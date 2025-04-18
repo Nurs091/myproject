@@ -1,21 +1,55 @@
 <!DOCTYPE html>
-
 <html lang="ru">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Моя первая страница</title>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная страница</title>
 </head>
-
 <body>
 
-<h1>Привет, Django!</h1>
+<h1>Привет, {{ user.username }}!</h1>
+
+{% if user.is_authenticated %}
+    <p>Добро пожаловать на главную страницу.</p>
+    <p><a href="{% url 'logout' %}">Выйти</a></p>
+
+    <!-- Список категорий -->
+    <h2>Категории</h2>
+    <ul>
+        {% for category in categories %}
+            <li>{{ category.name }}</li>
+        {% empty %}
+            <li>Категории не найдены</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Список объявлений -->
+    <h2>Объявления</h2>
+    <ul>
+        {% for ad in ads %}
+            <li>
+                <strong>{{ ad.title }}</strong><br>
+                {{ ad.description }}<br>
+                Цена: {{ ad.price }}<br>
+                Категория: {{ ad.category.name }}<br>
+                Автор: {{ ad.author.username }}<br>
+
+                {% if ad.images.all %}
+                    {% for image in ad.images.all %}
+                        <img src="{{ image.image.url }}" alt="Ad Image" width="200"><br>
+                    {% endfor %}
+                {% else %}
+                    <em>Нет изображений</em><br>
+                {% endif %}
+            </li>
+        {% empty %}
+            <li>Объявлений пока нет</li>
+        {% endfor %}
+    </ul>
+
+{% else %}
+    <p>Необходимо <a href="{% url 'login' %}">войти</a> или <a href="{% url 'register' %}">зарегистрироваться</a>.</p>
+{% endif %}
 
 </body>
-
 </html>
