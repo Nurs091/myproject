@@ -1,0 +1,7 @@
+      PID    PPID    PGID     WINPID   TTY         UID    STIME COMMAND
+     1720       1    1720        780  cons1     197609 09:02:12 /usr/bin/bash
+     1719    1227    1719       1500  cons0     197609 09:00:44 /c/Users/Asus/Desktop/project/myproject/venv/Scripts/python
+     1227       1    1227      23496  cons0     197609 08:47:59 /usr/bin/bash
+     2194       1    2194      15820  cons2     197609 09:37:24 /usr/bin/bash
+     2263    2194    2263       8816  cons2     197609 10:07:36 /usr/bin/PS
+     2143    1720    2143       1332  cons1     197609 09:28:42 /c/Users/Asus/AppData/Local/Microsoft/WindowsApps/python
