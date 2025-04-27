@@ -11,6 +11,7 @@ urlpatterns = [
     path('category/<int:category_id>/', views.category_ads, name='category_ads'),  # Страница с объявлениями категории
     path('ad/<int:ad_id>/', views.ad_detail, name='ad_detail'),  # Страница с подробностями объявления
     path('create/', views.create_ad, name='create_ad'),  # Кнопка создания объявлений
+    path('profile/', views.profile_view, name='profile'),
 ]
 
 if settings.DEBUG:

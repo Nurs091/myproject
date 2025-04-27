@@ -165,16 +165,22 @@
                 <h4>Объявления в категории {{ category.name }}</h4>
                 <div class="row">
                     {% for ad in ads %}
-                        <div class="col-md-12 mb-4">
-                            <div class="announcement">
-                                <div class="announcement-content">
-                                    <div class="announcement-title">{{ ad.title }}</div>
-                                    <div class="announcement-description">{{ ad.description|truncatewords:20 }}</div>
-                                    <div class="announcement-price"><strong>Цена:</strong> ${{ ad.price }}</div>
-                                    <a href="{% url 'ad_detail' ad.id %}" class="announcement-btn">Посмотреть</a>
-                                </div>
+                    <div class="col-md-12 mb-4">
+                        <div class="announcement">
+                            <div class="announcement-content">
+                                {% with ad.images.first as image %}
+                                    {% if image %}
+                                        <img src="{{ image.image.url }}" alt="Фото объявления" class="img-fluid mb-3" style="max-height: 250px; object-fit: cover;">
+                                    {% endif %}
+                                {% endwith %}
+                                <div class="announcement-title">{{ ad.title }}</div>
+                                <div class="announcement-description">{{ ad.description|truncatewords:20 }}</div>
+                                <div class="announcement-price"><strong>Цена:</strong> ${{ ad.price }}</div>
+                                <a href="{% url 'ad_detail' ad.id %}" class="announcement-btn">Посмотреть</a>
                             </div>
                         </div>
+                    </div>
+                    
                     {% empty %}
                         <p>Объявлений пока нет.</p>
                     {% endfor %}
