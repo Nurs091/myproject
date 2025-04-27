@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ ad.title }} - Подробности</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh; /* Задаем высоту на всю страницу */
+        }
+
+        .navbar {
+            background-color: #007bff;
+            border-bottom: 2px solid #0056b3;
+        }
+
+        .navbar-text {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .navbar form {
+            display: inline-block;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border: none;
+        }
+
+        .container {
+            margin-top: 30px;
+            flex: 1; /* Это заставит контейнер с контентом занимать оставшееся пространство */
+        }
+
+        .ad-detail {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .ad-detail img {
+            border-radius: 10px;
+            max-width: 200px;
+            height: auto;
+            object-fit: cover;
+            margin-left: 20px;
+        }
+
+        .ad-detail-content {
+            flex-grow: 1;
+        }
+
+        .ad-detail-title {
+            font-size: 26px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .ad-detail-description {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .ad-detail-price {
+            font-size: 22px;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+
+        .ad-detail-btn {
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            padding: 12px 25px;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .ad-detail-btn:hover {
+            background-color: #0056b3;
+        }
+
+        h4 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .list-group-item a {
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .list-group-item a:hover {
+            color: #007bff;
+        }
+
+        .list-group-item {
+            padding: 10px 15px;
+            font-size: 16px;
+        }
+
+        .footer-btn {
+            text-align: center;
+            margin-top: auto; /* Это заставит кнопку располагаться внизу */
+            padding: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Хедер -->
+    <nav class="navbar navbar-dark">
+        <div class="container d-flex justify-content-between">
+            <span class="navbar-text text-white">
+                Привет, {{ request.user.username }}!
+            </span>
+            <form action="{% url 'logout' %}" method="post" style="margin: 0;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-sm">Выйти</button>
+            </form>
+        </div>
+    </nav>
+
+    <!-- Контент -->
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Боковая панель категорий -->
+            <div class="col-md-3">
+                <h4>Категории</h4>
+                <ul class="list-group">
+                    {% for category in categories|slice:":5" %}
+                        <li class="list-group-item">
+                            <a href="{% url 'category_ads' category.id %}">{{ category.name }}</a>
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item">Нет категорий</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Основная часть с объявлением -->
+            <div class="col-md-9">
+                <div class="ad-detail">
+                    <div class="ad-detail-content">
+                        <h1 class="ad-detail-title">{{ ad.title }}</h1>
+                        <div class="ad-detail-description">
+                            <p>{{ ad.description }}</p>
+                        </div>
+                        <div class="ad-detail-price">
+                            <strong>Цена:</strong> ${{ ad.price }}
+                        </div>
+                    </div>
+                    <div class="ad-detail-img">
+                        {% if ad.images.first %}
+                            <img src="{{ ad.images.first.image.url }}" alt="{{ ad.title }}">
+                        {% else %}
+                            <img src="https://via.placeholder.com/300" alt="No image available">
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Кнопка "Назад на главную" внизу страницы -->
+    <div class="footer-btn">
+        <a href="{% url 'home' %}" class="ad-detail-btn">Назад на главную</a>
+    </div>
+
+    <!-- Скрипты Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
