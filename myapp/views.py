@@ -5,6 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.core.paginator import Paginator  # Импортируем Paginator для пагинации
 from .forms import CustomUserCreationForm
 from .models import User, Ad, Category, AdImage  # Импортируем также модель AdImage
+from django.contrib.auth.decorators import login_required
 
 # Представление для регистрации
 def register(request):
@@ -108,3 +109,16 @@ def create_ad(request):
 
             return redirect('home')  # После создания объявления возвращаем на главную
     return render(request, 'create_ad.html', {'categories': categories})
+
+
+@login_required
+def profile_view(request):
+    # Получаем все объявления, созданные текущим пользователем
+    user_ads = Ad.objects.filter(author=request.user)  # Используем 'author' вместо 'user'
+    
+    # Передаем в контекст данные о пользователе и его объявлениях
+    context = {
+        'user_ads': user_ads,
+    }
+    return render(request, 'profile.html', context)
+

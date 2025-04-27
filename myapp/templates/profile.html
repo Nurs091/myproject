@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f4f7fa;
+            font-family: 'Arial', sans-serif;
+        }
+        .navbar {
+            border-bottom: 2px solid #0056b3;
+        }
+        .profile-header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .profile-header h2 {
+            margin-bottom: 0;
+        }
+        .profile-header p {
+            margin-top: 10px;
+        }
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .card-body {
+            padding: 15px;
+        }
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .card-text {
+            font-size: 14px;
+            color: #555;
+        }
+        .card-footer {
+            background-color: #f7f7f7;
+            border-top: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container d-flex justify-content-between">
+            <span class="navbar-text text-white">
+                Личный кабинет - {{ request.user.username }}
+            </span>
+            <a href="{% url 'home' %}" class="btn btn-light btn-sm">На главную</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Профиль пользователя -->
+        <div class="profile-header text-center">
+            <h2>Ваш профиль</h2>
+            <p>Добро пожаловать, {{ request.user.username }}! Здесь вы можете управлять своими объявлениями.</p>
+        </div>
+
+        <!-- Информация о пользователе -->
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Информация о пользователе</h5>
+                <ul class="list-group">
+                    <li class="list-group-item"><strong>Имя пользователя:</strong> {{ request.user.username }}</li>
+                    <li class="list-group-item"><strong>Электронная почта:</strong> {{ request.user.email }}</li>
+                    <!-- Можно добавить другие данные -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- Объявления пользователя -->
+        <h3 class="mt-4">Ваши объявления</h3>
+        {% if user_ads %}
+            <div class="row">
+                {% for ad in user_ads %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <img src="{% if ad.images.all %}{{ ad.images.first.image.url }}{% else %}/path/to/default-image.jpg{% endif %}" class="card-img-top" alt="Объявление">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ ad.title }}</h5>
+                                <p class="card-text">{{ ad.description|truncatewords:20 }}</p>
+                                <p><strong>Цена:</strong> ${{ ad.price }}</p>
+                                <a href="{% url 'ad_detail' ad.id %}" class="btn btn-primary btn-sm">Посмотреть</a>
+                            </div>
+                            <div class="card-footer text-muted">
+                                Дата создания: {{ ad.created_at|date:"d M Y" }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>У вас еще нет объявлений.</p>
+        {% endif %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
