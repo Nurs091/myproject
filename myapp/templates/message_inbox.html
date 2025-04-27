@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сообщения</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container d-flex justify-content-between">
+            <span class="navbar-text text-white">
+                Личный кабинет - {{ request.user.username }}
+            </span>
+            <a href="{% url 'home' %}" class="btn btn-light btn-sm">На главную</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h3>Полученные сообщения</h3>
+        {% for message in received_messages %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">От: {{ message.sender.username }}</h5>
+                <p class="card-text">{{ message.content }}</p>
+                <small>Отправлено: {{ message.created_at }}</small>
+            </div>
+        </div>
+        {% empty %}
+        <p>У вас нет сообщений.</p>
+        {% endfor %}
+
+        <h3 class="mt-4">Отправленные сообщения</h3>
+        {% for message in sent_messages %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Кому: {{ message.receiver.username }}</h5>
+                <p class="card-text">{{ message.content }}</p>
+                <small>Отправлено: {{ message.created_at }}</small>
+            </div>
+        </div>
+        {% empty %}
+        <p>Вы не отправляли сообщений.</p>
+        {% endfor %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
