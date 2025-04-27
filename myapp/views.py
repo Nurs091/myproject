@@ -108,3 +108,31 @@ def create_ad(request):
 
             return redirect('home')  # После создания объявления возвращаем на главную
     return render(request, 'create_ad.html', {'categories': categories})
+
+@login_required
+def user_profile(request):
+    # Получаем объявления пользователя
+    user_ads = Ad.objects.filter(author=request.user)
+    
+    return render(request, 'profile.html', {'user_ads': user_ads})
+
+
+@login_required
+def message_cab(request, ad_id):
+    ad = get_object_or_404(Ad, id=ad_id)
+    receiver = ad.author  # Получатель - это автор объявления
+
+    return render(request, 'message_cab.html', {'ad': ad})
+
+@login_required
+def message_inbox(request):
+    # Получаем все сообщения, полученные текущим пользователем
+    received_messages = Message.objects.filter(receiver=request.user)
+    
+    # Получаем все сообщения, отправленные текущим пользователем
+    sent_messages = Message.objects.filter(sender=request.user)
+
+    return render(request, 'message_inbox.html', {
+        'received_messages': received_messages,
+        'sent_messages': sent_messages,
+    })

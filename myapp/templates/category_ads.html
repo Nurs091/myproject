@@ -43,8 +43,8 @@
             padding: 18px;
             margin-bottom: 18px;
             display: flex;
-            flex-direction: column;
-            align-items: flex-start;
+            flex-direction: row;
+            align-items: center;
         }
 
         .announcement:hover {
@@ -89,6 +89,13 @@
 
         .announcement-btn:hover {
             background-color: #218838;
+        }
+
+        .announcement-image {
+            max-width: 200px;
+            max-height: 150px;
+            object-fit: cover;
+            margin-right: 20px;
         }
 
         .list-group-item a {
@@ -167,6 +174,16 @@
                     {% for ad in ads %}
                         <div class="col-md-12 mb-4">
                             <div class="announcement">
+                                <!-- Добавление изображения, если оно существует -->
+                                {% if ad.adimage_set.all %}
+                                    <div class="announcement-image">
+                                        <img src="{{ ad.adimage_set.first.image.url }}" alt="Image" class="img-fluid">
+                                    </div>
+                                {% else %}
+                                    <div class="announcement-image">
+                                        <img src="path/to/default-image.jpg" alt="Default Image" class="img-fluid">
+                                    </div>
+                                {% endif %}
                                 <div class="announcement-content">
                                     <div class="announcement-title">{{ ad.title }}</div>
                                     <div class="announcement-description">{{ ad.description|truncatewords:20 }}</div>

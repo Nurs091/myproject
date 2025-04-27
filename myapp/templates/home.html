@@ -132,6 +132,8 @@
             <span class="navbar-text text-white">
                 Привет, {{ request.user.username }}!
             </span>
+            <!-- Кнопка "В профиль" -->
+            <a href="{% url 'profile' %}" class="btn btn-info btn-sm ml-2">В профиль</a>
             <form action="{% url 'logout' %}" method="post" style="margin: 0;">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger btn-sm">Выйти</button>
@@ -190,6 +192,7 @@
                     {% endfor %}
                 </div>
 
+                
                 <!-- Пагинация -->
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
