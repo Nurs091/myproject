@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ category.name }} - Объявления</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #28a745;
+            border-bottom: 2px solid #218838;
+        }
+
+        .navbar-text {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .navbar form {
+            display: inline-block;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border: none;
+        }
+
+        .container {
+            margin-top: 40px;
+        }
+
+        .announcement {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 18px;
+            margin-bottom: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .announcement:hover {
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+        }
+
+        .announcement img {
+            border-radius: 8px;
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            margin-bottom: 12px;
+        }
+
+        .announcement-content {
+            flex: 1;
+        }
+
+        .announcement-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .announcement-description {
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .announcement-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #28a745;
+            margin-bottom: 15px;
+        }
+
+        .announcement-btn {
+            background-color: #28a745;
+            border: none;
+            border-radius: 5px;
+            padding: 12px 24px;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
+        .announcement-btn:hover {
+            background-color: #218838;
+        }
+
+        .list-group-item a {
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .list-group-item a:hover {
+            color: #28a745;
+        }
+
+        .list-group-item {
+            padding: 10px 15px;
+            font-size: 16px;
+        }
+
+        h4 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .pagination-container {
+            margin-top: 20px;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        .pagination .page-item .page-link {
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <!-- Хедер -->
+    <nav class="navbar navbar-dark">
+        <div class="container d-flex justify-content-between">
+            <span class="navbar-text text-white">
+                Категория: {{ category.name }}
+            </span>
+            <div>
+                <a href="{% url 'home' %}" class="btn btn-light btn-sm mr-2">Главная</a>
+                <form action="{% url 'logout' %}" method="post" style="margin: 0;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Выйти</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Контент -->
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Боковая панель категорий -->
+            <div class="col-md-3">
+                <h4>Категории</h4>
+                <ul class="list-group">
+                    {% for category in categories|slice:":5" %}
+                        <li class="list-group-item">
+                            <a href="{% url 'category_ads' category.id %}">{{ category.name }}</a>
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item">Нет категорий</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Основная часть с объявлениями -->
+            <div class="col-md-9">
+                <h4>Объявления в категории {{ category.name }}</h4>
+                <div class="row">
+                    {% for ad in ads %}
+                        <div class="col-md-12 mb-4">
+                            <div class="announcement">
+                                {% if ad.images.first %}
+                                    <img src="{{ ad.images.first.image.url }}" alt="{{ ad.title }}">
+                                {% else %}
+                                    <img src="https://via.placeholder.com/200" alt="No image available">
+                                {% endif %}
+                                <div class="announcement-content">
+                                    <div class="announcement-title">{{ ad.title }}</div>
+                                    <div class="announcement-description">{{ ad.description|truncatewords:20 }}</div>
+                                    <div class="announcement-price"><strong>Цена:</strong> ${{ ad.price }}</div>
+                                    <a href="{% url 'ad_detail' ad.id %}" class="announcement-btn">Посмотреть</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p>Объявлений пока нет.</p>
+                    {% endfor %}
+                </div>
+
+                <!-- Пагинация -->
+                <div class="pagination-container d-flex justify-content-center mt-4">
+                    <ul class="pagination">
+                        {% if ads.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1" aria-label="First">
+                                    <span aria-hidden="true">&laquo;&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ ads.previous_page_number }}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {% for num in ads.paginator.page_range %}
+                            {% if ads.number == num %}
+                                <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if ads.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ ads.next_page_number }}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ ads.paginator.num_pages }}" aria-label="Last">
+                                    <span aria-hidden="true">&raquo;&raquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Скрипты Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

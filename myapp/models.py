@@ -1,18 +1,9 @@
-# from django.db import models
+from django.contrib.auth.models import AbstractUser
+from django.db import models
 
-# class YourModel(models.Model):
-#     name = models.CharField(max_length=100)
-
-#     def __str__(self):
-#         return self.name
-
-
-class User(models.Model):
-    username = models.CharField(max_length=150, unique=True)
-    email = models.EmailField(unique=True)
-    password = models.CharField(max_length=128)
-    phone = models.CharField(max_length=20, blank=True)
-    date_joined = models.DateTimeField(auto_now_add=True)
+# Кастомизация модели пользователя, наследуя от AbstractUser
+class User(AbstractUser):
+    phone = models.CharField(max_length=20, blank=True)  # Дополнительное поле для телефона
 
     def __str__(self):
         return self.username
@@ -43,7 +34,3 @@ class AdImage(models.Model):
 
     def __str__(self):
         return f"Image for {self.ad.title}"
-
-
-# Create your models here.
-
