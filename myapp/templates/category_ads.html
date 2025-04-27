@@ -1,9 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ category.name }} - Объявления</title>
+    <title>{{ category.name }} - Listings</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
@@ -134,70 +135,73 @@
     </style>
 </head>
 <body>
-    <!-- Хедер -->
+    <!-- Header -->
     <nav class="navbar navbar-dark">
         <div class="container d-flex justify-content-between">
             <span class="navbar-text text-white">
-                Категория: {{ category.name }}
+                Category: {{ category.name }}
             </span>
             <div>
-                <a href="{% url 'home' %}" class="btn btn-light btn-sm mr-2">Главная</a>
+                <!-- Profile button -->
+                <a href="{% url 'profile' %}" class="btn btn-primary btn-sm">Profile</a>
+                <a href="{% url 'home' %}" class="btn btn-light btn-sm mr-2">Home</a>
                 <form action="{% url 'logout' %}" method="post" style="margin: 0;">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-danger btn-sm">Выйти</button>
+                    <button type="submit" class="btn btn-danger btn-sm">Logout</button>
                 </form>
             </div>
         </div>
     </nav>
 
-    <!-- Контент -->
+    <!-- Content -->
     <div class="container mt-4">
         <div class="row">
-            <!-- Боковая панель категорий -->
+            <!-- Category sidebar -->
             <div class="col-md-3">
-                <h4>Категории</h4>
+                <h4>Categories</h4>
                 <ul class="list-group">
-                    {% for category in categories|slice:":5" %}
+                    {% for category in categories %}
                         <li class="list-group-item">
                             <a href="{% url 'category_ads' category.id %}">{{ category.name }}</a>
                         </li>
                     {% empty %}
-                        <li class="list-group-item">Нет категорий</li>
+                        <li class="list-group-item">No categories</li>
                     {% endfor %}
                 </ul>
             </div>
 
-            <!-- Основная часть с объявлениями -->
+            <!-- Main content with listings -->
             <div class="col-md-9">
-                <h4>Объявления в категории {{ category.name }}</h4>
+                <h4>Listings in {{ category.name }} category</h4>
                 <div class="row">
                     {% for ad in ads %}
                         <div class="col-md-12 mb-4">
                             <div class="announcement">
-                                <!-- Добавление изображения, если оно существует -->
-                                {% if ad.adimage_set.all %}
+                                <!-- Add image if available -->
+                                {% if ad.images.all %}
                                     <div class="announcement-image">
-                                        <img src="{{ ad.adimage_set.first.image.url }}" alt="Image" class="img-fluid">
+                                        <img src="{{ ad.images.first.image.url }}" alt="Image" class="img-fluid">
                                     </div>
                                 {% else %}
                                     <div class="announcement-image">
-                                        <img src="path/to/default-image.jpg" alt="Default Image" class="img-fluid">
+                                        <img src="{% static 'images/default-photo.jpg' %}" alt="Default Image" class="img-fluid">
                                     </div>
                                 {% endif %}
+
                                 <div class="announcement-content">
                                     <div class="announcement-title">{{ ad.title }}</div>
                                     <div class="announcement-description">{{ ad.description|truncatewords:20 }}</div>
-                                    <div class="announcement-price"><strong>Цена:</strong> ${{ ad.price }}</div>
-                                    <a href="{% url 'ad_detail' ad.id %}" class="announcement-btn">Посмотреть</a>
+                                    <div class="announcement-price"><strong>Price:</strong> ${{ ad.price }}</div>
+                                    <a href="{% url 'ad_detail' ad.id %}" class="announcement-btn">View</a>
                                 </div>
                             </div>
                         </div>
                     {% empty %}
-                        <p>Объявлений пока нет.</p>
+                        <p>No listings yet.</p>
                     {% endfor %}
                 </div>
 
-                <!-- Пагинация -->
+                <!-- Pagination -->
                 <div class="pagination-container d-flex justify-content-center mt-4">
                     <ul class="pagination">
                         {% if ads.has_previous %}
@@ -239,7 +243,7 @@
         </div>
     </div>
 
-    <!-- Скрипты Bootstrap -->
+    <!-- Bootstrap Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

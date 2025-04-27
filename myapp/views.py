@@ -114,8 +114,18 @@ def user_profile(request):
     # Получаем объявления пользователя
     user_ads = Ad.objects.filter(author=request.user)
     
-    return render(request, 'profile.html', {'user_ads': user_ads})
+    # Получаем избранные объявления пользователя
+    favorite_ads = Ad.objects.filter(favorite_users=request.user)
+    
+    return render(request, 'profile.html', {
+        'user_ads': user_ads,
+        'favorite_ads': favorite_ads,
+    })
 
+@login_required
+def profile_view(request):
+    # Логика для отображения профиля пользователя
+    return render(request, 'profile.html')
 
 @login_required
 def message_cab(request, ad_id):
@@ -136,3 +146,40 @@ def message_inbox(request):
         'received_messages': received_messages,
         'sent_messages': sent_messages,
     })
+
+@login_required
+def user_favorites(request):
+    # Получаем все избранные объявления текущего пользователя
+    favorite_ads = Favorite.objects.filter(user=request.user)
+    return render(request, 'profile.html', {'favorite_ads': favorite_ads})
+
+@login_required
+def add_to_favorites(request, ad_id):
+    ad = get_object_or_404(Ad, id=ad_id)
+
+    # Проверяем, не добавлено ли объявление в избранное
+    if ad.favorite_users.filter(id=request.user.id).exists():
+        # Если да, удаляем его из избранного
+        ad.favorite_users.remove(request.user)
+        message = "Объявление удалено из избранного."
+    else:
+        # Если нет, добавляем его в избранное
+        ad.favorite_users.add(request.user)
+        message = "Объявление добавлено в избранное."
+
+    return redirect('ad_detail', ad_id=ad.id)  # Перенаправляем обратно на страницу объявления
+
+def delete_ad(request, ad_id):
+    ad = get_object_or_404(Ad, id=ad_id)
+    
+    # Проверка, что текущий пользователь является автором объявления
+    if request.user != ad.author:
+        raise Http404("Вы не можете удалить это объявление.")
+
+    # Удаляем объявление
+    ad.delete()
+    
+    # Перенаправляем пользователя на страницу профиля или главную
+    return redirect('profile')  # Или 'home', если хотите перенаправить на главную страницу
+
+

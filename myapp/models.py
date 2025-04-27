@@ -21,6 +21,7 @@ class Ad(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)  # Автор объявления
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)  # Категория
+    favorite_users = models.ManyToManyField(User, related_name='favorite_ads', blank=True)  # Пользователи, добавившие объявление в избранное
 
     def __str__(self):
         return self.title
@@ -33,5 +34,4 @@ class AdImage(models.Model):
 
     def __str__(self):
         return f"Image for {self.ad.title}"
-
 

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -91,21 +92,6 @@
             background-color: #0056b3;
         }
 
-        .list-group-item a {
-            color: #333;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .list-group-item a:hover {
-            color: #007bff;
-        }
-
-        .list-group-item {
-            padding: 10px 15px;
-            font-size: 16px;
-        }
-
         h4 {
             font-size: 24px;
             font-weight: bold;
@@ -126,40 +112,39 @@
 </head>
 <body>
     <!-- Хедер -->
-    <nav class="navbar navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container d-flex justify-content-between">
-            <a href="{% url 'home' %}" class="text-white">Главная</a>
+            <a href="{% url 'home' %}" class="text-white">Обновить</a>
             <span class="navbar-text text-white">
                 Привет, {{ request.user.username }}!
             </span>
-            <!-- Кнопка "В профиль" -->
-            <a href="{% url 'profile' %}" class="btn btn-info btn-sm ml-2">В профиль</a>
             <form action="{% url 'logout' %}" method="post" style="margin: 0;">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger btn-sm">Выйти</button>
             </form>
+            <!-- Кнопка "В профиль" -->
+            <a href="{% url 'profile' %}" class="btn btn-primary btn-sm">В профиль</a>
+            <!-- Выпадающее меню категорий -->
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="categoriesDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Категории
+                </button>
+                <div class="dropdown-menu" aria-labelledby="categoriesDropdown">
+                    {% for category in categories %}
+                        <a class="dropdown-item" href="{% url 'category_ads' category.id %}">{{ category.name }}</a>
+                    {% empty %}
+                        <a class="dropdown-item" href="#">Нет категорий</a>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </nav>
 
     <!-- Контент -->
     <div class="container mt-4">
         <div class="row">
-            <!-- Боковая панель категорий -->
-            <div class="col-md-3">
-                <h4>Категории</h4>
-                <ul class="list-group">
-                    {% for category in categories|slice:":5" %}
-                        <li class="list-group-item">
-                            <a href="{% url 'category_ads' category.id %}">{{ category.name }}</a>
-                        </li>
-                    {% empty %}
-                        <li class="list-group-item">Нет категорий</li>
-                    {% endfor %}
-                </ul>
-            </div>
-
             <!-- Основная часть с объявлениями -->
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4>Последние объявления</h4>
                     <a href="{% url 'create_ad' %}" class="btn btn-success btn-sm">Создать объявление</a>
@@ -176,7 +161,7 @@
                                     </div>
                                 {% else %}
                                     <div class="announcement-image">
-                                        <img src="path/to/default-image.jpg" alt="Default Image" class="img-fluid">
+                                        <img src="{% static 'images/default-photo.jpg' %}" alt="Default Image" class="img-fluid">
                                     </div>
                                 {% endif %}
                                 <div class="announcement-content">
@@ -192,7 +177,6 @@
                     {% endfor %}
                 </div>
 
-                
                 <!-- Пагинация -->
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">

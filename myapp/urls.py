@@ -1,7 +1,7 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from . import views  # Импортируем views из приложения myapp
+from . import views
 
 urlpatterns = [
     path('register/', views.register, name='register'),  # Страница регистрации
@@ -14,6 +14,9 @@ urlpatterns = [
     path('profile/', views.user_profile, name='profile'),  # Профиль пользователя
     path('message_inbox/', views.message_inbox, name='message_inbox'),
     path('message_cab/<int:ad_id>/', views.message_cab, name='message_cab'),
+    path('favorites/', views.user_favorites, name='favorites'),
+    path('add_to_favorites/<int:ad_id>/', views.add_to_favorites, name='add_to_favorites'),
+    path('ad/delete/<int:ad_id>/', views.delete_ad, name='delete_ad'),
 ]
 
 if settings.DEBUG:

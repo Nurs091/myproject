@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -181,12 +182,28 @@
     </style>
 </head>
 <body>
+    {% load static %}
     <!-- Хедер -->
     <nav class="navbar navbar-dark">
         <div class="container d-flex justify-content-between">
             <span class="navbar-text text-white">
                 Привет, {{ request.user.username }}!
             </span>
+            
+            <!-- Кнопка "В профиль" -->
+            <a href="{% url 'profile' %}" class="btn btn-primary btn-sm">В профиль</a>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="categoriesDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Категории
+                </button>
+                <div class="dropdown-menu" aria-labelledby="categoriesDropdown">
+                    {% for category in categories %}
+                        <a class="dropdown-item" href="{% url 'category_ads' category.id %}">{{ category.name }}</a>
+                    {% empty %}
+                        <a class="dropdown-item" href="#">Нет категорий</a>
+                    {% endfor %}
+                </div>
+            </div>
             <form action="{% url 'logout' %}" method="post" style="margin: 0;">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger btn-sm">Выйти</button>
@@ -208,6 +225,27 @@
                         <div class="ad-detail-price">
                             <strong>Цена:</strong> ${{ ad.price }}
                         </div>
+                        
+                        <!-- Кнопка "Добавить в избранное" -->
+                        <form action="{% url 'add_to_favorites' ad.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-warning mt-3">
+                                {% if user in ad.favorite_users.all %}
+                                    Удалить из избранного
+                                {% else %}
+                                    Добавить в избранное
+                                {% endif %}
+                            </button>
+                        </form>
+                        <!-- Кнопка для удаления объявления -->
+                        {% if request.user == ad.author %}
+                            <form action="{% url 'delete_ad' ad.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger mt-3" onclick="return confirm('Вы уверены, что хотите удалить это объявление?')">
+                                    Удалить объявление
+                                </button>
+                            </form>
+                        {% endif %}
 
                         <!-- Показать номер телефона, если он есть -->
                         {% if ad.author.phone %}
@@ -215,8 +253,6 @@
                             <strong>Телефон:</strong> {{ ad.author.phone }}
                         </div>
                         {% endif %}
-
-                        
                     </div>
 
                     <!-- Фотографии справа -->
@@ -229,10 +265,13 @@
                                 <!-- Миниатюры других фотографий -->
                                 <div class="thumbs">
                                     {% for photo in ad.images.all %}
-                                    <img src="{{ photo.image.url }}" alt="Фото объявления" onclick="changeMainPhoto(this)" />
+                                        <img src="{{ photo.image.url }}" alt="Фото объявления" onclick="changeMainPhoto(this)" />
                                     {% endfor %}
                                 </div>
                             </div>
+                        {% else %}
+                            <!-- Если нет фотографий, показываем изображение по умолчанию -->
+                            <img id="main-photo" class="main-photo" src="{% static 'images/default-photo.jpg' %}" alt="Фото объявления" />
                         {% endif %}
                     </div>
                 </div>

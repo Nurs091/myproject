@@ -2,73 +2,84 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Создать объявление</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            background-color: #f4f7fa;
             font-family: 'Arial', sans-serif;
+            background-color: #f4f7fa;
+            margin: 0;
+            padding: 0;
         }
+
         .container {
-            margin-top: 50px;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-top: 30px;
         }
-        h1 {
-            margin-bottom: 30px;
+
+        h4 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
         }
+
         .form-group label {
             font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Создать объявление</h1>
 
-        <form action="{% url 'create_ad' %}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
+<div class="container mt-4">
+    <h4>Создать новое объявление</h4>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="title">Заголовок объявления</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="category">Категория</label>
+            <select class="form-control" id="category" name="category" required>
+                {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Описание</label>
+            <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="price">Цена</label>
+            <input type="number" class="form-control" id="price" name="price" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="images">Изображения</label>
+            <input type="file" class="form-control" id="images" name="images" multiple>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Создать объявление</button>
+    </form>
+</div>
 
-            <div class="form-group">
-                <label for="title">Заголовок</label>
-                <input type="text" class="form-control" id="title" name="title" placeholder="Введите заголовок" required>
-            </div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-            <div class="form-group">
-                <label for="description">Описание</label>
-                <textarea class="form-control" id="description" name="description" rows="5" placeholder="Введите описание" required></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="price">Цена ($)</label>
-                <input type="number" class="form-control" id="price" name="price" min="0" placeholder="Введите цену" required>
-            </div>
-
-            <div class="form-group">
-                <label for="category">Категория</label>
-                <select class="form-control" id="category" name="category" required>
-                    <option value="">Выберите категорию</option>
-                    {% for category in categories %}
-                        <option value="{{ category.id }}">{{ category.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <!-- Кнопка для добавления нескольких изображений -->
-            <div class="form-group">
-                <label for="images">Загрузить изображения</label>
-                <input type="file" class="form-control-file" id="images" name="images" accept="image/*" multiple>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Создать</button>
-        </form>
-    </div>
-
-    <!-- Скрипты Bootstrap -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

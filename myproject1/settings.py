@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+
+# Указываем пользовательскую модель
 AUTH_USER_MODEL = 'myapp.User'
 LOGIN_URL = '/register/'
 
@@ -39,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'myapp' 
+    'myapp',  # Ваше приложение
 ]
 
 MIDDLEWARE = [
@@ -72,9 +74,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'myproject1.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
+# Database configuration
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -84,8 +84,6 @@ DATABASES = {
 
 
 # Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -102,30 +100,30 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
-
+# Internationalization settings
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
-
 USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
-
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Путь для медиа-файлов (фото, видео и других загружаемых файлов)
+# Pараметры для медиа-файлов (фото, видео и других загружаемых файлов)
 MEDIA_URL = '/media/'
 
-# Папка, где будут храниться медиа-файлы
+# Папка для медиа-файлов
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Параметры для хранения статических файлов
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',  # Для разработки используйте эту строку, если хотите хранить статические файлы в проекте
+]
+
+# Статический путь для продакшн
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # Для продакшн (не обязательно, если у вас только разработка)
