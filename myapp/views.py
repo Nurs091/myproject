@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.paginator import Paginator  # Импортируем Paginator для пагинации
 from .forms import CustomUserCreationForm
-from .models import User, Ad, Category  # Импортируем также кастомную модель User
+from .models import User, Ad, Category, AdImage  # Импортируем также модель AdImage
 
 # Представление для регистрации
 def register(request):
@@ -86,6 +86,9 @@ def create_ad(request):
         price = request.POST.get('price')
         category_id = request.POST.get('category')
 
+        # Получаем изображения
+        images = request.FILES.getlist('images')  # Получаем список файлов изображений
+
         if title and description and price and category_id:
             category = get_object_or_404(Category, id=category_id)
             ad = Ad.objects.create(
@@ -95,5 +98,13 @@ def create_ad(request):
                 category=category,
                 author=request.user  # Используем author, а не user
             )
+
+            # Сохраняем изображения для объявления
+            for image in images:
+                AdImage.objects.create(
+                    ad=ad,
+                    image=image
+                )
+
             return redirect('home')  # После создания объявления возвращаем на главную
     return render(request, 'create_ad.html', {'categories': categories})

@@ -51,14 +51,6 @@
             box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
         }
 
-        .announcement img {
-            border-radius: 8px;
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            margin-bottom: 12px;
-        }
-
         .announcement-content {
             flex: 1;
         }
@@ -175,11 +167,6 @@
                     {% for ad in ads %}
                         <div class="col-md-12 mb-4">
                             <div class="announcement">
-                                {% if ad.images.first %}
-                                    <img src="{{ ad.images.first.image.url }}" alt="{{ ad.title }}">
-                                {% else %}
-                                    <img src="https://via.placeholder.com/200" alt="No image available">
-                                {% endif %}
                                 <div class="announcement-content">
                                     <div class="announcement-title">{{ ad.title }}</div>
                                     <div class="announcement-description">{{ ad.description|truncatewords:20 }}</div>

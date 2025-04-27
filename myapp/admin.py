@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Ad, AdImage, User  # Импортируем нужные модели
+from .models import Category, Ad, User  # Импортируем нужные модели
 
 # Регистрация модели Category в админке
 @admin.register(Category)
@@ -12,10 +12,6 @@ class CategoryAdmin(admin.ModelAdmin):
 class AdAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'category', 'price', 'created_at')
     search_fields = ('title', 'author__username', 'category__name')
-
-@admin.register(AdImage)
-class AdImageAdmin(admin.ModelAdmin):
-    list_display = ('ad', 'image')
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):

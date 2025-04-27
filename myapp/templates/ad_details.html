@@ -52,14 +52,6 @@
             flex-wrap: wrap;
         }
 
-        .ad-detail img {
-            border-radius: 10px;
-            max-width: 200px;
-            height: auto;
-            object-fit: cover;
-            margin-left: 20px;
-        }
-
         .ad-detail-content {
             flex-grow: 1;
         }
@@ -171,13 +163,6 @@
                         <div class="ad-detail-price">
                             <strong>Цена:</strong> ${{ ad.price }}
                         </div>
-                    </div>
-                    <div class="ad-detail-img">
-                        {% if ad.images.first %}
-                            <img src="{{ ad.images.first.image.url }}" alt="{{ ad.title }}">
-                        {% else %}
-                            <img src="https://via.placeholder.com/300" alt="No image available">
-                        {% endif %}
                     </div>
                 </div>
             </div>

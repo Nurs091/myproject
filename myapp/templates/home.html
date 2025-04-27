@@ -51,14 +51,6 @@
             box-shadow: none;
         }
 
-        .announcement img {
-            border-radius: 10px;
-            max-width: 200px;
-            height: auto;
-            object-fit: cover;
-            margin-right: 20px;
-        }
-
         .announcement-content {
             flex: 1;
         }
@@ -123,6 +115,13 @@
         .pagination {
             justify-content: center;
         }
+
+        .announcement-image {
+            max-width: 200px;
+            max-height: 150px;
+            object-fit: cover;
+            margin-right: 20px;
+        }
     </style>
 </head>
 <body>
@@ -168,10 +167,15 @@
                     {% for ad in ads %}
                         <div class="col-md-12 mb-4">
                             <div class="announcement">
-                                {% if ad.images.first %}
-                                    <img src="{{ ad.images.first.image.url }}" alt="{{ ad.title }}">
+                                <!-- Добавление изображения, если оно существует -->
+                                {% if ad.images.all %}
+                                    <div class="announcement-image">
+                                        <img src="{{ ad.images.first.image.url }}" alt="Image" class="img-fluid">
+                                    </div>
                                 {% else %}
-                                    <img src="https://via.placeholder.com/200" alt="No image available">
+                                    <div class="announcement-image">
+                                        <img src="path/to/default-image.jpg" alt="Default Image" class="img-fluid">
+                                    </div>
                                 {% endif %}
                                 <div class="announcement-content">
                                     <div class="announcement-title">{{ ad.title }}</div>
