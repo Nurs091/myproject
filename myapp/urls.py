@@ -17,6 +17,8 @@ urlpatterns = [
     path('favorites/', views.user_favorites, name='favorites'),
     path('add_to_favorites/<int:ad_id>/', views.add_to_favorites, name='add_to_favorites'),
     path('ad/delete/<int:ad_id>/', views.delete_ad, name='delete_ad'),
+    path('ad/<int:ad_id>/update-status/', views.update_ad_status, name='update_ad_status'),
+    path('ad/<int:ad_id>/edit/', views.edit_ad, name='edit_ad'),
 ]
 
 if settings.DEBUG:

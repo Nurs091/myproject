@@ -1,151 +1,227 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        body {
-            background-color: #f4f7fa;
-            font-family: 'Arial', sans-serif;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Профиль</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  <style>
+    body {
+        background-color: #f0f2f5;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .navbar {
+        background-color: #007bff;
+    }
+
+    .profile-header {
+        background: white;
+        padding: 30px 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .tabs {
+        display: flex;
+        justify-content: center;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        gap: 20px;
+    }
+
+    .tab-item {
+        background-color: #e7f0fd; /* мягкий голубой фон */
+        color: #007bff;
+        border: 1px solid #cce0ff;
+        border-radius: 10px;
+        padding: 10px 25px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+        text-align: center;
+        user-select: none;
+    }
+
+    .tab-item:hover {
+        background-color: #d0e7ff;
+    }
+
+    .tab-item.active {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+
+    .content-section {
+        margin-top: 20px;
+    }
+
+    .card-custom {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        transition: 0.3s;
+        background-color: #fff;
+    }
+
+    .card-custom:hover {
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+    .fade-in {
+        animation: fadeIn 0.4s ease-in;
+    }
+    .tabs-wrapper {
+      width: 100%;
+      background-color: #6f7e8d; /* мягкий светло-серый */
+      padding: 30px 0;
+      margin: 40px 0;
+  }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
         }
-        .navbar {
-            border-bottom: 2px solid #0056b3;
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
-        .profile-header {
-            background-color: #007bff;
-            color: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-        .profile-header h2 {
-            margin-bottom: 0;
-        }
-        .profile-header p {
-            margin-top: 10px;
-        }
-        .card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-        .card-body {
-            padding: 15px;
-        }
-        .card-title {
-            font-size: 18px;
-            font-weight: bold;
-        }
-        .card-text {
-            font-size: 14px;
-            color: #555;
-        }
-        .card-footer {
-            background-color: #f7f7f7;
-            border-top: 1px solid #ddd;
-        }
-        .favorite-card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-            background-color: #fff;
-        }
-        .favorite-card .card-body {
-            padding: 15px;
-        }
-        .favorite-card .card-footer {
-            background-color: #f7f7f7;
-            border-top: 1px solid #ddd;
-        }
-    </style>
+    }
+</style>
 </head>
 <body>
-    <nav class="navbar navbar-dark bg-primary">
-        
-        <div class="container d-flex justify-content-between">
-            <span class="navbar-text text-white">
-                Profile - {{ request.user.username }}
-            </span>
-            <a href="{% url 'home' %}" class="btn btn-light btn-sm">Home</a>
-        </div>
-    </nav>
 
-    <div class="container mt-4">
-        <!-- User Profile -->
-        <div class="profile-header text-center">
-            <h2>Your Profile</h2>
-            <p>Welcome, {{ request.user.username }}! Here you can manage your listings.</p>
-        </div>
-
-        <!-- User Information -->
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">User Information</h5>
-                <ul class="list-group">
-                    <li class="list-group-item"><strong>Username:</strong> {{ request.user.username }}</li>
-                    <li class="list-group-item"><strong>Email:</strong> {{ request.user.email }}</li>
-                    <!-- You can add other data here -->
-                </ul>
-            </div>
-        </div>
-
-        <!-- User Listings -->
-        <h3 class="mt-4">Your Listings</h3>
-        {% if user_ads %}
-            <div class="row">
-                {% for ad in user_ads %}
-                    <div class="col-md-4 mb-4">
-                        <div class="card">
-                            <img src="{% if ad.images.all %}{{ ad.images.first.image.url }}{% else %}/path/to/default-image.jpg{% endif %}" class="card-img-top" alt="Listing">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ ad.title }}</h5>
-                                <p class="card-text">{{ ad.description|truncatewords:20 }}</p>
-                                <p><strong>Price:</strong> ${{ ad.price }}</p>
-                                <a href="{% url 'ad_detail' ad.id %}" class="btn btn-primary btn-sm">View</a>
-                            </div>
-                            <div class="card-footer text-muted">
-                                Created on: {{ ad.created_at|date:"d M Y" }}
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <p>You don't have any listings yet.</p>
-        {% endif %}
-        
-        
-        <!-- Favorite Listings -->
-        <h3 class="mt-4">Favorite Listings</h3>
-        {% if favorite_ads %}
-            <div class="row">
-                {% for favorite in favorite_ads %}
-                    <div class="col-md-4 mb-4">
-                        <div class="favorite-card">
-                            <img src="{% if favorite.images.all %}{{ favorite.images.first.image.url }}{% else %}/path/to/default-image.jpg{% endif %}" class="card-img-top" alt="Favorite">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ favorite.title }}</h5>
-                                <p class="card-text">{{ favorite.description|truncatewords:20 }}</p>
-                                <p><strong>Price:</strong> ${{ favorite.price }}</p>
-                                <a href="{% url 'ad_detail' favorite.id %}" class="btn btn-success btn-sm">Go to</a>
-                            </div>
-                            <div class="card-footer text-muted">
-                                Added on: {{ favorite.created_at|date:"d M Y" }}
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <p>You have no favorite listings.</p>
-        {% endif %}
+<!-- Навигация -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container">
+    <a href="{% url 'home' %}" class="btn btn-outline-light rounded-pill px-4 py-2">На главную</a>
+    <div class="ml-auto">
+      <span class="text-white">Профиль: {{ request.user.username }}</span>
     </div>
+  </div>
+</nav>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<div class="container">
+
+  <!-- Профиль -->
+  <div class="profile-header">
+    <h2>Your Profile</h2>
+    <p>Welcome, {{ request.user.username }}! Here you can manage your listings.</p>
+    <hr>
+    <h5>User Information</h5>
+    <p><strong>Username:</strong> {{ request.user.username }}</p>
+    <p><strong>Email:</strong> {{ request.user.email }}</p>
+  </div>
+
+  <!-- Вкладки -->
+<!-- Вкладки -->
+<div class="tabs-wrapper">
+    <div class="container d-flex justify-content-center">
+      <div class="tabs">
+        <div class="tab-item active" onclick="showTab('listings', this)">Your Listings</div>
+        <div class="tab-item" onclick="showTab('favorites', this)">Favorite Listings</div>
+      </div>
+    </div>
+  </div>
+  
+  
+
+  <!-- Секции -->
+  <div id="listings" class="content-section">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h4>My Listings</h4>
+      <a href="{% url 'create_ad' %}" class="btn btn-success btn-sm">Create Listing</a>
+    </div>
+  
+    {% if user_ads %}
+      <div class="row">
+        {% for ad in user_ads %}
+          <div class="col-md-6 mb-4">
+            <div class="card-custom h-100">
+              <img src="{% if ad.images.all %}{{ ad.images.first.image.url }}{% else %}{% static 'images/default-photo.jpg' %}{% endif %}" class="card-img-top" alt="Объявление">
+              <div class="card-body">
+                <h5 class="card-title">{{ ad.title }}</h5>
+                <p>{{ ad.description|truncatewords:20 }}</p>
+                <p><strong>Цена:</strong> ${{ ad.price }}</p>
+                <a href="{% url 'ad_detail' ad.id %}" class="btn btn-primary btn-sm">View</a>
+              </div>
+              <div class="card-footer text-muted text-center">
+                Created: {{ ad.created_at|date:"d M Y" }}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>You have no listings yet.</p>
+    {% endif %}
+  </div>
+  
+
+  <div id="favorites" class="content-section" style="display: none;">
+    <h4>Favorite Listings</h4>
+    {% if favorite_ads %}
+      <div class="row">
+        {% for favorite in favorite_ads %}
+          <div class="col-md-6 mb-4">
+            <div class="card-custom h-100">
+              <img src="{% if favorite.images.all %}{{ favorite.images.first.image.url }}{% else %}{% static 'images/default-photo.jpg' %}{% endif %}" class="card-img-top" alt="Избранное">
+              <div class="card-body">
+                <h5 class="card-title">{{ favorite.title }}</h5>
+                <p>{{ favorite.description|truncatewords:20 }}</p>
+                <p><strong>Цена:</strong> ${{ favorite.price }}</p>
+                <a href="{% url 'ad_detail' favorite.id %}" class="btn btn-success btn-sm">Go to</a>
+              </div>
+              <div class="card-footer text-muted text-center">
+                Added: {{ favorite.created_at|date:"d M Y" }}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>You have no favorite listings yet.</p>
+    {% endif %}
+  </div>
+
+</div>
+
+<script>
+    function showTab(tabId, element = null) {
+        const tabs = document.querySelectorAll('.tab-item');
+        tabs.forEach(tab => tab.classList.remove('active'));
+        if (element) {
+            element.classList.add('active');
+        }
+
+        document.getElementById('listings').style.display = 'none';
+        document.getElementById('favorites').style.display = 'none';
+
+        document.getElementById('listings').classList.remove('fade-in');
+        document.getElementById('favorites').classList.remove('fade-in');
+
+        const activeSection = document.getElementById(tabId);
+        activeSection.style.display = 'block';
+        activeSection.classList.add('fade-in');
+    }
+
+    // Плавное появление первой вкладки при загрузке
+    window.addEventListener('DOMContentLoaded', function() {
+        const activeSection = document.getElementById('listings');
+        activeSection.classList.add('fade-in');
+    });
+</script>
+
+  
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>

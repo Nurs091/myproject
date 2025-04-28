@@ -2,9 +2,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from django.core.paginator import Paginator  # Импортируем Paginator для пагинации
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.db.models.functions import Lower
+
 from .forms import CustomUserCreationForm
-from .models import User, Ad, Category, AdImage  # Импортируем также модель AdImage
+from .models import User, Ad, Category, AdImage, AdStatus, AdHistory
+
 
 # Представление для регистрации
 def register(request):
@@ -44,17 +48,60 @@ def user_logout(request):
     return redirect('home')  # Перенаправление на главную страницу
 
 # Представление для главной страницы (доступно только авторизованным пользователям)
+from django.db.models import Q
+from django.db.models.functions import Lower
+
 @login_required
 def home(request):
-    ads = Ad.objects.all()  # Получаем все объявления
-    categories = Category.objects.all()  # Получаем все категории
+    ads = Ad.objects.all()
+    categories = Category.objects.all()
+
+    query = request.GET.get('q')
+    status = request.GET.get('status')
+
+    if query:
+        ads = ads.annotate(
+            lower_title=Lower('title'),
+            lower_description=Lower('description')
+        ).filter(
+            Q(lower_title__icontains=query) |
+            Q(lower_description__icontains=query)
+        )
+
+    if status:
+        ads = ads.filter(status__name__iexact=status)
+
+    paginator = Paginator(ads, 5)  # 5 объявлений на страницу
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'home.html', {
+        'ads': page_obj,
+        'categories': categories,
+        'query': query,
+        'status': status,
+    })
+
+    # Фильтрация по статусу
+    status = request.GET.get('status')
+    if status:
+        ads = ads.filter(status__name__iexact=status)
+
+    # Убираем фильтрацию по категории (если не нужна), иначе оставляем так:
+    category_id = request.GET.get('category')
+    if category_id:
+        ads = ads.filter(category__id=category_id)
 
     # Пагинация
-    paginator = Paginator(ads, 10)  # 10 объявлений на страницу
-    page_number = request.GET.get('page')  # Получаем номер страницы из GET-запроса
-    page_obj = paginator.get_page(page_number)  # Получаем страницы
+    paginator = Paginator(ads, 5)  # 5 объявлений на страницу
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
-    return render(request, 'home.html', {'ads': page_obj, 'categories': categories})
+    return render(request, 'home.html', {
+        'ads': page_obj,
+        'categories': categories
+    })
+
 
 # Представление для отображения объявлений в категории
 @login_required
@@ -73,8 +120,18 @@ def category_ads(request, category_id):
 @login_required
 def ad_detail(request, ad_id):
     ad = get_object_or_404(Ad, id=ad_id)
-    categories = Category.objects.all()  # Получаем все категории
-    return render(request, 'ad_details.html', {'ad': ad, 'categories': categories})
+    categories = Category.objects.all()
+
+    # Поиск похожих объявлений из той же категории, исключая текущее объявление
+    recommended_ads = Ad.objects.filter(
+        category=ad.category
+    ).exclude(id=ad.id).order_by('-created_at')[:6]  # Ограничиваем до 6 объявлений
+
+    return render(request, 'ad_details.html', {
+        'ad': ad,
+        'categories': categories,
+        'recommended_ads': recommended_ads,
+    })
 
 # Представление для создания нового объявления
 @login_required
@@ -91,15 +148,20 @@ def create_ad(request):
 
         if title and description and price and category_id:
             category = get_object_or_404(Category, id=category_id)
+
+            # 👇 Найти статус "Active" автоматически
+            active_status = AdStatus.objects.filter(name="Active").first()
+
             ad = Ad.objects.create(
                 title=title,
                 description=description,
                 price=price,
                 category=category,
-                author=request.user  # Используем author, а не user
+                author=request.user,
+                status=active_status  # 👉 Теперь новый статус
             )
 
-            # Сохраняем изображения для объявления
+            # Сохраняем изображения
             for image in images:
                 AdImage.objects.create(
                     ad=ad,
@@ -109,6 +171,7 @@ def create_ad(request):
             return redirect('home')  # После создания объявления возвращаем на главную
     return render(request, 'create_ad.html', {'categories': categories})
 
+
 @login_required
 def user_profile(request):
     # Получаем объявления пользователя
@@ -117,9 +180,13 @@ def user_profile(request):
     # Получаем избранные объявления пользователя
     favorite_ads = Ad.objects.filter(favorite_users=request.user)
     
+    # Получаем ВСЕ статусы объявлений
+    ad_statuses = AdStatus.objects.all()
+
     return render(request, 'profile.html', {
         'user_ads': user_ads,
         'favorite_ads': favorite_ads,
+        'ad_statuses': ad_statuses,  # <-- теперь переменная определена
     })
 
 @login_required
@@ -182,4 +249,74 @@ def delete_ad(request, ad_id):
     # Перенаправляем пользователя на страницу профиля или главную
     return redirect('profile')  # Или 'home', если хотите перенаправить на главную страницу
 
+@login_required
+def update_ad_status(request, ad_id):
+    ad = get_object_or_404(Ad, id=ad_id, author=request.user)  # Проверяем, что объявление принадлежит пользователю
+    if request.method == 'POST':
+        status_id = request.POST.get('status_id')
+        status = get_object_or_404(AdStatus, id=status_id)
+        ad.status = status
+        ad.save()
+    return redirect('profile')  # После обновления вернуться на страницу профиля
 
+@login_required
+def update_ad_status(request, ad_id):
+    ad = get_object_or_404(Ad, id=ad_id, author=request.user)
+    if request.method == 'POST':
+        status_id = request.POST.get('status_id')
+        status = get_object_or_404(AdStatus, id=status_id)
+
+        # Сохраняем старую версию перед изменением!
+        AdHistory.objects.create(
+            ad=ad,
+            title=ad.title,
+            description=ad.description,
+            price=ad.price
+        )
+
+        # Потом обновляем статус
+        ad.status = status
+        ad.save()
+
+    return redirect('profile')
+
+from .models import Ad, AdHistory, AdImage  # Убедись, что все модели импортированы
+
+from django.shortcuts import redirect
+
+@login_required
+def edit_ad(request, ad_id):
+    ad = get_object_or_404(Ad, id=ad_id, author=request.user)
+
+    if request.method == 'POST':
+        new_title = request.POST.get('title')
+        new_description = request.POST.get('description')
+        new_price = request.POST.get('price')
+
+        # Сохраняем старую версию перед изменением
+        AdHistory.objects.create(
+            ad=ad,
+            title=ad.title,
+            description=ad.description,
+            price=ad.price
+        )
+
+        ad.title = new_title
+        ad.description = new_description
+        ad.price = new_price
+        ad.save()
+
+        # Удаление выбранных фото
+        delete_image_ids = request.POST.getlist('delete_images')
+        if delete_image_ids:
+            AdImage.objects.filter(id__in=delete_image_ids, ad=ad).delete()
+
+        # Добавление новых фото
+        new_images = request.FILES.getlist('images')
+        for image in new_images:
+            AdImage.objects.create(ad=ad, image=image)
+
+        # После редактирования — переход на страницу объявления
+        return redirect('ad_detail', ad_id=ad.id)
+
+    return render(request, 'edit_ad.html', {'ad': ad})
