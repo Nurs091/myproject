@@ -62,7 +62,21 @@
       align-items: center;
       margin-bottom: 20px;
       transition: 0.3s;
+      opacity: 0;
+  animation: fadeInUpSmart 0.7s ease forwards;
     }
+
+    @keyframes fadeInUpSmart {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
     .announcement:hover {
       box-shadow: 0 6px 16px rgba(0,0,0,0.12);
     }
@@ -114,116 +128,150 @@
 </head>
 
 <body>
-<!-- Навбар -->
-<nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container">
-      <a href="{% url 'home' %}" class="navbar-brand">OLX Clone</a>
-      <div class="ml-auto d-flex align-items-center gap-2">
-        <span class="text-white mr-3">Привет, {{ request.user.username }}!</span>
-        <a href="{% url 'profile' %}" class="btn btn-light btn-sm mr-2">Профиль</a>
-        <a href="{% url 'create_ad' %}" class="btn btn-success btn-sm mr-2">Создать объявление</a>
-        <form action="{% url 'logout' %}" method="post" style="margin: 0;">
-          {% csrf_token %}
-          <button type="submit" class="btn btn-danger btn-sm">Выйти</button>
-        </form>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container">
+        <a href="{% url 'home' %}" class="navbar-brand">MaJeSTiC</a>
+        <div class="ml-auto d-flex align-items-center gap-2">
+          <span class="text-white mr-3">Hello, {{ request.user.username }}!</span> <!-- перевод -->
+          <a href="{% url 'profile' %}" class="btn btn-light btn-sm mr-2">Profile</a> <!-- перевод -->
+          <a href="{% url 'create_ad' %}" class="btn btn-success btn-sm mr-2">Post Ad</a> <!-- перевод -->
+          <form action="{% url 'logout' %}" method="post" style="margin: 0;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-sm">Logout</button> <!-- перевод -->
+          </form>
+        </div>
       </div>
-    </div>
-  </nav>
-
-<div class="container container-main">
-  <div class="row">
-
-    <!-- Сайдбар -->
-    <div class="col-md-3">
-      <div class="sidebar">
-        <h5>Категории</h5>
-        <ul class="category-list">
-          {% for category in categories %}
-            <li>
-              <a href="{% url 'category_ads' category.id %}">{{ category.name }}</a>
-            </li>
-          {% empty %}
-            <li>Нет категорий</li>
-          {% endfor %}
-        </ul>
+    </nav>
+  
+  <div class="container container-main">
+    <div class="row">
+  
+      <!-- Sidebar -->
+      <div class="col-md-3">
+        <div class="sidebar">
+          <h5>Categories</h5> <!-- перевод -->
+          <ul class="category-list">
+            {% for category in categories %}
+              <li>
+                <a href="{% url 'category_ads' category.id %}">{{ category.name }}</a>
+              </li>
+            {% empty %}
+              <li>No categories available.</li> <!-- перевод -->
+            {% endfor %}
+          </ul>
+        </div>
       </div>
-    </div>
-
-    <!-- Основная часть -->
-    <div class="col-md-9">
-      <!-- Поиск по объявлениям внутри категории -->
-      <div class="filter-form">
-        <form method="get" class="row">
-          <div class="col-md-10 mb-2">
-            <input type="text" name="q" class="form-control" placeholder="Поиск объявлений в категории..." value="{{ request.GET.q }}">
-          </div>
-          <div class="col-md-2 mb-2">
-            <button type="submit" class="btn btn-success btn-block">Искать</button>
-          </div>
-        </form>
-      </div>
-
-      <h4>Объявления в {{ category.name }}</h4>
-
-      <div class="row">
-        {% for ad in ads %}
-          <div class="col-md-12">
-            <div class="announcement">
-                <div class="announcement-image">
-                    {% if ad.images.all %}
-                        <img src="{{ ad.images.first.image.url }}" alt="Image" loading="lazy">
-                    {% else %}
-                        {% if ad.status.name == "Sold" %}
-                            <img src="{% static 'images/sold.jpg' %}" alt="Sold Image" loading="lazy">
-                        {% else %}
-                            <img src="{% static 'images/default-photo.jpg' %}" alt="Default Image" loading="lazy">
-                        {% endif %}
-                    {% endif %}
-                </div>
-                <div class="announcement-content">
-                    <div class="announcement-title">{{ ad.title }}</div>
-                    <div class="announcement-description">{{ ad.description|truncatewords:20 }}</div>
-                    <div class="announcement-price">Цена: ${{ ad.price }}</div>
-                    <a href="{% url 'ad_detail' ad.id %}" class="announcement-btn">Подробнее</a>
-                </div>
+  
+      <!-- Main content -->
+      <div class="col-md-9">
+  
+        <!-- Filter form -->
+        <div class="filter-form">
+          <form method="get" class="form-row">
+            <div class="col-md-4 mb-2">
+              <input type="text" name="q" class="form-control" placeholder="Search ads in category..." value="{{ request.GET.q }}">
             </div>
-            
-          </div>
-        {% empty %}
-          <div class="col-12">
-            <div class="alert alert-info text-center">Нет объявлений в этой категории.</div>
-          </div>
-        {% endfor %}
-      </div>
-
-      <!-- Пагинация -->
-      {% if ads.has_other_pages %}
-      <div class="pagination-container d-flex justify-content-center">
-        <ul class="pagination">
-          {% if ads.has_previous %}
-            <li class="page-item"><a class="page-link" href="?page={{ ads.previous_page_number }}">«</a></li>
-          {% endif %}
-          {% for num in ads.paginator.page_range %}
-            {% if ads.number == num %}
-              <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
-            {% else %}
-              <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
-            {% endif %}
+        
+            <div class="col-md-3 mb-2">
+              <select name="status" class="form-control">
+                <option value="">All statuses</option> <!-- перевод -->
+                <option value="Active" {% if request.GET.status == "Active" %}selected{% endif %}>Active</option>
+                <option value="Sold" {% if request.GET.status == "Sold" %}selected{% endif %}>Sold</option>
+              </select>
+            </div>
+        
+            <div class="col-md-3 mb-2">
+              <select name="city" class="form-control">
+                <option value="">All cities</option> <!-- перевод -->
+                <option value="Алматы" {% if request.GET.city == "Алматы" %}selected{% endif %}>Almaty</option> <!-- перевод -->
+                <option value="Астана" {% if request.GET.city == "Астана" %}selected{% endif %}>Astana</option> <!-- перевод -->
+                <option value="Шымкент" {% if request.GET.city == "Шымкент" %}selected{% endif %}>Shymkent</option> <!-- перевод -->
+                <option value="Караганда" {% if request.GET.city == "Караганда" %}selected{% endif %}>Karaganda</option> <!-- перевод -->
+                <option value="Актау" {% if request.GET.city == "Актау" %}selected{% endif %}>Aktau</option> <!-- перевод -->
+              </select>
+            </div>
+        
+            <div class="col-md-2 mb-2">
+              <button type="submit" class="btn btn-success btn-block">Search</button> <!-- перевод -->
+            </div>
+          </form>
+        </div>
+        
+        <h4>Ads in {{ category.name }}</h4> <!-- перевод -->
+  
+        <div class="row">
+          {% for ad in ads %}
+            <div class="col-md-12">
+              <div class="announcement">
+                  <div class="announcement-image">
+                      {% if ad.images.all %}
+                          <img src="{{ ad.images.first.image.url }}" alt="Image" loading="lazy">
+                      {% else %}
+                          {% if ad.status.name == "Sold" %}
+                              <img src="{% static 'images/sold.jpg' %}" alt="Sold Image" loading="lazy">
+                          {% else %}
+                              <img src="{% static 'images/default-photo.jpg' %}" alt="Default Image" loading="lazy">
+                          {% endif %}
+                      {% endif %}
+                  </div>
+                  <div class="announcement-content">
+                      <div class="announcement-title">{{ ad.title }}</div>
+                      <div class="announcement-description">{{ ad.description|truncatewords:20 }}</div>
+                      <div class="announcement-price">Price: ${{ ad.price }}</div> <!-- перевод -->
+                      <a href="{% url 'ad_detail' ad.id %}" class="announcement-btn">View Details</a> <!-- перевод -->
+                  </div>
+              </div>
+            </div>
+          {% empty %}
+            <div class="col-12">
+              <div class="alert alert-info text-center">No ads found in this category.</div> <!-- перевод -->
+            </div>
           {% endfor %}
-          {% if ads.has_next %}
-            <li class="page-item"><a class="page-link" href="?page={{ ads.next_page_number }}">»</a></li>
-          {% endif %}
-        </ul>
+        </div>
+  
+        <!-- Pagination -->
+        {% if ads.has_other_pages %}
+        <div class="pagination-container d-flex justify-content-center">
+          <ul class="pagination">
+            {% if ads.has_previous %}
+              <li class="page-item">
+                <a class="page-link"
+                   href="?page={{ ads.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}">«</a>
+              </li>
+            {% endif %}
+  
+            {% for num in ads.paginator.page_range %}
+              {% if ads.number == num %}
+                <li class="page-item active">
+                  <a class="page-link" href="#">{{ num }}</a>
+                </li>
+              {% else %}
+                <li class="page-item">
+                  <a class="page-link"
+                     href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}">{{ num }}</a>
+                </li>
+              {% endif %}
+            {% endfor %}
+  
+            {% if ads.has_next %}
+              <li class="page-item">
+                <a class="page-link"
+                   href="?page={{ ads.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}">»</a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+        {% endif %}
+  
       </div>
-      {% endif %}
-
     </div>
   </div>
-</div>
-
-<!-- Bootstrap scripts -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
+  
+  <!-- Bootstrap scripts -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+  </html>

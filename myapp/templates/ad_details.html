@@ -88,188 +88,210 @@
 
 <body>
 
-<!-- Навбар -->
-<nav class="navbar navbar-dark">
-    <div class="container d-flex justify-content-between">
-        <span class="navbar-text text-white">
-            Привет, {{ request.user.username }}!
-        </span>
-        <div class="d-flex gap-2">
-            <a href="{% url 'profile' %}" class="btn btn-light btn-sm">Профиль</a>
-            <div class="dropdown">
-                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="categoriesDropdown" data-toggle="dropdown">
-                    Категории
+    <!-- Toasts -->
+    <div aria-live="polite" aria-atomic="true" style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="toast" role="alert" data-delay="3000" data-autohide="true">
+              <div class="toast-header">
+                <strong class="mr-auto">{{ message.tags|title }}</strong>
+                <small class="text-muted">just now</small> <!-- перевод -->
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
                 </button>
-                <div class="dropdown-menu">
-                    {% for category in categories %}
-                        <a class="dropdown-item" href="{% url 'category_ads' category.id %}">{{ category.name }}</a>
-                    {% empty %}
-                        <a class="dropdown-item" href="#">Нет категорий</a>
-                    {% endfor %}
-                </div>
+              </div>
+              <div class="toast-body">
+                {{ message }}
+              </div>
             </div>
-            <form action="{% url 'logout' %}" method="post" class="mb-0">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger btn-sm">Выйти</button>
-            </form>
-        </div>
+          {% endfor %}
+        {% endif %}
     </div>
-</nav>
-
-<!-- Контент -->
-<div class="container">
-    <div class="ad-detail">
-        <div class="ad-detail-content-left">
-            <h1 class="ad-detail-title">{{ ad.title }}</h1>
-            <p>{{ ad.description }}</p>
-            <div class="ad-detail-price">
-                <strong>Цена:</strong> ${{ ad.price }}
-            </div>
-
-            <p><strong>Статус:</strong> 
-                {% if ad.status.name == "Active" %}
-                    <span class="badge badge-success">{{ ad.status.name }}</span>
-                {% elif ad.status.name == "Sold" %}
-                    <span class="badge badge-secondary">{{ ad.status.name }}</span>
-                {% else %}
-                    <span class="badge badge-info">{{ ad.status.name }}</span>
-                {% endif %}
-            </p>
-            <p><strong>Опубликовано:</strong> {{ ad.created_at|date:"d.m.Y H:i" }}</p>
-            <p><strong>Автор:</strong> {{ ad.author.username }}</p>
-            {% if ad.author.phone %}
-                <p><strong>Телефон:</strong> {{ ad.author.phone }}</p>
-            {% endif %}
-
-            {% if ad.history.all %}
-            <div class="card mt-4">
-                <div class="card-header">
-                    История изменений
-                </div>
-                <ul class="list-group list-group-flush">
-                    {% for version in ad.history.all %}
-                        <li class="list-group-item">
-                            <strong>{{ version.changed_at|date:"d.m.Y H:i" }}</strong> — Цена была ${{ version.price }}, Заголовок: "{{ version.title }}"
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-            {% else %}
-            <p class="text-muted mt-3">История изменений отсутствует.</p>
-            {% endif %}
-
-            <!-- Кнопки действий -->
-            <div class="d-flex flex-wrap gap-2 mt-4">
-                <form action="{% url 'add_to_favorites' ad.id %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-warning">
-                        {% if user in ad.favorite_users.all %}
-                            Удалить из избранного
-                        {% else %}
-                            В избранное
-                        {% endif %}
+    
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark">
+        <div class="container d-flex justify-content-between">
+            <span class="navbar-text text-white">
+                Hello, {{ request.user.username }}!
+            </span>
+            <div class="d-flex gap-2">
+                <a href="{% url 'profile' %}" class="btn btn-light btn-sm">Profile</a>
+                <div class="dropdown">
+                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="categoriesDropdown" data-toggle="dropdown">
+                        Categories
                     </button>
-                </form>
-
-                {% if request.user == ad.author %}
-                    <a href="{% url 'edit_ad' ad.id %}" class="btn btn-info">✏️ Редактировать</a>
-
-                    <form action="{% url 'delete_ad' ad.id %}" method="post" onsubmit="return confirm('Вы уверены, что хотите удалить это объявление?');">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger">🗑️ Удалить</button>
-                    </form>
-                {% endif %}
-            </div>
-
-        </div>
-
-        <!-- Фото -->
-        <div class="ad-detail-photo">
-            {% if ad.images.all %}
-    <div class="photo-gallery">
-        <img id="main-photo" src="{{ ad.images.first.image.url }}" class="main-photo" onclick="openModal(0)" alt="Фото объявления">
-        <div class="thumbs mt-2">
-            {% for photo in ad.images.all %}
-                <img src="{{ photo.image.url }}" onclick="openModal({{ forloop.counter0 }})" alt="Миниатюра">
-            {% endfor %}
-        </div>
-    </div>
-{% else %}
-    {% if ad.status.name == "Sold" %}
-        <img src="{% static 'images/sold.jpg' %}" class="main-photo" alt="Продано">
-    {% else %}
-        <img src="{% static 'images/default-photo.jpg' %}" class="main-photo" alt="Фото отсутствует">
-    {% endif %}
-{% endif %}
-
-        </div>
-    </div>
-
-    {% if recommended_ads %}
-    <div class="container mt-5">
-        <h5 class="mb-4">Похожие объявления</h5>
-        <div class="row">
-            {% for similar_ad in recommended_ads %}
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100">
-                        {% if similar_ad.images.all %}
-                            <img src="{{ similar_ad.images.first.image.url }}" class="card-img-top" alt="Фото">
-                        {% else %}
-                            <img src="{% static 'images/default-photo.jpg' %}" class="card-img-top" alt="Фото отсутствует">
-                        {% endif %}
-                        <div class="card-body">
-                            <h6 class="card-title">{{ similar_ad.title|truncatewords:6 }}</h6>
-                            <p class="card-text"><strong>${{ similar_ad.price }}</strong></p>
-                            <a href="{% url 'ad_detail' similar_ad.id %}" class="btn btn-primary btn-sm btn-block">Посмотреть</a>
-                        </div>
+                    <div class="dropdown-menu">
+                        {% for category in categories %}
+                            <a class="dropdown-item" href="{% url 'category_ads' category.id %}">{{ category.name }}</a>
+                        {% empty %}
+                            <a class="dropdown-item" href="#">No categories available</a>
+                        {% endfor %}
                     </div>
                 </div>
-            {% endfor %}
+                <form action="{% url 'logout' %}" method="post" class="mb-0">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Logout</button>
+                </form>
+            </div>
         </div>
+    </nav>
+    
+    <!-- Content -->
+    <div class="container">
+        <div class="ad-detail">
+            <div class="ad-detail-content-left">
+                <h1 class="ad-detail-title">{{ ad.title }}</h1>
+                <p>{{ ad.description }}</p>
+                <div class="ad-detail-price">
+                    <strong>Price:</strong> ${{ ad.price }}
+                </div>
+    
+                <p><strong>Status:</strong> 
+                    {% if ad.status.name == "Active" %}
+                        <span class="badge badge-success">{{ ad.status.name }}</span>
+                    {% elif ad.status.name == "Sold" %}
+                        <span class="badge badge-secondary">{{ ad.status.name }}</span>
+                    {% else %}
+                        <span class="badge badge-info">{{ ad.status.name }}</span>
+                    {% endif %}
+                </p>
+                <p><strong>Posted on:</strong> {{ ad.created_at|date:"d.m.Y H:i" }}</p>
+                <p><strong>Author:</strong> {{ ad.author.username }}</p>
+                {% if ad.author.phone %}
+                    <p><strong>Phone:</strong> {{ ad.author.phone }}</p>
+                {% endif %}
+                <p><strong>City:</strong> 
+                    {% if ad.city %}
+                        {{ ad.city }}
+                    {% else %}
+                        <span class="text-muted">Not specified</span>
+                    {% endif %}
+                </p>
+    
+                <div class="ad-detail-price">
+                    <strong>Price:</strong> 
+                    {% if ad.history.last and ad.price != ad.history.last.price %}
+                        <span style="text-decoration: line-through; color: gray;">${{ ad.history.last.price }}</span> 
+                        <span class="ml-2">${{ ad.price }}</span>
+                    {% else %}
+                        ${{ ad.price }}
+                    {% endif %}
+                </div>
+    
+                <!-- Action Buttons -->
+                <div class="d-flex flex-wrap gap-2 mt-4">
+                    <form action="{% url 'add_to_favorites' ad.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-warning">
+                            {% if user in ad.favorite_users.all %}
+                                Remove from Favorites
+                            {% else %}
+                                Add to Favorites
+                            {% endif %}
+                        </button>
+                    </form>
+    
+                    {% if request.user == ad.author %}
+                        <a href="{% url 'edit_ad' ad.id %}" class="btn btn-info">✏️ Edit</a>
+    
+                        <form action="{% url 'delete_ad' ad.id %}" method="post" onsubmit="return confirm('Are you sure you want to delete this ad?');">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">🗑️ Delete</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+    
+            <!-- Photo Section -->
+            <div class="ad-detail-photo">
+                {% if ad.images.all %}
+                    <div class="photo-gallery">
+                        <img id="main-photo" src="{{ ad.images.first.image.url }}" class="main-photo" onclick="openModal(0)" alt="Ad Photo">
+                        <div class="thumbs mt-2">
+                            {% for photo in ad.images.all %}
+                                <img src="{{ photo.image.url }}" onclick="openModal({{ forloop.counter0 }})" alt="Thumbnail">
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% else %}
+                    {% if ad.status.name == "Sold" %}
+                        <img src="{% static 'images/sold.jpg' %}" class="main-photo" alt="Sold">
+                    {% else %}
+                        <img src="{% static 'images/default-photo.jpg' %}" class="main-photo" alt="No Photo Available">
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    
+        {% if recommended_ads %}
+        <div class="container mt-5">
+            <h5 class="mb-4">Similar Ads</h5>
+            <div class="row">
+                {% for similar_ad in recommended_ads %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            {% if similar_ad.images.all %}
+                                <img src="{{ similar_ad.images.first.image.url }}" class="card-img-top" alt="Photo">
+                            {% else %}
+                                <img src="{% static 'images/default-photo.jpg' %}" class="card-img-top" alt="No Photo">
+                            {% endif %}
+                            <div class="card-body">
+                                <h6 class="card-title">{{ similar_ad.title|truncatewords:6 }}</h6>
+                                <p class="card-text"><strong>${{ similar_ad.price }}</strong></p>
+                                <a href="{% url 'ad_detail' similar_ad.id %}" class="btn btn-primary btn-sm btn-block">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
     </div>
-    {% endif %}
-</div>
-
-<!-- Модальное окно просмотра фото -->
-<div class="modal fade" id="photoModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-body">
-                <img id="modal-photo" src="" alt="Увеличенное фото">
+    
+    <!-- Modal for viewing enlarged photos -->
+    <div class="modal fade" id="photoModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img id="modal-photo" src="" alt="Enlarged Photo">
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-<!-- Footer кнопка -->
-<div class="footer-btn">
-    <a href="{% url 'home' %}" class="btn btn-outline-primary">⬅️ Назад на главную</a>
-</div>
-
-<!-- Скрипты -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    var photos = [];
-
-    {% if ad.images.all %}
-        {% for photo in ad.images.all %}
-            photos.push("{{ photo.image.url }}");
-        {% endfor %}
-    {% else %}
-        {% if ad.status.name == "Sold" %}
-            photos.push("{% static 'images/sold.jpg' %}");
-        {% else %}
-            photos.push("{% static 'images/default-photo.jpg' %}");
-        {% endif %}
-    {% endif %}
-
-    function openModal(index) {
-        document.getElementById('modal-photo').src = photos[index];
-        $('#photoModal').modal('show');
-    }
-</script>
-
-
-</body>
-</html>
+    
+    <!-- Footer Button -->
+    <div class="footer-btn">
+        <a href="{% url 'home' %}" class="btn btn-outline-primary">⬅️ Back to Home</a>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        var photos = [
+            {% if ad.images.all %}
+                {% for photo in ad.images.all %}
+                    "{{ photo.image.url }}"{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            {% else %}
+                {% if ad.status.name == "Sold" %}
+                    "{% static 'images/sold.jpg' %}"
+                {% else %}
+                    "{% static 'images/default-photo.jpg' %}"
+                {% endif %}
+            {% endif %}
+        ];
+    
+        function openModal(index) {
+            document.getElementById('modal-photo').src = photos[index];
+            $('#photoModal').modal('show');
+        }
+    </script>
+    <script>
+        $(document).ready(function(){
+          $('.toast').toast('show');
+        });
+    </script>
+    
+    </body>
+    </html>

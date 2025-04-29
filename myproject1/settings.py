@@ -127,3 +127,13 @@ STATICFILES_DIRS = [
 
 # Статический путь для продакшн
 STATIC_ROOT = BASE_DIR / 'staticfiles'  # Для продакшн (не обязательно, если у вас только разработка)
+
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'debug',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}

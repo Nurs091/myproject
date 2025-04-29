@@ -23,6 +23,7 @@ class Ad(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     favorite_users = models.ManyToManyField(User, related_name='favorite_ads', blank=True)
     status = models.ForeignKey('AdStatus', on_delete=models.SET_NULL, null=True, default=None)
+    city = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
         return self.title

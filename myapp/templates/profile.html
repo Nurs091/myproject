@@ -8,95 +8,33 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
   <style>
-    body {
-        background-color: #f0f2f5;
-        font-family: 'Arial', sans-serif;
-    }
-
-    .navbar {
-        background-color: #007bff;
-    }
-
-    .profile-header {
-        background: white;
-        padding: 30px 20px;
-        border-radius: 15px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        margin-top: 30px;
-        text-align: center;
-    }
-
-    .tabs {
-        display: flex;
-        justify-content: center;
-        margin-top: 30px;
-        margin-bottom: 30px;
-        gap: 20px;
-    }
-
-    .tab-item {
-        background-color: #e7f0fd; /* мягкий голубой фон */
-        color: #007bff;
-        border: 1px solid #cce0ff;
-        border-radius: 10px;
-        padding: 10px 25px;
-        font-size: 16px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: 0.3s;
-        text-align: center;
-        user-select: none;
-    }
-
-    .tab-item:hover {
-        background-color: #d0e7ff;
-    }
-
-    .tab-item.active {
-        background-color: #007bff;
-        color: white;
-        border-color: #007bff;
-    }
-
-    .content-section {
-        margin-top: 20px;
-    }
-
-    .card-custom {
-        border: none;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        transition: 0.3s;
-        background-color: #fff;
-    }
-
-    .card-custom:hover {
-        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-    }
-    .fade-in {
-        animation: fadeIn 0.4s ease-in;
-    }
-    .tabs-wrapper {
-      width: 100%;
-      background-color: #6f7e8d; /* мягкий светло-серый */
-      padding: 30px 0;
-      margin: 40px 0;
-  }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-</style>
+    body { background-color: #f0f2f5; font-family: 'Arial', sans-serif; }
+    .navbar { background-color: #007bff; }
+    .profile-header { background: white; padding: 30px 20px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-top: 30px; text-align: center; }
+    .tabs { display: flex; justify-content: center; margin-top: 30px; margin-bottom: 30px; gap: 20px; }
+    .tab-item { background-color: #e7f0fd; color: #007bff; border: 1px solid #cce0ff; border-radius: 10px; padding: 10px 25px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.3s; text-align: center; user-select: none; }
+    .tab-item:hover { background-color: #d0e7ff; }
+    .tab-item.active { background-color: #007bff; color: white; border-color: #007bff; }
+    .content-section { margin-top: 20px; }
+    .card-custom { border: none; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: 0.3s; background-color: #fff; }
+    .card-custom:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+    .fade-in { animation: fadeIn 0.4s ease-in; }
+    .tabs-wrapper { width: 100%; background-color: #6f7e8d; padding: 30px 0; margin: 40px 0; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
 </head>
 <body>
-
+    {% if messages %}
+    <div class="container mt-4">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="border-radius: 12px;">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+  
 <!-- Навигация -->
 <nav class="navbar navbar-expand-lg navbar-dark">
   <div class="container">
@@ -120,8 +58,7 @@
   </div>
 
   <!-- Вкладки -->
-<!-- Вкладки -->
-<div class="tabs-wrapper">
+  <div class="tabs-wrapper">
     <div class="container d-flex justify-content-center">
       <div class="tabs">
         <div class="tab-item active" onclick="showTab('listings', this)">Your Listings</div>
@@ -129,8 +66,6 @@
       </div>
     </div>
   </div>
-  
-  
 
   <!-- Секции -->
   <div id="listings" class="content-section">
@@ -138,7 +73,7 @@
       <h4>My Listings</h4>
       <a href="{% url 'create_ad' %}" class="btn btn-success btn-sm">Create Listing</a>
     </div>
-  
+
     {% if user_ads %}
       <div class="row">
         {% for ad in user_ads %}
@@ -158,14 +93,52 @@
           </div>
         {% endfor %}
       </div>
+
+      {% if is_paginated %}
+        <nav aria-label="Page navigation" class="mt-4">
+          <ul class="pagination justify-content-center">
+            {% if user_ads.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ user_ads.previous_page_number }}" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <span class="page-link" aria-hidden="true">&laquo;</span>
+              </li>
+            {% endif %}
+
+            {% for num in user_ads.paginator.page_range %}
+              {% if user_ads.number == num %}
+                <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+              {% elif num > user_ads.number|add:'-3' and num < user_ads.number|add:'3' %}
+                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+              {% endif %}
+            {% endfor %}
+
+            {% if user_ads.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ user_ads.next_page_number }}" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <span class="page-link" aria-hidden="true">&raquo;</span>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
+      {% endif %}
     {% else %}
-      <p>You have no listings yet.</p>
+      <p class="text-center text-muted">You have no listings yet.</p>
     {% endif %}
   </div>
-  
 
   <div id="favorites" class="content-section" style="display: none;">
     <h4>Favorite Listings</h4>
+
     {% if favorite_ads %}
       <div class="row">
         {% for favorite in favorite_ads %}
@@ -186,39 +159,34 @@
         {% endfor %}
       </div>
     {% else %}
-      <p>You have no favorite listings yet.</p>
+      <p class="text-center text-muted">You have no favorite listings yet.</p>
     {% endif %}
   </div>
 
 </div>
 
 <script>
-    function showTab(tabId, element = null) {
-        const tabs = document.querySelectorAll('.tab-item');
-        tabs.forEach(tab => tab.classList.remove('active'));
-        if (element) {
-            element.classList.add('active');
-        }
+function showTab(tabId, element = null) {
+  const tabs = document.querySelectorAll('.tab-item');
+  tabs.forEach(tab => tab.classList.remove('active'));
+  if (element) {
+    element.classList.add('active');
+  }
+  document.getElementById('listings').style.display = 'none';
+  document.getElementById('favorites').style.display = 'none';
+  document.getElementById('listings').classList.remove('fade-in');
+  document.getElementById('favorites').classList.remove('fade-in');
 
-        document.getElementById('listings').style.display = 'none';
-        document.getElementById('favorites').style.display = 'none';
+  const activeSection = document.getElementById(tabId);
+  activeSection.style.display = 'block';
+  activeSection.classList.add('fade-in');
+}
 
-        document.getElementById('listings').classList.remove('fade-in');
-        document.getElementById('favorites').classList.remove('fade-in');
-
-        const activeSection = document.getElementById(tabId);
-        activeSection.style.display = 'block';
-        activeSection.classList.add('fade-in');
-    }
-
-    // Плавное появление первой вкладки при загрузке
-    window.addEventListener('DOMContentLoaded', function() {
-        const activeSection = document.getElementById('listings');
-        activeSection.classList.add('fade-in');
-    });
+window.addEventListener('DOMContentLoaded', function() {
+  const activeSection = document.getElementById('listings');
+  activeSection.classList.add('fade-in');
+});
 </script>
-
-  
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
