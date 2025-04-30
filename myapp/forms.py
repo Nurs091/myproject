@@ -5,10 +5,24 @@ from .models import User, Ad, AdImage  # Корректный импорт
 # Форма регистрации пользователя
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
+    phone = forms.CharField(required=True)
 
     class Meta:
-        model = User  # <-- Важно: своя модель User
+        model = User
         fields = ['username', 'email', 'phone', 'password1', 'password2']
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("A user with that email already exists.")
+        return email
+
+    def clean_phone(self):
+        phone = self.cleaned_data.get('phone')
+        if User.objects.filter(phone=phone).exists():
+            raise forms.ValidationError("A user with that phone number already exists.")
+        return phone
+
 
 # Форма создания объявления с выбором города
 class AdForm(forms.ModelForm):
@@ -35,3 +49,24 @@ class AdImageForm(forms.ModelForm):
     class Meta:
         model = AdImage
         fields = ['image']
+
+
+class CustomUserCreationForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'phone', 'password1', 'password2']
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("A user with that email already exists.")
+        return email
+
+    def clean_phone(self):
+        phone = self.cleaned_data.get('phone')
+        if phone and User.objects.filter(phone=phone).exists():
+            raise forms.ValidationError("A user with that phone number already exists.")
+        return phone
+

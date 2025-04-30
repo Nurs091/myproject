@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ category.name }} - Объявления</title>
+  <title>{{ category.name }} - ads </title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
   <style>
@@ -132,7 +132,7 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark">
       <div class="container">
-        <a href="{% url 'home' %}" class="navbar-brand">MaJeSTiC</a>
+        <a href="{% url 'home' %}" class="navbar-brand">Craft</a>
         <div class="ml-auto d-flex align-items-center gap-2">
           <span class="text-white mr-3">Hello, {{ request.user.username }}!</span> <!-- перевод -->
           <a href="{% url 'profile' %}" class="btn btn-light btn-sm mr-2">Profile</a> <!-- перевод -->

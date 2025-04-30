@@ -17,6 +17,11 @@ urlpatterns = [
     path('ad/delete/<int:ad_id>/', views.delete_ad, name='delete_ad'),
     path('ad/<int:ad_id>/update-status/', views.update_ad_status, name='update_ad_status'),
     path('ad/<int:ad_id>/edit/', views.edit_ad, name='edit_ad'),
+    path('moderation/', views.moderation_panel, name='moderation_panel'),
+    path('moderation/approve/<int:ad_id>/', views.approve_ad, name='approve_ad'),
+    path('moderation/reject/<int:ad_id>/', views.reject_ad, name='reject_ad'),
+    path('moderation/ad/<int:ad_id>/', views.moderation_ad_detail, name='moderation_ad_detail'),
+
 ]
 
 if settings.DEBUG:

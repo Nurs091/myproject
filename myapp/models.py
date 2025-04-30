@@ -3,7 +3,9 @@ from django.contrib.auth.models import AbstractUser
 
 # Кастомизация модели пользователя, наследяя от AbstractUser
 class User(AbstractUser):
-    phone = models.CharField(max_length=20, blank=True)  # Дополнительное поле для телефона
+    email = models.EmailField(unique=True)
+    phone = models.CharField(max_length=20, blank=False, null=False, unique=True)
+    is_moderator = models.BooleanField(default=False)  # <-- Добавляем это поле
 
     def __str__(self):
         return self.username

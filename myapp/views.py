@@ -6,7 +6,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.db.models.functions import Lower
 from django.contrib import messages
-
+from django.contrib.auth.decorators import user_passes_test
 from .forms import AdForm
 
 
@@ -55,7 +55,7 @@ def user_logout(request):
 
 @login_required
 def home(request):
-    ads = Ad.objects.all()
+    ads = Ad.objects.exclude(status__name__iexact="On moderation")
     categories = Category.objects.all()
 
     query = request.GET.get('q')
@@ -80,13 +80,18 @@ def home(request):
     paginator = Paginator(ads, 5)  # 5 объявлений на страницу
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    moderation_count = 0
+    if request.user.is_authenticated and request.user.is_moderator:
+        moderation_count = Ad.objects.filter(status__name="On moderation").count()
+    
 
     return render(request, 'home.html', {
         'ads': page_obj,
         'categories': categories,
         'query': query,
         'status': status,
-        'city': city,  # <-- передаём city в шаблон, чтобы отмечать выбранное значение
+        'city': city,
+        'moderation_count': moderation_count  # <-- передаём city в шаблон, чтобы отмечать выбранное значение
     })
 
 
@@ -94,7 +99,7 @@ def home(request):
 @login_required
 def category_ads(request, category_id):
     category = get_object_or_404(Category, id=category_id)
-    ads_list = Ad.objects.filter(category=category)
+    ads_list = Ad.objects.filter(category=category).exclude(status__name__iexact="On moderation")
     categories = Category.objects.all()
 
     # Получение GET-параметров
@@ -163,8 +168,8 @@ def create_ad(request):
             ad.author = request.user
 
             # Найти статус "Active"
-            active_status = AdStatus.objects.filter(name="Active").first()
-            ad.status = active_status
+            moderation_status = AdStatus.objects.filter(name="On moderation").first()
+            ad.status = moderation_status
 
             ad.save()
 
@@ -303,4 +308,38 @@ def edit_ad(request, ad_id):
         'ad': ad,
         'statuses': statuses,
     })
+
+def is_moderator(user):
+    return user.is_authenticated and user.is_moderator
+
+@user_passes_test(is_moderator)
+def moderation_panel(request):
+    ads_list = Ad.objects.filter(status__name="On moderation").order_by('-created_at')
+    paginator = Paginator(ads_list, 5)  # Показывать по 5 объявлений на страницу
+    page_number = request.GET.get('page')
+    ads = paginator.get_page(page_number)
+    return render(request, 'moderation_panel.html', {'ads': ads})
+
+@user_passes_test(is_moderator)
+def approve_ad(request, ad_id):
+    ad = get_object_or_404(Ad, id=ad_id)
+    approved_status = AdStatus.objects.get(name="Active")
+    ad.status = approved_status
+    ad.save()
+    messages.success(request, f'Объявление "{ad.title}" одобрено.')
+    return redirect('moderation_panel')
+
+@user_passes_test(is_moderator)
+def reject_ad(request, ad_id):
+    ad = get_object_or_404(Ad, id=ad_id)
+    rejected_status = AdStatus.objects.get(name="Rejected")
+    ad.status = rejected_status
+    ad.save()
+    messages.error(request, f'Объявление "{ad.title}" отклонено.')
+    return redirect('moderation_panel')
+
+@user_passes_test(is_moderator)
+def moderation_ad_detail(request, ad_id):
+    ad = get_object_or_404(Ad, id=ad_id)
+    return render(request, 'moderator_ad_detail.html', {'ad': ad})
 

@@ -23,6 +23,6 @@ class AdAdmin(admin.ModelAdmin):
 # Регистрация модели User в админке
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'email', 'phone', 'date_joined')
-    search_fields = ('username', 'email', 'phone')  # Поиск по логину, почте и телефону
-    list_filter = ('date_joined',)  # Фильтр по дате регистрации
+    list_display = ('username', 'email', 'phone', 'is_moderator', 'date_joined')  # добавили is_moderator
+    search_fields = ('username', 'email', 'phone')
+    list_filter = ('is_moderator', 'date_joined') 

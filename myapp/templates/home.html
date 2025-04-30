@@ -159,9 +159,22 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark">
   <div class="container">
-    <a href="{% url 'home' %}" class="navbar-brand">MaJeSTIC</a>
+    <a href="{% url 'home' %}" class="navbar-brand">Craft</a>
+    {% if request.user.is_authenticated and request.user.is_moderator and moderation_count > 0 %}
+  <span class="badge badge-danger ml-2">
+    Ads are waiting: {{ moderation_count }}
+  </span>
+{% endif %}
     <div class="ml-auto d-flex align-items-center gap-2">
       <span class="text-white mr-3">Hello, {{ request.user.username }}!</span>
+      {% if request.user.is_authenticated and request.user.is_moderator %}
+      <a href="{% url 'moderation_panel' %}" class="btn btn-warning btn-sm mr-2">
+        Moderation Panel
+        {% if moderation_count > 0 %}
+          <span class="badge badge-light ml-1">{{ moderation_count }}</span>
+        {% endif %}
+      </a>
+  {% endif %}
       <a href="{% url 'profile' %}" class="btn btn-light btn-sm mr-2">Profile</a>
       <a href="{% url 'create_ad' %}" class="btn btn-success btn-sm mr-2">Post Ad</a>
       <form action="{% url 'logout' %}" method="post" style="margin: 0;">
