@@ -77,8 +77,12 @@ WSGI_APPLICATION = 'myproject1.wsgi.application'
 # Database configuration
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'Craft',          # <-- название твоей базы данных
+        'USER': 'postgres',       # <-- имя пользователя, по умолчанию "postgres"
+        'PASSWORD': '1465',  # <-- введи свой пароль от PostgreSQL
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -127,3 +131,27 @@ STATICFILES_DIRS = [
 
 # Статический путь для продакшн
 STATIC_ROOT = BASE_DIR / 'staticfiles'  # Для продакшн (не обязательно, если у вас только разработка)
+
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'debug',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = 'nurairuslan06@gmail.com'
+EMAIL_HOST_PASSWORD = 'ebpjnxrtnxepzifg'# ← твоя Gmail-почта  # ← тот пароль приложения, который ты только что получил
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ]
+}

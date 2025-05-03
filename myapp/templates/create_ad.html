@@ -1,82 +1,154 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Создать объявление</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f7fa;
-            margin: 0;
-            padding: 0;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create New Ad</title> <!-- перевод -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-        .container {
-            margin-top: 30px;
-        }
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-image: url("{% static 'images/create_ad_walp.jpg' %}");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
 
-        h4 {
-            font-size: 24px;
-            font-weight: bold;
-            color: #333;
-        }
+    .container {
+      margin-top: 50px;
+    }
 
-        .form-group label {
-            font-weight: bold;
-        }
+    .form-wrapper {
+      background: rgba(255, 255, 255, 0.85);
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      backdrop-filter: blur(5px);
+    }
 
-        .btn-primary {
-            background-color: #007bff;
-            border: none;
-        }
+    h4 {
+      font-size: 28px;
+      font-weight: bold;
+      color: #343a40;
+      margin-bottom: 30px;
+      text-align: center;
+    }
 
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    .form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+  max-height: 150px;
+}
+
+    .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.form-control,
+textarea.form-control {
+  border-radius: 12px;
+  padding: 10px 14px;
+  border: 1px solid #ced4da;
+  background-color: #f8f9fa;
+  transition: box-shadow 0.3s;
+  font-size: 15px;
+}
+
+    .form-control:focus {
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+      border-color: #80bdff;
+    }
+
+    .btn-primary {
+      background-color: #28a745;
+      border: none;
+      padding: 12px 30px;
+      font-weight: 600;
+      border-radius: 12px;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .btn-primary:hover {
+      background-color: #218838;
+      transform: translateY(-2px);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.97);
+    }
+
+    .form-control-file {
+      margin-top: 10px;
+    }
+
+    select.form-control {
+      height: auto;
+      min-height: 50px;
+      padding: 12px 15px;
+      font-size: 16px;
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="container mt-4">
-    <h4>Создать новое объявление</h4>
+<div class="container">
+    <div class="text-center mb-4">
+        <a href="{% url 'home' %}" class="btn btn-outline-success btn-lg" style="border-radius: 12px; padding: 10px 25px;">
+          Back to Home
+        </a>
+      </div>
+  <div class="form-wrapper">
+    <h4>Create New Ad</h4> <!-- перевод -->
     <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        
-        <div class="form-group">
-            <label for="title">Заголовок объявления</label>
-            <input type="text" class="form-control" id="title" name="title" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="category">Категория</label>
-            <select class="form-control" id="category" name="category" required>
-                {% for category in categories %}
-                    <option value="{{ category.id }}">{{ category.name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        
-        <div class="form-group">
-            <label for="description">Описание</label>
-            <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
-        </div>
-        
-        <div class="form-group">
-            <label for="price">Цена</label>
-            <input type="number" class="form-control" id="price" name="price" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="images">Изображения</label>
-            <input type="file" class="form-control" id="images" name="images" multiple>
-        </div>
-        
-        <button type="submit" class="btn btn-primary">Создать объявление</button>
+      {% csrf_token %}
+      
+      <div class="form-group">
+        {{ form.title.label_tag }}
+        {{ form.title }}
+      </div>
+    
+      <div class="form-group">
+        {{ form.category.label_tag }}
+        {{ form.category }}
+      </div>
+    
+      <div class="form-group">
+        {{ form.city.label_tag }}
+        {{ form.city }}
+      </div>
+    
+      <div class="form-group">
+        {{ form.description.label_tag }}
+        {{ form.description }}
+      </div>
+    
+      <div class="form-group">
+        {{ form.price.label_tag }}
+        {{ form.price }}
+      </div>
+    
+      <div class="form-group">
+        <label for="images">Images</label> <!-- перевод -->
+        <input type="file" class="form-control-file" id="images" name="images" multiple>
+      </div>
+    
+      <div class="text-center mt-4">
+        <button type="submit" class="btn btn-primary">Post Ad</button> <!-- перевод -->
+      </div>
     </form>
+    
+  </div>
 </div>
 
+<!-- Bootstrap Scripts -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

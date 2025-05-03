@@ -4,43 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ ad.title }} - Подробности</title>
+    <title>{{ ad.title }} - Details</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f7fa;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  position: relative;
+  background: url("{% static 'images/ad_details.png' %}") no-repeat center center fixed;
+  background-size: cover;
+}
 
         .navbar {
             background-color: #007bff;
             border-bottom: 2px solid #0056b3;
         }
-
+        body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4); /* регулируй затемнение */
+  z-index: 1;
+}
         .navbar-text {
             font-size: 18px;
             font-weight: bold;
         }
-
-        .navbar form {
-            display: inline-block;
-        }
-
-        .btn-danger {
-            background-color: #dc3545;
-            border: none;
-        }
-
         .container {
             margin-top: 30px;
             flex: 1;
         }
-
         .ad-detail {
             background-color: white;
             border-radius: 10px;
@@ -48,292 +45,310 @@
             padding: 20px;
             margin-bottom: 20px;
             display: flex;
-            flex-direction: row;
-            align-items: flex-start;
             flex-wrap: wrap;
         }
-
-        .ad-detail-content {
-            flex-grow: 1;
-        }
-
-        .ad-detail-title {
-            font-size: 26px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .ad-detail-description {
-            font-size: 16px;
-            color: #666;
-            margin-bottom: 15px;
-        }
-
-        .ad-detail-price {
-            font-size: 22px;
-            font-weight: bold;
-            color: #007bff;
-            margin-bottom: 10px;
-        }
-
-        .ad-detail-btn {
-            background-color: #007bff;
-            border: none;
-            border-radius: 5px;
-            padding: 12px 25px;
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            transition: background-color 0.3s ease;
-            margin-top: 20px;
-        }
-
-        .ad-detail-btn:hover {
-            background-color: #0056b3;
-        }
-
-        .photo-gallery {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .photo-gallery .main-photo {
-            width: 100%;
-            max-width: 600px;
-            height: auto;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            cursor: pointer;
-        }
-
-        .photo-gallery .thumbs {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .photo-gallery .thumbs img {
-            width: 100%;
-            max-width: 120px;
-            height: auto;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .footer-btn {
-            text-align: center;
-            margin-top: auto;
-            padding: 20px 0;
-        }
-
         .ad-detail-content-left {
             flex: 1;
             margin-right: 20px;
         }
-
         .ad-detail-photo {
-            flex-shrink: 0;
             width: 400px;
+            flex-shrink: 0;
         }
-
         .ad-detail-photo img {
-            max-width: 100%;
+            width: 100%;
             border-radius: 8px;
         }
-
-        /* Модальное окно */
-        .modal-content {
-            background-color: #f4f7fa;
+        .photo-gallery .thumbs img {
+            width: 100px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-right: 8px;
+            margin-bottom: 8px;
         }
-
-        .modal-body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .ad-detail-title {
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 15px;
         }
-
+        .ad-detail-price {
+            font-size: 22px;
+            color: #007bff;
+            margin-top: 15px;
+        }
         .modal-body img {
-            max-width: 100%;
+            width: 100%;
             max-height: 80vh;
         }
-
-        .modal-prev, .modal-next {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 30px;
-            color: #fff;
-            background-color: rgba(0, 0, 0, 0.5);
-            border: none;
-            padding: 10px;
-            cursor: pointer;
+        .footer-btn {
+            text-align: center;
+            padding: 20px 0;
         }
-
-        .modal-prev {
-            left: 10px;
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: 0.3s;
         }
-
-        .modal-next {
-            right: 10px;
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
         }
+        .footer-btn a.btn:hover {
+  background-color: #007bff;
+  color: white;
+}
+        .navbar,
+.container,
+.footer-btn,
+.toast {
+  position: relative;
+  z-index: 2;
+  h5 {
+  background-color: rgba(255, 255, 255, 0.9); /* полупрозрачный белый */
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  color: #333;
+  display: inline-block;
+  z-index: 2;
+  position: relative;
+}
+
+/* Кнопка "Back to Home" */
+.footer-btn a.btn {
+  background-color: white;
+  color: #007bff;
+  font-weight: bold;
+  border: 2px solid #007bff;
+  padding: 10px 25px;
+  border-radius: 8px;
+  transition: 0.3s;
+  z-index: 2;
+  position: relative;
+}
     </style>
 </head>
+
 <body>
-    {% load static %}
-    <!-- Хедер -->
+
+    <!-- Toasts -->
+    <div aria-live="polite" aria-atomic="true" style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="toast" role="alert" data-delay="3000" data-autohide="true">
+              <div class="toast-header">
+                <strong class="mr-auto">{{ message.tags|title }}</strong>
+                <small class="text-muted">just now</small> <!-- перевод -->
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="toast-body">
+                {{ message }}
+              </div>
+            </div>
+          {% endfor %}
+        {% endif %}
+    </div>
+    
+    <!-- Navbar -->
     <nav class="navbar navbar-dark">
         <div class="container d-flex justify-content-between">
             <span class="navbar-text text-white">
-                Привет, {{ request.user.username }}!
+                Hello, {{ request.user.username }}!
             </span>
-            
-            <!-- Кнопка "В профиль" -->
-            <a href="{% url 'profile' %}" class="btn btn-primary btn-sm">В профиль</a>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="categoriesDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Категории
-                </button>
-                <div class="dropdown-menu" aria-labelledby="categoriesDropdown">
-                    {% for category in categories %}
-                        <a class="dropdown-item" href="{% url 'category_ads' category.id %}">{{ category.name }}</a>
-                    {% empty %}
-                        <a class="dropdown-item" href="#">Нет категорий</a>
-                    {% endfor %}
+            <div class="d-flex gap-2">
+                <a href="{% url 'profile' %}" class="btn btn-light btn-sm">Profile</a>
+                <div class="dropdown">
+                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="categoriesDropdown" data-toggle="dropdown">
+                        Categories
+                    </button>
+                    <div class="dropdown-menu">
+                        {% for category in categories %}
+                            <a class="dropdown-item" href="{% url 'category_ads' category.id %}">{{ category.name }}</a>
+                        {% empty %}
+                            <a class="dropdown-item" href="#">No categories available</a>
+                        {% endfor %}
+                    </div>
                 </div>
+                <form action="{% url 'logout' %}" method="post" class="mb-0">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Logout</button>
+                </form>
             </div>
-            <form action="{% url 'logout' %}" method="post" style="margin: 0;">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger btn-sm">Выйти</button>
-            </form>
         </div>
     </nav>
-
-    <!-- Контент -->
-    <div class="container mt-4">
-        <div class="row justify-content-center">
-            <!-- Основная часть с объявлением -->
-            <div class="col-md-10">
-                <div class="ad-detail">
-                    <div class="ad-detail-content-left">
-                        <h1 class="ad-detail-title">{{ ad.title }}</h1>
-                        <div class="ad-detail-description">
-                            <p>{{ ad.description }}</p>
-                        </div>
-                        <div class="ad-detail-price">
-                            <strong>Цена:</strong> ${{ ad.price }}
-                        </div>
-                        
-                        <!-- Кнопка "Добавить в избранное" -->
-                        <form action="{% url 'add_to_favorites' ad.id %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-warning mt-3">
+    
+    <!-- Content -->
+    <div class="container">
+        <div class="ad-detail">
+            <div class="ad-detail-content-left">
+                <h1 class="ad-detail-title">{{ ad.title }}</h1>
+                <p>{{ ad.description }}</p>
+                <div class="ad-detail-price">
+                    <strong>Price:</strong> ${{ ad.price }}
+                </div>
+    
+                <p><strong>Status:</strong> 
+                    {% if ad.status.name == "Active" %}
+                        <span class="badge badge-success">{{ ad.status.name }}</span>
+                    {% elif ad.status.name == "Sold" %}
+                        <span class="badge badge-secondary">{{ ad.status.name }}</span>
+                    {% else %}
+                        <span class="badge badge-info">{{ ad.status.name }}</span>
+                    {% endif %}
+                </p>
+                <p><strong>Posted on:</strong> {{ ad.created_at|date:"d.m.Y H:i" }}</p>
+                <p><strong>Author:</strong> {{ ad.author.username }}</p>
+                {% if ad.author.phone %}
+                    <p><strong>Phone:</strong> {{ ad.author.phone }}</p>
+                {% endif %}
+                <p><strong>City:</strong> 
+                    {% if ad.city %}
+                        {{ ad.city }}
+                    {% else %}
+                        <span class="text-muted">Not specified</span>
+                    {% endif %}
+                </p>
+    
+                <div class="ad-detail-price">
+                    <strong>Price:</strong> 
+                    {% if ad.history.last and ad.price != ad.history.last.price %}
+                        <span style="text-decoration: line-through; color: gray;">${{ ad.history.last.price }}</span> 
+                        <span class="ml-2">${{ ad.price }}</span>
+                    {% else %}
+                        ${{ ad.price }}
+                    {% endif %}
+                </div>
+    
+                <!-- Action Buttons -->
+                <div class="d-flex flex-wrap gap-2 mt-4">
+                    <form action="{% url 'add_to_favorites' ad.id %}" method="post">
+                        {% csrf_token %}
+                        {% if ad.status.name == "Rejected" %}
+                            <button type="button" class="btn btn-secondary" disabled title="Нельзя добавить в избранное отклонённое объявление">
+                                Add to Favorites
+                            </button>
+                        {% else %}
+                            <button type="submit" class="btn btn-warning">
                                 {% if user in ad.favorite_users.all %}
-                                    Удалить из избранного
+                                    Remove from Favorites
                                 {% else %}
-                                    Добавить в избранное
+                                    Add to Favorites
                                 {% endif %}
                             </button>
-                        </form>
-                        <!-- Кнопка для удаления объявления -->
-                        {% if request.user == ad.author %}
-                            <form action="{% url 'delete_ad' ad.id %}" method="post">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-danger mt-3" onclick="return confirm('Вы уверены, что хотите удалить это объявление?')">
-                                    Удалить объявление
-                                </button>
-                            </form>
                         {% endif %}
-
-                        <!-- Показать номер телефона, если он есть -->
-                        {% if ad.author.phone %}
-                        <div class="ad-detail-phone">
-                            <strong>Телефон:</strong> {{ ad.author.phone }}
-                        </div>
-                        {% endif %}
-                    </div>
-
-                    <!-- Фотографии справа -->
-                    <div class="ad-detail-photo">
-                        {% if ad.images.all %}
-                            <div class="photo-gallery">
-                                <!-- Главная фотография -->
-                                <img id="main-photo" class="main-photo" src="{{ ad.images.first.image.url }}" alt="Фото объявления" onclick="openModal(0)" />
-
-                                <!-- Миниатюры других фотографий -->
-                                <div class="thumbs">
-                                    {% for photo in ad.images.all %}
-                                        <img src="{{ photo.image.url }}" alt="Фото объявления" onclick="changeMainPhoto(this)" />
-                                    {% endfor %}
-                                </div>
-                            </div>
+                    </form>
+                
+                    {% if request.user == ad.author %}
+                        {% if ad.status.name == "Rejected" %}
+                            <button type="button" class="btn btn-secondary" disabled title="Нельзя редактировать отклонённое объявление">
+                                ✏️ Edit
+                            </button>
                         {% else %}
-                            <!-- Если нет фотографий, показываем изображение по умолчанию -->
-                            <img id="main-photo" class="main-photo" src="{% static 'images/default-photo.jpg' %}" alt="Фото объявления" />
+                            <a href="{% url 'edit_ad' ad.id %}" class="btn btn-info">✏️ Edit</a>
                         {% endif %}
-                    </div>
+                
+                        <form action="{% url 'delete_ad' ad.id %}" method="post" onsubmit="return confirm('Are you sure you want to delete this ad?');">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">🗑️ Delete</button>
+                        </form>
+                    {% endif %}
                 </div>
+                
+
+            </div>
+    
+            <!-- Photo Section -->
+            <div class="ad-detail-photo">
+                {% if ad.images.all %}
+                    <div class="photo-gallery">
+                        <img id="main-photo" src="{{ ad.images.first.image.url }}" class="main-photo" onclick="openModal(0)" alt="Ad Photo">
+                        <div class="thumbs mt-2">
+                            {% for photo in ad.images.all %}
+                                <img src="{{ photo.image.url }}" onclick="openModal({{ forloop.counter0 }})" alt="Thumbnail">
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% else %}
+                    {% if ad.status.name == "Sold" %}
+                        <img src="{% static 'images/sold.jpg' %}" class="main-photo" alt="Sold">
+                    {% else %}
+                        <img src="{% static 'images/default-photo.jpg' %}" class="main-photo" alt="No Photo Available">
+                    {% endif %}
+                {% endif %}
             </div>
         </div>
+    
+        {% if recommended_ads %}
+        <div class="container mt-5">
+            <h5 class="mb-4">Similar Ads</h5>
+            <div class="row">
+                {% for similar_ad in recommended_ads %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            {% if similar_ad.images.all %}
+                                <img src="{{ similar_ad.images.first.image.url }}" class="card-img-top" alt="Photo">
+                            {% else %}
+                                <img src="{% static 'images/default-photo.jpg' %}" class="card-img-top" alt="No Photo">
+                            {% endif %}
+                            <div class="card-body">
+                                <h6 class="card-title">{{ similar_ad.title|truncatewords:6 }}</h6>
+                                <p class="card-text"><strong>${{ similar_ad.price }}</strong></p>
+                                <a href="{% url 'ad_detail' similar_ad.id %}" class="btn btn-primary btn-sm btn-block">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
     </div>
-
-    <!-- Модальное окно для фотографии -->
-    <div class="modal fade" id="photoModal" tabindex="-1" aria-labelledby="photoModalLabel" aria-hidden="true">
+    
+    <!-- Modal for viewing enlarged photos -->
+    <div class="modal fade" id="photoModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <button type="button" class="modal-prev" onclick="changePhoto(-1)">&#10094;</button>
                 <div class="modal-body">
-                    <img id="modal-photo" src="{{ ad.images.first.image.url }}" alt="Фото объявления" />
+                    <img id="modal-photo" src="" alt="Enlarged Photo">
                 </div>
-                <button type="button" class="modal-next" onclick="changePhoto(1)">&#10095;</button>
             </div>
         </div>
     </div>
-
-    <!-- Кнопка "Назад на главную" внизу страницы -->
+    
+    <!-- Footer Button -->
     <div class="footer-btn">
-        <a href="{% url 'home' %}" class="ad-detail-btn">Назад на главную</a>
+        <a href="{% url 'home' %}" class="btn btn-outline-primary">⬅️ Back to Home</a>
     </div>
-
-    <!-- Скрипты Bootstrap и JS для смены главной фотографии и модального окна -->
+    
+    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         var photos = [
-            {% for photo in ad.images.all %}
-                "{% if photo.image.url %}{{ photo.image.url }}{% endif %}"{% if not forloop.last %}, {% endif %}
-            {% empty %}
-                // Если нет фотографий, можно вставить пустой элемент или удалить эту строку.
-            {% endfor %}
+            {% if ad.images.all %}
+                {% for photo in ad.images.all %}
+                    "{{ photo.image.url }}"{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            {% else %}
+                {% if ad.status.name == "Sold" %}
+                    "{% static 'images/sold.jpg' %}"
+                {% else %}
+                    "{% static 'images/default-photo.jpg' %}"
+                {% endif %}
+            {% endif %}
         ];
     
-        var currentPhotoIndex = 0;
-    
         function openModal(index) {
-            currentPhotoIndex = index;
-            document.getElementById('modal-photo').src = photos[currentPhotoIndex];
+            document.getElementById('modal-photo').src = photos[index];
             $('#photoModal').modal('show');
         }
-    
-        function changeMainPhoto(imgElement) {
-            document.getElementById('main-photo').src = imgElement.src;
-        }
-    
-        function changePhoto(direction) {
-            currentPhotoIndex += direction;
-    
-            if (currentPhotoIndex < 0) {
-                currentPhotoIndex = photos.length - 1;
-            } else if (currentPhotoIndex >= photos.length) {
-                currentPhotoIndex = 0;
-            }
-    
-            document.getElementById('modal-photo').src = photos[currentPhotoIndex];
-        }
+    </script>
+    <script>
+        $(document).ready(function(){
+          $('.toast').toast('show');
+        });
     </script>
     
-</body>
-</html>
+    </body>
+    </html>

@@ -1,223 +1,330 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OLX Clone - Home</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f7fa;
-            margin: 0;
-            padding: 0;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #eef2f7;
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+      background-color: #007bff;
+    }
+    .container-main {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 15px;
+    }
+    .sidebar {
+      background-color: #ffffff;
+      padding: 25px 20px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      height: fit-content;
+      transition: all 0.3s ease;
+    }
+    .sidebar:hover {
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+    }
+    .sidebar h5 {
+      margin-bottom: 20px;
+      font-weight: 700;
+      color: #343a40;
+      font-size: 20px;
+    }
+    .category-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+    .category-list li {
+      margin-bottom: 8px;
+    }
+    .category-list a {
+      text-decoration: none;
+      color: #007bff;
+      font-weight: 600;
+      padding: 8px 12px;
+      border-radius: 8px;
+      display: block;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .category-list a:hover {
+      background-color: #e7f1ff;
+      color: #0056b3;
+    }
+    @keyframes fadeInUpSmart {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .announcement {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  transition: 0.3s;
+  opacity: 0;
+  animation: fadeInUpSmart 0.7s ease forwards;
+}
+.announcement:hover {
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  transform: translateY(-5px);
+}
+.announcement-image img {
+  width: 200px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 20px;
+}
 
-        .navbar {
-            background-color: #007bff;
-            border-bottom: 2px solid #0056b3;
-        }
-
-        .navbar-text {
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .navbar form {
-            display: inline-block;
-        }
-
-        .btn-danger {
-            background-color: #dc3545;
-            border: none;
-        }
-
-        .container {
-            margin-top: 30px;
-        }
-
-        .announcement {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-        }
-
-        .announcement:hover {
-            box-shadow: none;
-        }
-
-        .announcement-content {
-            flex: 1;
-        }
-
-        .announcement-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .announcement-description {
-            font-size: 16px;
-            color: #666;
-            margin-bottom: 15px;
-        }
-
-        .announcement-price {
-            font-size: 18px;
-            font-weight: bold;
-            color: #007bff;
-            margin-bottom: 10px;
-        }
-
-        .announcement-btn {
-            background-color: #007bff;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            transition: background-color 0.3s ease;
-        }
-
-        .announcement-btn:hover {
-            background-color: #0056b3;
-        }
-
-        h4 {
-            font-size: 24px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .pagination {
-            justify-content: center;
-        }
-
-        .announcement-image {
-            max-width: 200px;
-            max-height: 150px;
-            object-fit: cover;
-            margin-right: 20px;
-        }
-    </style>
+.announcement-body {
+  flex: 1;
+}
+    .announcement-title {
+      font-size: 22px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    .announcement-description {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 15px;
+    }
+    .announcement-price {
+      font-size: 18px;
+      font-weight: bold;
+      color: #007bff;
+      margin-bottom: 10px;
+    }
+    .announcement-status {
+      margin-bottom: 10px;
+    }
+    .announcement-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+    .announcement-btn:hover {
+      background-color: #0056b3;
+    }
+    .pagination {
+      justify-content: center;
+      margin-top: 40px;
+    }
+    .filter-form {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      margin-bottom: 30px;
+    }
+    #scrollTopBtn {
+      display: none;
+      position: fixed;
+      bottom: 40px;
+      right: 30px;
+      z-index: 99;
+      font-size: 20px;
+      border: none;
+      outline: none;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      padding: 12px 16px;
+      border-radius: 50%;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      transition: background-color 0.3s, transform 0.3s;
+    }
+    #scrollTopBtn:hover {
+      background-color: #0056b3;
+      transform: scale(1.1);
+    }
+  </style>
 </head>
 <body>
-    <!-- Хедер -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container d-flex justify-content-between">
-            <a href="{% url 'home' %}" class="text-white">Обновить</a>
-            <span class="navbar-text text-white">
-                Привет, {{ request.user.username }}!
-            </span>
-            <form action="{% url 'logout' %}" method="post" style="margin: 0;">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger btn-sm">Выйти</button>
-            </form>
-            <!-- Кнопка "В профиль" -->
-            <a href="{% url 'profile' %}" class="btn btn-primary btn-sm">В профиль</a>
-            <!-- Выпадающее меню категорий -->
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="categoriesDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Категории
-                </button>
-                <div class="dropdown-menu" aria-labelledby="categoriesDropdown">
-                    {% for category in categories %}
-                        <a class="dropdown-item" href="{% url 'category_ads' category.id %}">{{ category.name }}</a>
-                    {% empty %}
-                        <a class="dropdown-item" href="#">Нет категорий</a>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </nav>
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container">
+    <a href="{% url 'home' %}" class="navbar-brand">Craft</a>
+    {% if request.user.is_authenticated and request.user.is_moderator and moderation_count > 0 %}
+  <span class="badge badge-danger ml-2">
+    Ads are waiting: {{ moderation_count }}
+  </span>
+{% endif %}
+    <div class="ml-auto d-flex align-items-center gap-2">
+      <span class="text-white mr-3">Hello, {{ request.user.username }}!</span>
+      {% if request.user.is_authenticated and request.user.is_moderator %}
+      <a href="{% url 'moderation_panel' %}" class="btn btn-warning btn-sm mr-2">
+        Moderation Panel
+        {% if moderation_count > 0 %}
+          <span class="badge badge-light ml-1">{{ moderation_count }}</span>
+        {% endif %}
+      </a>
+  {% endif %}
+      <a href="{% url 'profile' %}" class="btn btn-light btn-sm mr-2">Profile</a>
+      <a href="{% url 'create_ad' %}" class="btn btn-success btn-sm mr-2">Post Ad</a>
+      <form action="{% url 'logout' %}" method="post" style="margin: 0;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger btn-sm">Logout</button>
+      </form>
+    </div>
+  </div>
+</nav>
 
-    <!-- Контент -->
-    <div class="container mt-4">
-        <div class="row">
-            <!-- Основная часть с объявлениями -->
-            <div class="col-md-12">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4>Последние объявления</h4>
-                    <a href="{% url 'create_ad' %}" class="btn btn-success btn-sm">Создать объявление</a>
-                </div>
-
-                <div class="row">
-                    {% for ad in ads %}
-                        <div class="col-md-12 mb-4">
-                            <div class="announcement">
-                                <!-- Добавление изображения, если оно существует -->
-                                {% if ad.images.all %}
-                                    <div class="announcement-image">
-                                        <img src="{{ ad.images.first.image.url }}" alt="Image" class="img-fluid">
-                                    </div>
-                                {% else %}
-                                    <div class="announcement-image">
-                                        <img src="{% static 'images/default-photo.jpg' %}" alt="Default Image" class="img-fluid">
-                                    </div>
-                                {% endif %}
-                                <div class="announcement-content">
-                                    <div class="announcement-title">{{ ad.title }}</div>
-                                    <div class="announcement-description">{{ ad.description|truncatewords:20 }}</div>
-                                    <div class="announcement-price"><strong>Цена:</strong> ${{ ad.price }}</div>
-                                    <a href="{% url 'ad_detail' ad.id %}" class="announcement-btn">Посмотреть</a>
-                                </div>
-                            </div>
-                        </div>
-                    {% empty %}
-                        <p>Объявлений пока нет.</p>
-                    {% endfor %}
-                </div>
-
-                <!-- Пагинация -->
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        {% if ads.has_previous %}
-                            <li class="page-item">
-                                <a class="page-link" href="?page=1" aria-label="First">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ ads.previous_page_number }}" aria-label="Previous">
-                                    <span aria-hidden="true">&lt;</span>
-                                </a>
-                            </li>
-                        {% endif %}
-
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#">{{ ads.number }}</a>
-                        </li>
-
-                        {% if ads.has_next %}
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ ads.next_page_number }}" aria-label="Next">
-                                    <span aria-hidden="true">&gt;</span>
-                                </a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ ads.paginator.num_pages }}" aria-label="Last">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </nav>
-            </div>
-        </div>
+<div class="container-main">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="sidebar">
+        <h5>Categories</h5>
+        <ul class="category-list">
+          {% for category in categories %}
+            <li><a href="{% url 'category_ads' category.id %}">{{ category.name }}</a></li>
+          {% empty %}
+            <li>No categories</li>
+          {% endfor %}
+        </ul>
+      </div>
     </div>
 
-    <!-- Скрипты Bootstrap -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <div class="col-md-9">
+      <div class="filter-form">
+        <form method="get" class="form-row">
+          <div class="col-md-5 mb-2">
+            <input type="text" name="q" class="form-control" placeholder="Search ads..." value="{{ request.GET.q }}">
+          </div>
+          <div class="col-md-3 mb-2">
+            <select name="status" class="form-control">
+              <option value="">All statuses</option>
+              <option value="Active" {% if request.GET.status == "Active" %}selected{% endif %}>Active</option>
+              <option value="Sold" {% if request.GET.status == "Sold" %}selected{% endif %}>Sold</option>
+            </select>
+          </div>
+          <div class="col-md-3 mb-2">
+            <select name="city" class="form-control">
+              <option value="">All cities</option>
+              <option value="Almaty" {% if request.GET.city == "Almaty" %}selected{% endif %}>Almaty</option>
+              <option value="Astana" {% if request.GET.city == "Astana" %}selected{% endif %}>Astana</option>
+              <option value="Shymkent" {% if request.GET.city == "Shymkent" %}selected{% endif %}>Shymkent</option>
+              <option value="Karaganda" {% if request.GET.city == "Karaganda" %}selected{% endif %}>Karaganda</option>
+              <option value="Aktau" {% if request.GET.city == "Aktau" %}selected{% endif %}>Aktau</option>
+            </select>
+          </div>
+          <div class="col-md-1 mb-2">
+            <button type="submit" class="btn btn-primary btn-block">Search</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4>Latest Ads</h4>
+      </div>
+
+      {% for ad in ads %}
+      <div class="announcement">
+        <div class="announcement-image">
+          {% if ad.images.all %}
+            <img src="{{ ad.images.first.image.url }}" alt="Image" loading="lazy">
+          {% else %}
+            {% if ad.status.name == "Sold" %}
+              <img src="{% static 'images/sold.jpg' %}" alt="Sold Image" loading="lazy">
+            {% else %}
+              <img src="{% static 'images/default-photo.jpg' %}" alt="Default Image" loading="lazy">
+            {% endif %}
+          {% endif %}
+        </div>
+        <div class="announcement-body">
+          <div class="announcement-title">{{ ad.title }}</div>
+          <div class="announcement-description">{{ ad.description|truncatewords:20 }}</div>
+          <div class="announcement-price">Price: ${{ ad.price }}</div>
+          {% if ad.status %}
+            <div class="announcement-status mt-1">
+              {% if ad.status.name == "Active" %}
+                <span class="badge badge-success">Active</span>
+              {% elif ad.status.name == "Sold" %}
+                <span class="badge badge-secondary">Sold</span>
+              {% else %}
+                <span class="badge badge-info">{{ ad.status.name }}</span>
+              {% endif %}
+            </div>
+          {% endif %}
+          <a href="{% url 'ad_detail' ad.id %}" class="announcement-btn mt-2">View</a>
+        </div>
+      </div>
+      
+      {% empty %}
+        <div class="alert alert-info text-center">
+          No ads found.
+        </div>
+      {% endfor %}
+
+      {% if ads.has_other_pages %}
+      <nav aria-label="Page navigation">
+        <ul class="pagination">
+          {% if ads.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ ads.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}">&laquo;</a>
+            </li>
+          {% endif %}
+          <li class="page-item active">
+            <a class="page-link" href="#">{{ ads.number }}</a>
+          </li>
+          {% if ads.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ ads.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.city %}&city={{ request.GET.city }}{% endif %}">&raquo;</a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const announcements = document.querySelectorAll('.announcement');
+    announcements.forEach((announcement, index) => {
+      announcement.style.animationDelay = `${index * 0.15}s`;
+    });
+  });
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<button onclick="topFunction()" id="scrollTopBtn" title="Scroll to top">↑</button>
+<script>
+  window.onscroll = function() {scrollFunction()};
+  function scrollFunction() {
+    const btn = document.getElementById("scrollTopBtn");
+    if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
+      btn.style.display = "block";
+    } else {
+      btn.style.display = "none";
+    }
+  }
+  function topFunction() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
 </body>
-</html>
+</html> 

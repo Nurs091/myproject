@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Moderate: {{ ad.title }}</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body { background-color: #f5f8fb; font-family: Arial, sans-serif; }
+    .container { margin-top: 40px; }
+    .main-photo { width: 100%; max-width: 500px; border-radius: 10px; }
+    .thumbs img { width: 80px; margin-right: 8px; border-radius: 6px; cursor: pointer; }
+    .ad-info { margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-dark">
+  <div class="container d-flex justify-content-between">
+    <a href="{% url 'moderation_panel' %}" class="navbar-brand">Moderation Panel</a>
+    <span class="text-white">Hello, {{ request.user.username }} (Moderator)</span>
+    <a href="{% url 'logout' %}" class="btn btn-danger btn-sm">Logout</a>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      {% if ad.images.all %}
+        <img id="main-photo" src="{{ ad.images.first.image.url }}" class="main-photo" alt="Main Photo">
+        <div class="thumbs mt-3">
+          {% for img in ad.images.all %}
+            <img src="{{ img.image.url }}" onclick="document.getElementById('main-photo').src=this.src;">
+          {% endfor %}
+        </div>
+      {% else %}
+        <img src="{% static 'images/default-photo.jpg' %}" class="main-photo" alt="No Photo">
+      {% endif %}
+    </div>
+
+    <div class="col-md-6 ad-info">
+      <h2>{{ ad.title }}</h2>
+      <p>{{ ad.description }}</p>
+      <p><strong>Price:</strong> ${{ ad.price }}</p>
+      <p><strong>City:</strong> {{ ad.city|default:"Not specified" }}</p>
+      <p><strong>Author:</strong> {{ ad.author.username }}</p>
+      <p><strong>Phone:</strong> {{ ad.author.phone|default:"—" }}</p>
+      <p><strong>Status:</strong> 
+        <span class="badge badge-info">{{ ad.status.name }}</span>
+      </p>
+      <p><strong>Created:</strong> {{ ad.created_at|date:"d.m.Y H:i" }}</p>
+
+      <div class="mt-4 d-flex gap-2">
+        <a href="{% url 'approve_ad' ad.id %}" class="btn btn-success mr-2"> Одобрить</a>
+        <a href="{% url 'reject_ad' ad.id %}" class="btn btn-danger"> Отклонить</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

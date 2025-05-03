@@ -1,97 +1,223 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f7fa;
-            margin: 0;
-            padding: 0;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-image: url("{% static 'images/register.png' %}");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-        .container {
-            max-width: 600px;
-            margin: 50px auto;
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+    .container {
+      background: rgba(255, 255, 255, 0.85);
+      padding: 40px 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      max-width: 500px;
+      width: 90%;
+      animation: fadeIn 1s ease-in-out;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
 
-        h2 {
-            text-align: center;
-            color: #333;
-        }
+    .container:hover {
+      transform: scale(1.02);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+    }
 
-        .alert {
-            padding: 15px;
-            background-color: #d4edda;
-            color: #155724;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            font-size: 16px;
-        }
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 25px;
+      font-weight: bold;
+    }
 
-        form {
-            display: flex;
-            flex-direction: column;
-        }
+    .alert {
+      padding: 15px;
+      background-color: #d4edda;
+      color: #155724;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
 
-        form input, form button {
-            padding: 10px;
-            margin-bottom: 15px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
 
-        form button {
-            background-color: #28a745;
-            color: white;
-            cursor: pointer;
-        }
+    form input, form button {
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
 
-        form button:hover {
-            background-color: #218838;
-        }
+    form input::placeholder {
+      color: #999;
+      font-size: 15px;
+    }
 
-        .login-link {
-            text-align: center;
-            font-size: 14px;
-        }
+    form button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
 
-        .login-link a {
-            color: #007bff;
-            text-decoration: none;
-        }
+    form button:hover {
+      background-color: #218838;
+      box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+    }
 
-        .login-link a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    .help-text {
+      font-size: 13px;
+      color: #555;
+      margin-top: -10px;
+      margin-bottom: 10px;
+    }
+
+    .login-link {
+      text-align: center;
+      font-size: 14px;
+      margin-top: 15px;
+    }
+
+    .login-link a {
+      color: #007bff;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .login-link a:hover {
+      color: #0056b3;
+      text-decoration: underline;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
+
 <body>
-    <div class="container">
-        <h2>Registration</h2>
 
-        {% if user.is_authenticated %}
-            <div class="alert">
-                You are already logged in as {{ user.username }}. <a href="{% url 'home' %}">Go to homepage</a>.
-            </div>
-        {% endif %}
+<div class="container">
+  <h2>Registration</h2>
 
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Register</button>
-        </form>
-
-        <div class="login-link">
-            <p>Already have an account? <a href="{% url 'login' %}">Log in</a></p>
-        </div>
+  {% if user.is_authenticated %}
+    <div class="alert">
+      You are already logged in as {{ user.username }}. <a href="{% url 'home' %}">Go to homepage</a>.
     </div>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+
+    <input type="text" name="username" placeholder="Username" required id="id_username">
+    <input type="email" name="email" placeholder="Email (required)" required id="id_email">
+    <input type="text" name="phone" placeholder="Phone (required)" id="id_phone">
+    <input type="password" name="password1" placeholder="Password" required id="id_password1">
+    <input type="password" name="password2" placeholder="Confirm Password" required id="id_password2">
+
+    {% if form.errors %}
+      <div class="alert alert-danger">
+        {% for field in form %}
+          {% for error in field.errors %}
+            <div class="help-text">{{ error }}</div>
+          {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+          <div class="help-text">{{ error }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if form.password1.help_text %}
+      <div class="help-text">{{ form.password1.help_text|safe }}</div>
+    {% endif %}
+
+    <button type="submit">Register</button>
+  </form>
+
+  <div class="login-link">
+    <p>Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+  </div>
+</div>
+<script>
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let cookie of cookies) {
+        cookie = cookie.trim();
+        if (cookie.startsWith(name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  document.querySelector('form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const data = {
+  username: document.querySelector('#id_username').value,
+  email: document.querySelector('#id_email').value,
+  password: document.querySelector('#id_password1').value,
+  phone: document.querySelector('#id_phone').value,  // <-- обязательно!
+};
+
+    try {
+      const response = await fetch('/api/register/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        alert(result.detail || 'Регистрация успешна!');
+        window.location.href = '/verify-code/';
+      } else {
+        let errorMsg = result.error || 'Ошибка регистрации.';
+        if (typeof result === 'object') {
+          const allErrors = Object.values(result).flat().join('\n');
+          errorMsg = allErrors || errorMsg;
+        }
+        alert(errorMsg);
+      }
+    } catch (err) {
+      alert('Ошибка соединения с сервером.');
+      console.error(err);
+    }
+  });
+</script>
+
+
+  
+
 </body>
 </html>
