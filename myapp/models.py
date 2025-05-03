@@ -1,5 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.utils import timezone
+import random
+import string
+from datetime import timedelta
 
 # Кастомизация модели пользователя, наследяя от AbstractUser
 class User(AbstractUser):
@@ -56,3 +60,27 @@ class AdHistory(models.Model):
     def __str__(self):
         return f"История для {self.ad.title} ({self.changed_at.strftime('%d.%m.%Y %H:%M')})"
 
+
+class EmailVerification(models.Model):
+    email = models.EmailField()
+    code = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def is_expired(self):
+        return (timezone.now() - self.created_at).seconds > 600  # 10 минут
+
+    @staticmethod
+    def generate_code():
+        return ''.join(random.choices(string.digits, k=6))
+
+    def __str__(self):
+        return f"{self.email} — {self.code}"
+    
+
+class PasswordResetCode(models.Model):
+    email = models.EmailField()
+    code = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def is_valid(self):
+        return timezone.now() < self.created_at + timedelta(minutes=15)

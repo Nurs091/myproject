@@ -70,26 +70,32 @@
       }
     }
     .announcement {
-      background: #ffffff;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      margin-bottom: 30px;
-      overflow: hidden;
-      opacity: 0;
-      animation: fadeInUpSmart 0.7s ease forwards;
-    }
-    .announcement:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    }
-    .announcement-image img {
-      width: 100%;
-      height: 250px;
-      object-fit: cover;
-    }
-    .announcement-body {
-      padding: 20px;
-    }
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  transition: 0.3s;
+  opacity: 0;
+  animation: fadeInUpSmart 0.7s ease forwards;
+}
+.announcement:hover {
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  transform: translateY(-5px);
+}
+.announcement-image img {
+  width: 200px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 20px;
+}
+
+.announcement-body {
+  flex: 1;
+}
     .announcement-title {
       font-size: 22px;
       font-weight: bold;
@@ -234,36 +240,37 @@
       </div>
 
       {% for ad in ads %}
-        <div class="announcement">
-          <div class="announcement-image">
-            {% if ad.images.all %}
-              <img src="{{ ad.images.first.image.url }}" alt="Image" class="img-fluid" loading="lazy">
+      <div class="announcement">
+        <div class="announcement-image">
+          {% if ad.images.all %}
+            <img src="{{ ad.images.first.image.url }}" alt="Image" loading="lazy">
+          {% else %}
+            {% if ad.status.name == "Sold" %}
+              <img src="{% static 'images/sold.jpg' %}" alt="Sold Image" loading="lazy">
             {% else %}
-              {% if ad.status.name == "Sold" %}
-                <img src="{% static 'images/sold.jpg' %}" alt="Sold Image" class="img-fluid" loading="lazy">
-              {% else %}
-                <img src="{% static 'images/default-photo.jpg' %}" alt="Default Image" class="img-fluid" loading="lazy">
-              {% endif %}
+              <img src="{% static 'images/default-photo.jpg' %}" alt="Default Image" loading="lazy">
             {% endif %}
-          </div>
-          <div class="announcement-body">
-            <div class="announcement-title">{{ ad.title }}</div>
-            <div class="announcement-description">{{ ad.description|truncatewords:20 }}</div>
-            <div class="announcement-price">Price: ${{ ad.price }}</div>
-            {% if ad.status %}
-              <div class="announcement-status">
-                {% if ad.status.name == "Active" %}
-                  <span class="badge badge-success">Active</span>
-                {% elif ad.status.name == "Sold" %}
-                  <span class="badge badge-secondary">Sold</span>
-                {% else %}
-                  <span class="badge badge-info">{{ ad.status.name }}</span>
-                {% endif %}
-              </div>
-            {% endif %}
-            <a href="{% url 'ad_detail' ad.id %}" class="announcement-btn">View</a>
-          </div>
+          {% endif %}
         </div>
+        <div class="announcement-body">
+          <div class="announcement-title">{{ ad.title }}</div>
+          <div class="announcement-description">{{ ad.description|truncatewords:20 }}</div>
+          <div class="announcement-price">Price: ${{ ad.price }}</div>
+          {% if ad.status %}
+            <div class="announcement-status mt-1">
+              {% if ad.status.name == "Active" %}
+                <span class="badge badge-success">Active</span>
+              {% elif ad.status.name == "Sold" %}
+                <span class="badge badge-secondary">Sold</span>
+              {% else %}
+                <span class="badge badge-info">{{ ad.status.name }}</span>
+              {% endif %}
+            </div>
+          {% endif %}
+          <a href="{% url 'ad_detail' ad.id %}" class="announcement-btn mt-2">View</a>
+        </div>
+      </div>
+      
       {% empty %}
         <div class="alert alert-info text-center">
           No ads found.
@@ -320,4 +327,4 @@
   }
 </script>
 </body>
-</html>
+</html> 

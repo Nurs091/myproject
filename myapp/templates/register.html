@@ -131,8 +131,8 @@
     {% csrf_token %}
 
     <input type="text" name="username" placeholder="Username" required id="id_username">
-    <input type="email" name="email" placeholder="Email" required id="id_email">
-    <input type="text" name="phone" placeholder="Phone (optional)" id="id_phone">
+    <input type="email" name="email" placeholder="Email (required)" required id="id_email">
+    <input type="text" name="phone" placeholder="Phone (required)" id="id_phone">
     <input type="password" name="password1" placeholder="Password" required id="id_password1">
     <input type="password" name="password2" placeholder="Confirm Password" required id="id_password2">
 
@@ -160,6 +160,64 @@
     <p>Already have an account? <a href="{% url 'login' %}">Log in</a></p>
   </div>
 </div>
+<script>
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let cookie of cookies) {
+        cookie = cookie.trim();
+        if (cookie.startsWith(name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  document.querySelector('form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const data = {
+  username: document.querySelector('#id_username').value,
+  email: document.querySelector('#id_email').value,
+  password: document.querySelector('#id_password1').value,
+  phone: document.querySelector('#id_phone').value,  // <-- обязательно!
+};
+
+    try {
+      const response = await fetch('/api/register/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        alert(result.detail || 'Регистрация успешна!');
+        window.location.href = '/verify-code/';
+      } else {
+        let errorMsg = result.error || 'Ошибка регистрации.';
+        if (typeof result === 'object') {
+          const allErrors = Object.values(result).flat().join('\n');
+          errorMsg = allErrors || errorMsg;
+        }
+        alert(errorMsg);
+      }
+    } catch (err) {
+      alert('Ошибка соединения с сервером.');
+      console.error(err);
+    }
+  });
+</script>
+
+
+  
 
 </body>
 </html>
