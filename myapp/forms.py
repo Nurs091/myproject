@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import User, Ad, AdImage  # Корректный импорт
+from django.utils.translation import gettext_lazy as _
 
 # Форма регистрации пользователя
 class CustomUserCreationForm(UserCreationForm):
@@ -27,24 +28,42 @@ class CustomUserCreationForm(UserCreationForm):
 # Форма создания объявления с выбором города
 class AdForm(forms.ModelForm):
     CITY_CHOICES = [
-    ('Almaty', 'Almaty'),
-    ('Astana', 'Astana'),
-    ('Shymkent', 'Shymkent'),
-    ('Karaganda', 'Karaganda'),
-    ('Aktau', 'Aktau'),
-]
+        ('Almaty', _('Almaty')),
+        ('Astana', _('Astana')),
+        ('Shymkent', _('Shymkent')),
+        ('Karaganda', _('Karaganda')),
+        ('Aktau', _('Aktau')),
+    ]
 
     city = forms.ChoiceField(
         choices=CITY_CHOICES,
         required=False,
-        widget=forms.Select(attrs={'class': 'form-control'})
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        label=_("City")
+    )
+
+    LANGUAGE_CHOICES = [
+        ('ru', _('Russian')),
+        ('en', _('English')),
+    ]
+
+    language = forms.ChoiceField(
+        choices=LANGUAGE_CHOICES,
+        required=True,
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        label=_("Language")
     )
 
     class Meta:
         model = Ad
-        fields = ['title', 'description', 'price', 'category', 'city']  # Обязательно добавляем city!
+        fields = ['title', 'description', 'price', 'category', 'city', 'language']
+        labels = {
+            'title': _('Title'),
+            'description': _('Description'),
+            'price': _('Price'),
+            'category': _('Category'),
+        }
 
-# Форма загрузки изображений для объявления
 class AdImageForm(forms.ModelForm):
     class Meta:
         model = AdImage

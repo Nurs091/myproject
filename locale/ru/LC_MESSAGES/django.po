@@ -22,7 +22,7 @@ msgstr ""
 
 #: myapp/templates/home.html:169
 msgid "Craft"
-msgstr "Творчество"
+msgstr "Craft"
 
 #: myapp/templates/home.html:172
 #, python-format
@@ -116,3 +116,84 @@ msgstr "Объявления не найдены."
 #: myapp/templates/home.html:324
 msgid "Scroll to top"
 msgstr "Наверх"
+
+msgid "Your Profile"
+msgstr "Ваш профиль"
+
+msgid "User Information"
+msgstr "Информация о пользователе"
+
+msgid "Username"
+msgstr "Ваше имя"
+
+msgid "Your Listings"
+msgstr "Ваши объявления"
+
+msgid "My Listings"
+msgstr "Мои Объявления"
+
+msgid "Create Listing"
+msgstr "Создать Объявления"
+
+msgid "Created"
+msgstr "Создано"
+
+msgid "Back to Home"
+msgstr "Назад"
+
+msgid "Favorite Listings"
+msgstr "Избранные списки"
+
+#. Translators: Welcome message with username
+msgid "Welcome, %(username)s! Here you can manage your listings."
+msgstr "Добро пожаловать, %(username)s! Здесь вы можете управлять своими объявлениями."
+
+msgid "Create New Ad"
+msgstr "Создать Новое Объявление"
+
+msgid "Title"
+msgstr "Придумайте название для вашего объявление"
+
+msgid "Category"
+msgstr "Категория"
+
+msgid "Description"
+msgstr "Описание Вашего Объявление"
+
+msgid "Price"
+msgstr "Цена"
+
+msgid "Images"
+msgstr "Фото Вашего Объявление"
+
+msgid "Status"
+msgstr "Статус"
+
+msgid "Posted on"
+msgstr "Объявление выложено"
+
+msgid "Author"
+msgstr "Автор "
+
+msgid "Phone"
+msgstr "Номер"
+
+msgid "City"
+msgstr "Город"
+
+msgid "Add to Favorites"
+msgstr "Добавить в Избранное"
+
+msgid "Remove from Favorites"
+msgstr "Удалить с Избранных"
+
+msgid "Edit"
+msgstr "Редактирование"
+
+
+
+
+
+
+
+

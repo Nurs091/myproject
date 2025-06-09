@@ -10,7 +10,7 @@ class AdStatusTranslationOptions(TranslationOptions):
     fields = ('name', 'description')
 
 class AdTranslationOptions(TranslationOptions):
-    fields = ('title', 'description', 'city')
+    fields = () 
 
 translator.register(Category, CategoryTranslationOptions)
 translator.register(AdStatus, AdStatusTranslationOptions)

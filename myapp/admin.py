@@ -8,10 +8,10 @@ class CategoryAdmin(TranslationAdmin):  # наследуем от TranslationAdm
     search_fields = ('name',)
 
 @admin.register(AdStatus)
-class AdStatusAdmin(TranslationAdmin):  # наследуем от TranslationAdmin
-    list_display = ('name', 'description')
+class AdStatusAdmin(TranslationAdmin):  # наследуем от TranslationAdmin, если используешь перевод
+    list_display = ('name', 'description', 'is_hidden')
+    list_editable = ('is_hidden',)
     search_fields = ('name',)
-
 @admin.register(Ad)
 class AdAdmin(admin.ModelAdmin):  # для Ad перевод не настраивали, поэтому оставляем ModelAdmin
     list_display = ('title', 'author', 'category', 'price', 'status', 'created_at')

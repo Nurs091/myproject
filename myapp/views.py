@@ -35,10 +35,11 @@ def user_logout(request):
     return redirect('home')
 
 # ------------------------ Главная и категории ------------------------
-
+from django.utils.translation import get_language
 @login_required
 def home(request):
-    ads = Ad.objects.exclude(status__name__in=["On moderation", "Sold"])
+    lang_code = get_language()
+    ads = Ad.objects.exclude(status__is_hidden=True)
     query = request.GET.get('q')
     status = request.GET.get('status')
     city = request.GET.get('city')
@@ -61,13 +62,15 @@ def home(request):
         ).filter(Q(lower_title__icontains=query) | Q(lower_description__icontains=query))
 
     if status:
-        ads = ads.filter(status__name__iexact=status)
+        ads = ads.filter(status_id=5)
     if city:
         ads = ads.filter(city=city)
 
     paginator = Paginator(ads, 5)
     page_obj = paginator.get_page(request.GET.get('page'))
-    moderation_count = Ad.objects.filter(status__name="On moderation").count() if request.user.is_moderator else 0
+    moderation_status_id = 6  # замените на актуальный ID из вашей базы
+    moderation_count = Ad.objects.filter(status_id=moderation_status_id).count() if request.user.is_moderator else 0
+
 
     return render(request, 'home.html', {
         'ads': page_obj,
@@ -78,35 +81,7 @@ def home(request):
         'moderation_count': moderation_count,
         'next_url': next_url,  # <-- передаём в шаблон
     })
-
-    ads = Ad.objects.exclude(status__name__in=["On moderation", "Sold"])
-    query = request.GET.get('q')
-    status = request.GET.get('status')
-    city = request.GET.get('city')
-
-    if query:
-        ads = ads.annotate(
-            lower_title=Lower('title'),
-            lower_description=Lower('description')
-        ).filter(Q(lower_title__icontains=query) | Q(lower_description__icontains=query))
-
-    if status:
-        ads = ads.filter(status__name__iexact=status)
-    if city:
-        ads = ads.filter(city=city)
-
-    paginator = Paginator(ads, 5)
-    page_obj = paginator.get_page(request.GET.get('page'))
-    moderation_count = Ad.objects.filter(status__name="On moderation").count() if request.user.is_moderator else 0
-
-    return render(request, 'home.html', {
-        'ads': page_obj,
-        'categories': Category.objects.all(),
-        'query': query,
-        'status': status,
-        'city': city,
-        'moderation_count': moderation_count
-    })
+    
 
 
 @login_required
