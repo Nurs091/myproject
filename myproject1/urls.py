@@ -26,7 +26,7 @@ urlpatterns = [
 urlpatterns += i18n_patterns(
     path('admin/', admin.site.urls),
     path('', include('myapp.urls')),
-    prefix_default_language=False,  # чтобы для языка по умолчанию не добавлялся префикс
+    prefix_default_language=True,  # добавлять префикс для default языка
 )
 
 

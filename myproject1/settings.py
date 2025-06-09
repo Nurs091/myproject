@@ -31,7 +31,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+from django.utils.translation import gettext_lazy as _
 # Application definition
 LANGUAGE_CODE = 'en'
 
