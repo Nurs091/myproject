@@ -1,6 +1,7 @@
 {% load static %}
+{% load static i18n %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -165,28 +166,37 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark">
   <div class="container">
-    <a href="{% url 'home' %}" class="navbar-brand">Craft</a>
+    <a href="{% url 'home' %}" class="navbar-brand">{% trans "Craft" %}</a>
     {% if request.user.is_authenticated and request.user.is_moderator and moderation_count > 0 %}
-  <span class="badge badge-danger ml-2">
-    Ads are waiting: {{ moderation_count }}
-  </span>
-{% endif %}
+      <span class="badge badge-danger ml-2">
+        {% blocktrans %}Ads are waiting: {{ moderation_count }}{% endblocktrans %}
+      </span>
+    {% endif %}
     <div class="ml-auto d-flex align-items-center gap-2">
-      <span class="text-white mr-3">Hello, {{ request.user.username }}!</span>
+      <span class="text-white mr-3">{% trans "Hello" %}, {{ request.user.username }}!</span>
       {% if request.user.is_authenticated and request.user.is_moderator %}
       <a href="{% url 'moderation_panel' %}" class="btn btn-warning btn-sm mr-2">
-        Moderation Panel
+        {% trans "Moderation Panel" %}
         {% if moderation_count > 0 %}
           <span class="badge badge-light ml-1">{{ moderation_count }}</span>
         {% endif %}
       </a>
-  {% endif %}
-      <a href="{% url 'profile' %}" class="btn btn-light btn-sm mr-2">Profile</a>
-      <a href="{% url 'create_ad' %}" class="btn btn-success btn-sm mr-2">Post Ad</a>
-      <form action="{% url 'logout' %}" method="post" style="margin: 0;">
+      {% endif %}
+      <a href="{% url 'profile' %}" class="btn btn-light btn-sm mr-2">{% trans "Profile" %}</a>
+      <a href="{% url 'create_ad' %}" class="btn btn-success btn-sm mr-2">{% trans "Post Ad" %}</a>
+      <form action="{% url 'logout' %}" method="post" style="margin: 0; display: inline-block;">
         {% csrf_token %}
-        <button type="submit" class="btn btn-danger btn-sm">Logout</button>
+        <button type="submit" class="btn btn-danger btn-sm">{% trans "Logout" %}</button>
       </form>
+
+      <form action="{% url 'set_language' %}" method="post" id="languageForm" style="display: inline-block; margin-left: 10px;">
+  {% csrf_token %}
+  <select name="language" class="form-control form-control-sm d-inline-block" style="width: auto; display: inline;" onchange="document.getElementById('languageForm').submit();">
+    <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+    <option value="ru" {% if LANGUAGE_CODE == 'ru' %}selected{% endif %}>Русский</option>
+  </select>
+  <input type="hidden" name="next" value="{{ request.get_full_path }}">
+</form>
     </div>
   </div>
 </nav>
@@ -195,12 +205,12 @@
   <div class="row">
     <div class="col-md-3">
       <div class="sidebar">
-        <h5>Categories</h5>
+        <h5>{% trans "Categories" %}</h5>
         <ul class="category-list">
           {% for category in categories %}
             <li><a href="{% url 'category_ads' category.id %}">{{ category.name }}</a></li>
           {% empty %}
-            <li>No categories</li>
+            <li>{% trans "No categories" %}</li>
           {% endfor %}
         </ul>
       </div>
@@ -210,18 +220,18 @@
       <div class="filter-form">
         <form method="get" class="form-row">
           <div class="col-md-5 mb-2">
-            <input type="text" name="q" class="form-control" placeholder="Search ads..." value="{{ request.GET.q }}">
+            <input type="text" name="q" class="form-control" placeholder="{% trans 'Search ads...' %}" value="{{ request.GET.q }}">
           </div>
           <div class="col-md-3 mb-2">
             <select name="status" class="form-control">
-              <option value="">All statuses</option>
-              <option value="Active" {% if request.GET.status == "Active" %}selected{% endif %}>Active</option>
-              <option value="Sold" {% if request.GET.status == "Sold" %}selected{% endif %}>Sold</option>
+              <option value="">{% trans "All statuses" %}</option>
+              <option value="Active" {% if request.GET.status == "Active" %}selected{% endif %}>{% trans "Active" %}</option>
+              <option value="Sold" {% if request.GET.status == "Sold" %}selected{% endif %}>{% trans "Sold" %}</option>
             </select>
           </div>
           <div class="col-md-3 mb-2">
             <select name="city" class="form-control">
-              <option value="">All cities</option>
+              <option value="">{% trans "All cities" %}</option>
               <option value="Almaty" {% if request.GET.city == "Almaty" %}selected{% endif %}>Almaty</option>
               <option value="Astana" {% if request.GET.city == "Astana" %}selected{% endif %}>Astana</option>
               <option value="Shymkent" {% if request.GET.city == "Shymkent" %}selected{% endif %}>Shymkent</option>
@@ -230,50 +240,50 @@
             </select>
           </div>
           <div class="col-md-1 mb-2">
-            <button type="submit" class="btn btn-primary btn-block">Search</button>
+            <button type="submit" class="btn btn-primary btn-block">{% trans "Search" %}</button>
           </div>
         </form>
       </div>
 
       <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4>Latest Ads</h4>
+        <h4>{% trans "Latest Ads" %}</h4>
       </div>
 
       {% for ad in ads %}
       <div class="announcement">
         <div class="announcement-image">
           {% if ad.images.all %}
-            <img src="{{ ad.images.first.image.url }}" alt="Image" loading="lazy">
+            <img src="{{ ad.images.first.image.url }}" alt="{% trans 'Image' %}" loading="lazy">
           {% else %}
             {% if ad.status.name == "Sold" %}
-              <img src="{% static 'images/sold.jpg' %}" alt="Sold Image" loading="lazy">
+              <img src="{% static 'images/sold.jpg' %}" alt="{% trans 'Sold Image' %}" loading="lazy">
             {% else %}
-              <img src="{% static 'images/default-photo.jpg' %}" alt="Default Image" loading="lazy">
+              <img src="{% static 'images/default-photo.jpg' %}" alt="{% trans 'Default Image' %}" loading="lazy">
             {% endif %}
           {% endif %}
         </div>
         <div class="announcement-body">
           <div class="announcement-title">{{ ad.title }}</div>
           <div class="announcement-description">{{ ad.description|truncatewords:20 }}</div>
-          <div class="announcement-price">Price: ${{ ad.price }}</div>
+          <div class="announcement-price">{% trans "Price:" %} ${{ ad.price }}</div>
           {% if ad.status %}
             <div class="announcement-status mt-1">
               {% if ad.status.name == "Active" %}
-                <span class="badge badge-success">Active</span>
+                <span class="badge badge-success">{% trans "Active" %}</span>
               {% elif ad.status.name == "Sold" %}
-                <span class="badge badge-secondary">Sold</span>
+                <span class="badge badge-secondary">{% trans "Sold" %}</span>
               {% else %}
                 <span class="badge badge-info">{{ ad.status.name }}</span>
               {% endif %}
             </div>
           {% endif %}
-          <a href="{% url 'ad_detail' ad.id %}" class="announcement-btn mt-2">View</a>
+          <a href="{% url 'ad_detail' ad.id %}" class="announcement-btn mt-2">{% trans "View" %}</a>
         </div>
       </div>
       
       {% empty %}
         <div class="alert alert-info text-center">
-          No ads found.
+          {% trans "No ads found." %}
         </div>
       {% endfor %}
 
@@ -311,7 +321,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<button onclick="topFunction()" id="scrollTopBtn" title="Scroll to top">↑</button>
+<button onclick="topFunction()" id="scrollTopBtn" title="{% trans 'Scroll to top' %}">↑</button>
 <script>
   window.onscroll = function() {scrollFunction()};
   function scrollFunction() {
@@ -327,4 +337,4 @@
   }
 </script>
 </body>
-</html> 
+</html>

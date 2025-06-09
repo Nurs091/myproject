@@ -7,6 +7,8 @@ from django.db.models import Q
 from django.db.models.functions import Lower
 from django.contrib import messages
 from .models import User, Ad, Category, AdImage, AdStatus, AdHistory, EmailVerification
+from django.utils.translation import get_language_from_request
+
 from .forms import AdForm
 from .serializers import (
     AdSerializer, AdStatusSerializer, CategorySerializer,
@@ -36,6 +38,47 @@ def user_logout(request):
 
 @login_required
 def home(request):
+    ads = Ad.objects.exclude(status__name__in=["On moderation", "Sold"])
+    query = request.GET.get('q')
+    status = request.GET.get('status')
+    city = request.GET.get('city')
+
+    # Определяем язык из запроса
+    lang_code = get_language_from_request(request)
+
+    # Исправляем next_url: если английский и путь начинается с /ru/, убираем /ru
+    current_path = request.path
+    if lang_code == 'en' and current_path.startswith('/ru/'):
+        next_url = current_path[3:] or '/'  # убираем /ru, оставляем / или путь без префикса
+    else:
+        next_url = current_path
+
+    # Фильтрация объявлений
+    if query:
+        ads = ads.annotate(
+            lower_title=Lower('title'),
+            lower_description=Lower('description')
+        ).filter(Q(lower_title__icontains=query) | Q(lower_description__icontains=query))
+
+    if status:
+        ads = ads.filter(status__name__iexact=status)
+    if city:
+        ads = ads.filter(city=city)
+
+    paginator = Paginator(ads, 5)
+    page_obj = paginator.get_page(request.GET.get('page'))
+    moderation_count = Ad.objects.filter(status__name="On moderation").count() if request.user.is_moderator else 0
+
+    return render(request, 'home.html', {
+        'ads': page_obj,
+        'categories': Category.objects.all(),
+        'query': query,
+        'status': status,
+        'city': city,
+        'moderation_count': moderation_count,
+        'next_url': next_url,  # <-- передаём в шаблон
+    })
+
     ads = Ad.objects.exclude(status__name__in=["On moderation", "Sold"])
     query = request.GET.get('q')
     status = request.GET.get('status')

@@ -1,0 +1,111 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-06-09 13:22+0500\n"
+"PO-Revision-Date: 2025-06-09 13:30+0500\n"
+"Last-Translator: Auto Translator <translator@example.com>\n"
+"Language-Team: English <en@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: myapp/templates/home.html:169
+msgid "Craft"
+msgstr "Craft"
+
+#: myapp/templates/home.html:172
+#, python-format
+msgid "Ads are waiting: %(moderation_count)s"
+msgstr "Ads are waiting: %(moderation_count)s"
+
+#: myapp/templates/home.html:176
+msgid "Hello"
+msgstr "Hello"
+
+#: myapp/templates/home.html:179
+msgid "Moderation Panel"
+msgstr "Moderation Panel"
+
+#: myapp/templates/home.html:185
+msgid "Profile"
+msgstr "Profile"
+
+#: myapp/templates/home.html:186
+msgid "Post Ad"
+msgstr "Post Ad"
+
+#: myapp/templates/home.html:189
+msgid "Logout"
+msgstr "Logout"
+
+#: myapp/templates/home.html:208
+msgid "Categories"
+msgstr "Categories"
+
+#: myapp/templates/home.html:213
+msgid "No categories"
+msgstr "No categories"
+
+#: myapp/templates/home.html:223
+msgid "Search ads..."
+msgstr "Search ads..."
+
+#: myapp/templates/home.html:227
+msgid "All statuses"
+msgstr "All statuses"
+
+#: myapp/templates/home.html:228 myapp/templates/home.html:272
+msgid "Active"
+msgstr "Active"
+
+#: myapp/templates/home.html:229 myapp/templates/home.html:274
+msgid "Sold"
+msgstr "Sold"
+
+#: myapp/templates/home.html:234
+msgid "All cities"
+msgstr "All cities"
+
+#: myapp/templates/home.html:243
+msgid "Search"
+msgstr "Search"
+
+#: myapp/templates/home.html:249
+msgid "Latest Ads"
+msgstr "Latest Ads"
+
+#: myapp/templates/home.html:256
+msgid "Image"
+msgstr "Image"
+
+#: myapp/templates/home.html:259
+msgid "Sold Image"
+msgstr "Sold Image"
+
+#: myapp/templates/home.html:261
+msgid "Default Image"
+msgstr "Default Image"
+
+#: myapp/templates/home.html:268
+msgid "Price:"
+msgstr "Price:"
+
+#: myapp/templates/home.html:280
+msgid "View"
+msgstr "View"
+
+#: myapp/templates/home.html:286
+msgid "No ads found."
+msgstr "No ads found."
+
+#: myapp/templates/home.html:324
+msgid "Scroll to top"
+msgstr "Scroll to top"
