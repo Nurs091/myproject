@@ -6,8 +6,10 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.db.models.functions import Lower
 from django.contrib import messages
-from .models import User, Ad, Category, AdImage, AdStatus, AdHistory, #EmailVerification
+from .models import User, Ad, Category, AdImage, AdStatus, AdHistory #EmailVerification
 from django.utils.translation import get_language_from_request
+from rest_framework.permissions import AllowAny
+from rest_framework import status
 
 from .forms import AdForm
 from .serializers import (
@@ -344,7 +346,7 @@ class RegisterAPIView(APIView):
 #         return Response(serializer.errors, status=400)
     
 
-from django.shortcuts import render
+
 
 def register_page(request):
     return render(request, 'register.html')
