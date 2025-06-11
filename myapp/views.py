@@ -6,15 +6,15 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.db.models.functions import Lower
 from django.contrib import messages
-from .models import User, Ad, Category, AdImage, AdStatus, AdHistory, EmailVerification
+from .models import User, Ad, Category, AdImage, AdStatus, AdHistory, #EmailVerification
 from django.utils.translation import get_language_from_request
 
 from .forms import AdForm
 from .serializers import (
     AdSerializer, AdStatusSerializer, CategorySerializer,
-    UserSerializer, RegisterSerializer, VerifyEmailSerializer
+    UserSerializer, RegisterSerializer, #VerifyEmailSerializer
 )
-from .utils import send_verification_code
+#from .utils import send_verification_code
 
 # ------------------------ Аутентификация ------------------------
 
@@ -314,33 +314,34 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class RegisterAPIView(APIView):
+    permission_classes = [AllowAny]
+
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response({'detail': 'Код подтверждения отправлен на email'}, status=201)
-        return Response(serializer.errors, status=400)
-
-
-class VerifyEmailAPIView(APIView):
-    def post(self, request):
-        serializer = VerifyEmailSerializer(data=request.data)
-        if serializer.is_valid():
-            email = serializer.validated_data['email']
-            code = serializer.validated_data['code']
-            try:
-                verification = EmailVerification.objects.get(email=email, code=code)
-                if verification.is_expired():
-                    return Response({'error': 'Код истёк'}, status=400)
-                user = User.objects.get(email=email)
-                user.is_active = True
-                user.save()
-                login(request, user)
-                verification.delete()
-                return Response({'detail': 'Email подтверждён. Теперь можно войти.'}, status=200)
-            except EmailVerification.DoesNotExist:
-                return Response({'error': 'Неверный код'}, status=400)
-        return Response(serializer.errors, status=400)
+            user = serializer.save()
+            login(request, user)  # сразу логиним
+            return Response({'detail': 'Регистрация успешна. Пользователь вошёл в систему.'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# class VerifyEmailAPIView(APIView):
+#     def post(self, request):
+#         serializer = VerifyEmailSerializer(data=request.data)
+#         if serializer.is_valid():
+#             email = serializer.validated_data['email']
+#             code = serializer.validated_data['code']
+#             try:
+#                 verification = EmailVerification.objects.get(email=email, code=code)
+#                 if verification.is_expired():
+#                     return Response({'error': 'Код истёк'}, status=400)
+#                 user = User.objects.get(email=email)
+#                 user.is_active = True
+#                 user.save()
+#                 login(request, user)
+#                 verification.delete()
+#                 return Response({'detail': 'Email подтверждён. Теперь можно войти.'}, status=200)
+#             except EmailVerification.DoesNotExist:
+#                 return Response({'error': 'Неверный код'}, status=400)
+#         return Response(serializer.errors, status=400)
     
 
 from django.shortcuts import render
