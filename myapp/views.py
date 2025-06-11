@@ -7,6 +7,8 @@ from django.db.models import Q
 from django.db.models.functions import Lower
 from django.contrib import messages
 from .models import User, Ad, Category, AdImage, AdStatus, AdHistory, EmailVerification
+from django.utils.translation import get_language_from_request
+
 from .forms import AdForm
 from .serializers import (
     AdSerializer, AdStatusSerializer, CategorySerializer,
@@ -33,14 +35,26 @@ def user_logout(request):
     return redirect('home')
 
 # ------------------------ Главная и категории ------------------------
-
+from django.utils.translation import get_language
 @login_required
 def home(request):
-    ads = Ad.objects.exclude(status__name__in=["On moderation", "Sold"])
+    lang_code = get_language()
+    ads = Ad.objects.exclude(status__is_hidden=True)
     query = request.GET.get('q')
     status = request.GET.get('status')
     city = request.GET.get('city')
 
+    # Определяем язык из запроса
+    lang_code = get_language_from_request(request)
+
+    # Исправляем next_url: если английский и путь начинается с /ru/, убираем /ru
+    current_path = request.path
+    if lang_code == 'en' and current_path.startswith('/ru/'):
+        next_url = current_path[3:] or '/'  # убираем /ru, оставляем / или путь без префикса
+    else:
+        next_url = current_path
+
+    # Фильтрация объявлений
     if query:
         ads = ads.annotate(
             lower_title=Lower('title'),
@@ -48,13 +62,15 @@ def home(request):
         ).filter(Q(lower_title__icontains=query) | Q(lower_description__icontains=query))
 
     if status:
-        ads = ads.filter(status__name__iexact=status)
+        ads = ads.filter(status_id=5)
     if city:
         ads = ads.filter(city=city)
 
     paginator = Paginator(ads, 5)
     page_obj = paginator.get_page(request.GET.get('page'))
-    moderation_count = Ad.objects.filter(status__name="On moderation").count() if request.user.is_moderator else 0
+    moderation_status_id = 6  # замените на актуальный ID из вашей базы
+    moderation_count = Ad.objects.filter(status_id=moderation_status_id).count() if request.user.is_moderator else 0
+
 
     return render(request, 'home.html', {
         'ads': page_obj,
@@ -62,8 +78,10 @@ def home(request):
         'query': query,
         'status': status,
         'city': city,
-        'moderation_count': moderation_count
+        'moderation_count': moderation_count,
+        'next_url': next_url,  # <-- передаём в шаблон
     })
+    
 
 
 @login_required
@@ -107,18 +125,64 @@ def ad_detail(request, ad_id):
 
 @login_required
 def create_ad(request):
+    print("--- create_ad view started ---")
     if request.method == 'POST':
+        print("Request method is POST")
         form = AdForm(request.POST, request.FILES)
+        print(f"Form instantiated. Is valid: {form.is_valid()}")
+
         if form.is_valid():
+            print("Form is valid!")
             ad = form.save(commit=False)
             ad.author = request.user
-            ad.status = AdStatus.objects.filter(name="On moderation").first()
-            ad.save()
-            for image in request.FILES.getlist('images'):
-                AdImage.objects.create(ad=ad, image=image)
+            print(f"Ad object created (commit=False) by user: {ad.author.username}")
+
+            try:
+                print("Attempting to get AdStatus 'On moderation'")
+                ad.status = AdStatus.objects.get(name="On moderation")
+                print("Successfully got AdStatus 'On moderation'")
+            except AdStatus.DoesNotExist:
+                print("ERROR: AdStatus with name 'On moderation' does not exist!")
+                ad.status = None
+            except AdStatus.MultipleObjectsReturned:
+                print("ERROR: Multiple AdStatus objects with name 'On moderation' found!")
+                ad.status = AdStatus.objects.filter(name="On moderation").first()
+
+            print(f"Ad status set to: {ad.status}")
+
+            try:
+                ad.save()
+                print("Ad object saved to database.")
+            except Exception as e:
+                print(f"ERROR during ad save: {e}")
+                return render(request, 'create_ad.html', {'form': form, 'categories': Category.objects.all(), 'save_error': str(e)})
+
+            images_list = request.FILES.getlist('images')
+            print(f"Found {len(images_list)} images to save.")
+            try:
+                for i, image in enumerate(images_list):
+                    AdImage.objects.create(ad=ad, image=image)
+                    print(f"Saved image {i+1}")
+                print("All images saved.")
+            except Exception as e:
+                 print(f"ERROR during image save: {e}")
+                 return render(request, 'create_ad.html', {'form': form, 'categories': Category.objects.all(), 'image_save_error': str(e)})
+
+            print("Redirecting to home.")
             return redirect('home')
+
+        else:
+            # Form is NOT valid
+            print("Form is NOT valid. Errors:")
+            print(form.errors) # <--- Add this line
+            print("Will render template with errors.")
+
+
     else:
+        print("Request method is GET")
         form = AdForm()
+
+    print("--- Rendering create_ad.html ---")
     return render(request, 'create_ad.html', {'form': form, 'categories': Category.objects.all()})
 
 
@@ -198,7 +262,7 @@ def is_moderator(user):
 
 @user_passes_test(is_moderator)
 def moderation_panel(request):
-    ads = Ad.objects.filter(status__name="On moderation").order_by('-created_at')
+    ads = Ad.objects.filter(status_id=6).order_by('-created_at')
     paginator = Paginator(ads, 5)
     return render(request, 'moderation_panel.html', {'ads': paginator.get_page(request.GET.get('page'))})
 

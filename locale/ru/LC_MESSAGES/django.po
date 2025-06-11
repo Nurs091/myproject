@@ -1,0 +1,305 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-06-09 07:53+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Your Name <your.email@example.com>\n"
+"Language-Team: Russian <ru@example.com>\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: myapp/templates/home.html:169
+msgid "Craft"
+msgstr "Craft"
+
+#: myapp/templates/home.html:172
+#, python-format
+msgid "Ads are waiting: %(moderation_count)s"
+msgstr "Ожидают объявления: %(moderation_count)s"
+
+#: myapp/templates/home.html:176
+msgid "Hello"
+msgstr "Привет"
+
+#: myapp/templates/home.html:179
+msgid "Moderation Panel"
+msgstr "Панель модерации"
+
+#: myapp/templates/home.html:185
+msgid "Profile"
+msgstr "Профиль"
+
+#: myapp/templates/home.html:186
+msgid "Post Ad"
+msgstr "Подать объявление"
+
+#: myapp/templates/home.html:189
+msgid "Logout"
+msgstr "Выйти"
+
+#: myapp/templates/home.html:198
+msgid "OK"
+msgstr "ОК"
+
+#: myapp/templates/home.html:208
+msgid "Categories"
+msgstr "Категории"
+
+#: myapp/templates/home.html:213
+msgid "No categories"
+msgstr "Нет категорий"
+
+#: myapp/templates/home.html:223
+msgid "Search ads..."
+msgstr "Поиск объявлений..."
+
+#: myapp/templates/home.html:227
+msgid "All statuses"
+msgstr "Все статусы"
+
+#: myapp/templates/home.html:228 myapp/templates/home.html:272
+msgid "Active"
+msgstr "Активные"
+
+#: myapp/templates/home.html:229 myapp/templates/home.html:274
+msgid "Sold"
+msgstr "Продано"
+
+#: myapp/templates/home.html:234
+msgid "All cities"
+msgstr "Все города"
+
+#: myapp/templates/home.html:243
+msgid "Search"
+msgstr "Поиск"
+
+#: myapp/templates/home.html:249
+msgid "Latest Ads"
+msgstr "Последние объявления"
+
+#: myapp/templates/home.html:256
+msgid "Image"
+msgstr "Изображение"
+
+#: myapp/templates/home.html:259
+msgid "Sold Image"
+msgstr "Изображение продано"
+
+#: myapp/templates/home.html:261
+msgid "Default Image"
+msgstr "Изображение по умолчанию"
+
+#: myapp/templates/home.html:268
+msgid "Price:"
+msgstr "Цена:"
+
+#: myapp/templates/home.html:280
+msgid "View"
+msgstr "Просмотр"
+
+#: myapp/templates/home.html:286
+msgid "No ads found."
+msgstr "Объявления не найдены."
+
+#: myapp/templates/home.html:324
+msgid "Scroll to top"
+msgstr "Наверх"
+
+msgid "Your Profile"
+msgstr "Ваш профиль"
+
+msgid "User Information"
+msgstr "Информация о пользователе"
+
+msgid "Username"
+msgstr "Ваше имя"
+
+msgid "Your Listings"
+msgstr "Ваши объявления"
+
+msgid "My Listings"
+msgstr "Мои Объявления"
+
+msgid "Create Listing"
+msgstr "Создать Объявления"
+
+msgid "Created"
+msgstr "Создано"
+
+msgid "Back to Home"
+msgstr "Назад"
+
+msgid "Favorite Listings"
+msgstr "Избранные списки"
+
+#. Translators: Welcome message with username
+msgid "Welcome, %(username)s! Here you can manage your listings."
+msgstr "Добро пожаловать, %(username)s! Здесь вы можете управлять своими объявлениями."
+
+msgid "Create New Ad"
+msgstr "Создать Новое Объявление"
+
+msgid "Title"
+msgstr "Придумайте название для вашего объявление"
+
+msgid "Category"
+msgstr "Категория"
+
+msgid "Description"
+msgstr "Описание Вашего Объявление"
+
+msgid "Price"
+msgstr "Цена"
+
+msgid "Images"
+msgstr "Фото Вашего Объявление"
+
+msgid "Status"
+msgstr "Статус"
+
+msgid "Posted on"
+msgstr "Объявление выложено"
+
+msgid "Author"
+msgstr "Автор "
+
+msgid "Phone"
+msgstr "Номер"
+
+msgid "City"
+msgstr "Город"
+
+msgid "Add to Favorites"
+msgstr "Добавить в Избранное"
+
+msgid "Remove from Favorites"
+msgstr "Удалить с Избранных"
+
+msgid "Edit"
+msgstr "Редактирование"
+
+msgid "Registration"
+msgstr "Регистрация"
+
+msgid "You are already logged in as"
+msgstr "Вы уже вошли как"
+
+msgid "Go to homepage"
+msgstr "Перейти на главную"
+
+msgid "Email (required)"
+msgstr "Email (обязательно)"
+
+msgid "Phone (required)"
+msgstr "Телефон (обязательно)"
+
+msgid "Password"
+msgstr "Пароль"
+
+msgid "Confirm Password"
+msgstr "Подтвердите пароль"
+
+msgid "Register"
+msgstr "Зарегистрироваться"
+
+msgid "Already have an account?"
+msgstr "Уже есть аккаунт?"
+
+msgid "Log in"
+msgstr "Войти"
+
+msgid "Registration successful!"
+msgstr "Регистрация прошла успешно!"
+
+msgid "Registration error."
+msgstr "Ошибка регистрации."
+
+msgid "Connection error."
+msgstr "Ошибка соединения."
+
+msgid "Forgot Password"  
+msgstr "Забыли пароль?"
+
+msgid "Enter your email"
+msgstr "Введите адрес электронной почты"
+
+msgid "Send Code"
+msgstr "Отправить код на почту"
+
+msgid "Username:"
+msgstr "Имя пользователя"
+
+msgid "Login to your account"
+msgstr "Войдите в учетную запись"
+
+msgid "Show password"
+msgstr "Показать пароль" 
+
+msgid "Don't have an account?"
+msgstr "У вас нет учетной записи?" 
+
+msgid "Forgot password?"
+msgstr "Забыли пароль?" 
+
+msgid "Moderate"
+msgstr "Модерация"
+
+msgid "Moderator"
+msgstr "Модератор"
+
+msgid "Main Photo"
+msgstr "Главное фото"
+
+msgid "No Photo"
+msgstr "Нет фото"
+
+msgid "Not specified"
+msgstr "Не указано"
+
+msgid "Approve"
+msgstr "Одобрить"
+
+msgid "Reject"
+msgstr "Отклонить" 
+
+msgid "No ads under moderation."
+msgstr "Нет объявлений, находящихся на модерации." 
+
+msgid "Ads under moderation."
+msgstr "Объявления на модерации" 
+
+msgid "Date"
+msgstr "Дата"
+
+msgid "Actions"
+msgstr "Действия"
+
+#: path/to/your/verify_code.html:XX
+msgid "Verify Code"
+msgstr "Подтверждать код" 
+
+#: path/to/your/verify_code.html:XX
+msgid "Enter code from email"
+msgstr "Введите код из электронной почты" 
+
+#: path/to/your/verify_code.html:XX
+msgid "Verify"
+msgstr "Подтверждать" 
+
+
+
+
+
+

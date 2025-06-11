@@ -1,35 +1,46 @@
+{% load static %}
+{% load i18n %}  {# Load the internationalization tags #}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ LANGUAGE_CODE }}">  {# Use LANGUAGE_CODE for dynamic language setting #}
 <head>
   <meta charset="UTF-8">
-  <title>Moderation Panel</title>
+  <title>{% trans "Moderation Panel" %}</title> {# Translate the title #}
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
 
 <nav class="navbar navbar-dark bg-dark">
   <div class="container">
-    <a href="{% url 'home' %}" class="navbar-brand">Craft</a>
-    <span class="navbar-text text-white">Moderation Panel</span>
+    <a href="{% url 'home' %}" class="navbar-brand">Craft</a> {# "Craft" seems like a brand name, usually not translated #}
+    <span class="navbar-text text-white">{% trans "Moderation Panel" %}</span> {# Translate "Moderation Panel" #}
+                    <form action="{% url 'set_language' %}" method="post" id="languageForm" style="display: inline-block; margin-left: 15px;">
+        {% csrf_token %}
+        <select name="language" class="form-control form-control-sm d-inline-block" style="width: auto;" onchange="this.form.submit();">
+          <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+          <option value="ru" {% if LANGUAGE_CODE == 'ru' %}selected{% endif %}>Русский</option>
+          <option value="kk" {% if LANGUAGE_CODE == 'kk' %}selected{% endif %}>Қазақша</option>
+        </select>
+        <input type="hidden" name="next" value="{{ request.get_full_path }}"> {# <-- This is already correct #}
+      </form>
     <div class="ml-auto">
-      <a href="{% url 'logout' %}" class="btn btn-danger btn-sm">Logout</a>
+      <a href="{% url 'logout' %}" class="btn btn-danger btn-sm">{% trans "Logout" %}</a> {# Translate "Logout" #}
     </div>
   </div>
 </nav>
 
 <div class="container mt-5">
-  <h2>Объявления на модерации</h2>
+  <h2>{% trans "Ads under moderation" %}</h2> {# Translate the main heading #}
   <table class="table table-bordered mt-3">
     <thead class="thead-light">
         <tr>
-          <th>Изображение</th>
-          <th>Заголовок</th>
-          <th>Описание</th>
-          <th>Автор</th>
-          <th>Город</th>
-          <th>Цена</th>
-          <th>Дата</th>
-          <th>Действия</th>
+          <th>{% trans "Image" %}</th> {# Translate table header #}
+          <th>{% trans "Title" %}</th> {# Translate table header #}
+          <th>{% trans "Description" %}</th> {# Translate table header #}
+          <th>{% trans "Author" %}</th> {# Translate table header #}
+          <th>{% trans "City" %}</th> {# Translate table header #}
+          <th>{% trans "Price" %}</th> {# Translate table header #}
+          <th>{% trans "Date" %}</th> {# Translate table header #}
+          <th>{% trans "Actions" %}</th> {# Translate table header #}
         </tr>
       </thead>
       <tbody>
@@ -37,31 +48,31 @@
         <tr>
           <td>
             {% if ad.images.all %}
-              <img src="{{ ad.images.first.image.url }}" width="100" height="80" style="object-fit: cover;" alt="Ad Image">
+              <img src="{{ ad.images.first.image.url }}" width="100" height="80" style="object-fit: cover;" alt="{% trans "Ad Image" %}"> {# Translate alt text #}
             {% else %}
-              <span class="text-muted">Нет фото</span>
+              <span class="text-muted">{% trans "No photo" %}</span> {# Translate "No photo" #}
             {% endif %}
           </td>
-          <td>{{ ad.title }}</td>
-          <td>{{ ad.description|truncatewords:15 }}</td>
-          <td>{{ ad.author.username }}</td>
-          <td>{{ ad.city }}</td>
-          <td>${{ ad.price }}</td>
-          <td>{{ ad.created_at|date:"d.m.Y H:i" }}</td>
+          <td>{{ ad.title }}</td> {# Dynamic content #}
+          <td>{{ ad.description|truncatewords:15 }}</td> {# Dynamic content #}
+          <td>{{ ad.author.username }}</td> {# Dynamic content #}
+          <td>{{ ad.city }}</td> {# Dynamic content #}
+          <td>${{ ad.price }}</td> {# Dynamic content #}
+          <td>{{ ad.created_at|date:"d.m.Y H:i" }}</td> {# Dynamic content, date format can also be localized #}
           <td>
-            <a href="{% url 'moderation_ad_detail' ad.id %}" class="btn btn-info btn-sm mb-1">Просмотр</a>
-            <a href="{% url 'approve_ad' ad.id %}" class="btn btn-success btn-sm mb-1"> Одобрить</a>
-            <a href="{% url 'reject_ad' ad.id %}" class="btn btn-danger btn-sm">Отклонить</a>
-          </td>          
+            <a href="{% url 'moderation_ad_detail' ad.id %}" class="btn btn-info btn-sm mb-1">{% trans "View" %}</a> {# Translate button text #}
+            <a href="{% url 'approve_ad' ad.id %}" class="btn btn-success btn-sm mb-1"> {% trans "Approve" %}</a> {# Translate button text #}
+            <a href="{% url 'reject_ad' ad.id %}" class="btn btn-danger btn-sm">{% trans "Reject" %}</a> {# Translate button text #}
+          </td>
         </tr>
         {% empty %}
         <tr>
-          <td colspan="8" class="text-center">Нет объявлений на модерации.</td>
+          <td colspan="8" class="text-center">{% trans "No ads under moderation." %}</td> {# Translate the empty state message #}
         </tr>
         {% endfor %}
       </tbody>
-      
-      
+
+
   </table>
 </div>
 {% if ads.has_other_pages %}

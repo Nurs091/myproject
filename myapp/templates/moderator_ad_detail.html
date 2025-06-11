@@ -1,9 +1,10 @@
 {% load static %}
+{% load i18n %}  {# Load the internationalization tags #}
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="{{ LANGUAGE_CODE }}">  {# Use LANGUAGE_CODE for dynamic language setting #}
 <head>
   <meta charset="UTF-8">
-  <title>Moderate: {{ ad.title }}</title>
+  <title>{% trans "Moderate" %}: {{ ad.title }}</title> {# Translate "Moderate" #}
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
     body { background-color: #f5f8fb; font-family: Arial, sans-serif; }
@@ -17,42 +18,59 @@
 
 <nav class="navbar navbar-dark bg-dark">
   <div class="container d-flex justify-content-between">
-    <a href="{% url 'moderation_panel' %}" class="navbar-brand">Moderation Panel</a>
-    <span class="text-white">Hello, {{ request.user.username }} (Moderator)</span>
-    <a href="{% url 'logout' %}" class="btn btn-danger btn-sm">Logout</a>
+    <a href="{% url 'moderation_panel' %}" class="navbar-brand">{% trans "Moderation Panel" %}</a> {# Translate "Moderation Panel" #}
+    <span class="text-white">{% trans "Hello" %}, {{ request.user.username }} ({% trans "Moderator" %})</span> {# Translate "Hello" and "Moderator" #}
+          {# This is the correct language form in the navbar - KEEP THIS ONE #}
+          <form action="{% url 'set_language' %}" method="post" id="languageFormNavbar" style="display: inline-block; margin-left: 15px;"> {# Added unique ID #}
+        {% csrf_token %}
+        <select name="language" class="form-control form-control-sm d-inline-block" style="width: auto;" onchange="this.form.submit();">
+          <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+          <option value="ru" {% if LANGUAGE_CODE == 'ru' %}selected{% endif %}>Русский</option>
+          <option value="kk" {% if LANGUAGE_CODE == 'kk' %}selected{% endif %}>Қазақша</option>
+        </select>
+        <input type="hidden" name="next" value="{{ request.get_full_path }}"> {# This ensures you redirect back to the current page #}
+      </form>
+    <a href="{% url 'logout' %}" class="btn btn-danger btn-sm">{% trans "Logout" %}</a> {# Translate "Logout" #}
   </div>
 </nav>
 
 <div class="container">
+        <form action="{% url 'set_language' %}" method="post" id="languageForm" style="display: inline-block; margin-left: 15px;">
+        {% csrf_token %}
+        <select name="language" class="form-control form-control-sm d-inline-block" style="width: auto;" onchange="this.form.submit();">
+          <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+          <option value="ru" {% if LANGUAGE_CODE == 'ru' %}selected{% endif %}>Русский</option>
+          <option value="kk" {% if LANGUAGE_CODE == 'kk' %}selected{% endif %}>Қазақша</option>
+        </select>
   <div class="row">
     <div class="col-md-6">
       {% if ad.images.all %}
-        <img id="main-photo" src="{{ ad.images.first.image.url }}" class="main-photo" alt="Main Photo">
+        <img id="main-photo" src="{{ ad.images.first.image.url }}" class="main-photo" alt="{% trans "Main Photo" %}"> {# Translate alt text #}
         <div class="thumbs mt-3">
           {% for img in ad.images.all %}
             <img src="{{ img.image.url }}" onclick="document.getElementById('main-photo').src=this.src;">
           {% endfor %}
         </div>
       {% else %}
-        <img src="{% static 'images/default-photo.jpg' %}" class="main-photo" alt="No Photo">
+        <img src="{% static 'images/default-photo.jpg' %}" class="main-photo" alt="{% trans "No Photo" %}"> {# Translate alt text #}
       {% endif %}
     </div>
 
     <div class="col-md-6 ad-info">
-      <h2>{{ ad.title }}</h2>
-      <p>{{ ad.description }}</p>
-      <p><strong>Price:</strong> ${{ ad.price }}</p>
-      <p><strong>City:</strong> {{ ad.city|default:"Not specified" }}</p>
-      <p><strong>Author:</strong> {{ ad.author.username }}</p>
-      <p><strong>Phone:</strong> {{ ad.author.phone|default:"—" }}</p>
-      <p><strong>Status:</strong> 
-        <span class="badge badge-info">{{ ad.status.name }}</span>
+      <h2>{{ ad.title }}</h2> {# Ad title is likely dynamic content, not a static string for translation #}
+      <p>{{ ad.description }}</p> {# Ad description is likely dynamic content #}
+      <p><strong>{% trans "Price" %}:</strong> ${{ ad.price }}</p> {# Translate "Price" #}
+      <p><strong>{% trans "City" %}:</strong> {{ ad.city|default:"Not specified" }}</p> {# Translate "City" and potentially the default value #}
+      <p><strong>{% trans "Author" %}:</strong> {{ ad.author.username }}</p> {# Translate "Author" #}
+      <p><strong>{% trans "Phone" %}:</strong> {{ ad.author.phone|default:"—" }}</p> {# Translate "Phone" #}
+      <p><strong>{% trans "Status" %}:</strong>
+        <span class="badge badge-info">{{ ad.status.name }}</span> {# ad.status.name likely comes from your model, consider translating the model field choices #}
       </p>
-      <p><strong>Created:</strong> {{ ad.created_at|date:"d.m.Y H:i" }}</p>
+      <p><strong>{% trans "Created" %}:</strong> {{ ad.created_at|date:"d.m.Y H:i" }}</p> {# Translate "Created" #}
 
       <div class="mt-4 d-flex gap-2">
-        <a href="{% url 'approve_ad' ad.id %}" class="btn btn-success mr-2"> Одобрить</a>
-        <a href="{% url 'reject_ad' ad.id %}" class="btn btn-danger"> Отклонить</a>
+        <a href="{% url 'approve_ad' ad.id %}" class="btn btn-success mr-2"> {% trans "Approve" %}</a> {# Translate button text #}
+        <a href="{% url 'reject_ad' ad.id %}" class="btn btn-danger"> {% trans "Reject" %}</a> {# Translate button text #}
       </div>
     </div>
   </div>

@@ -30,6 +30,13 @@ class Ad(models.Model):
     favorite_users = models.ManyToManyField(User, related_name='favorite_ads', blank=True)
     status = models.ForeignKey('AdStatus', on_delete=models.SET_NULL, null=True, default=None)
     city = models.CharField(max_length=100, blank=True)
+    language = models.CharField(
+        max_length=2,
+        choices=[('ru', 'Русский'), ('en', 'English')],
+        default='ru',
+        verbose_name='Язык объявления',
+        blank=True
+    )
 
     def __str__(self):
         return self.title
@@ -46,6 +53,7 @@ class AdImage(models.Model):
 class AdStatus(models.Model):
     name = models.CharField(max_length=50)  # Название статуса, например "Активно", "Продано", "На модерации"
     description = models.TextField(blank=True)  # Описание статуса (опционально)
+    is_hidden = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
