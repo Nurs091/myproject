@@ -92,7 +92,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'myproject1.wsgi.application'
-
+import os
 import dj_database_url
 # Database configuration
 DATABASES = {
