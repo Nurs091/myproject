@@ -28,8 +28,7 @@ SECRET_KEY = 'django-insecure-ql#sz^h0qcbq9wo4(q$6)ftlgup8x7ak%p_cd2j+-38nti!ptn
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = ['myproject-4o4a.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 from django.utils.translation import gettext_lazy as _
