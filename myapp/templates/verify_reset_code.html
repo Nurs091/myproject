@@ -1,9 +1,11 @@
+
 {% load static %}
+{% load i18n %}  
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ LANGUAGE_CODE }}"> 
 <head>
   <meta charset="UTF-8">
-  <title>Verify Code</title>
+  <title>{% trans "Verify Code" %}</title> {# Translate the title #}
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -59,11 +61,11 @@
 </head>
 <body>
   <div class="container">
-    <h2>Verify Code</h2>
+    <h2>{% trans "Verify Code" %}</h2> {# Translate the heading #}
     <form method="post">
       {% csrf_token %}
-      <input type="text" name="code" placeholder="Enter code from email" required>
-      <button type="submit">Verify</button>
+      <input type="text" name="code" placeholder="{% trans 'Enter code from email' %}" required> {# Translate the placeholder #}
+      <button type="submit">{% trans "Verify" %}</button> {# Translate the button text #}
     </form>
   </div>
 </body>

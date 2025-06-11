@@ -1,0 +1,317 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-06-09 07:53+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Your Name <your.email@example.com>\n"
+"Language-Team: Kazakh <kk@example.com>\n"
+"Language: kk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: myapp/templates/home.html:169
+msgid "Craft"
+msgstr "Craft"
+
+#: myapp/templates/home.html:172
+#, python-format
+msgid "Ads are waiting: %(moderation_count)s"
+msgstr "Жарнамалар күтіп тұр: %(moderation_count)s"
+
+#: myapp/templates/home.html:176
+msgid "Hello"
+msgstr "Сәлем"
+
+#: myapp/templates/home.html:179
+msgid "Moderation Panel"
+msgstr "Модерация панелі"
+
+#: myapp/templates/home.html:185
+msgid "Profile"
+msgstr "Профиль"
+
+#: myapp/templates/home.html:186
+msgid "Post Ad"
+msgstr "Жарнама жариялау"
+
+#: myapp/templates/home.html:189
+msgid "Logout"
+msgstr "Шығу"
+
+#: myapp/templates/home.html:198
+msgid "OK"
+msgstr "ОК"
+
+#: myapp/templates/home.html:208
+msgid "Categories"
+msgstr "Санаттар"
+
+#: myapp/templates/home.html:213
+msgid "No categories"
+msgstr "Санаттар жоқ"
+
+#: myapp/templates/home.html:223
+msgid "Search ads..."
+msgstr "Жарнамаларды іздеу..."
+
+#: myapp/templates/home.html:227
+msgid "All statuses"
+msgstr "Барлық мәртебелер"
+
+#: myapp/templates/home.html:228 myapp/templates/home.html:272
+msgid "Active"
+msgstr "Белсенді"
+
+#: myapp/templates/home.html:229 myapp/templates/home.html:274
+msgid "Sold"
+msgstr "Сатылды"
+
+#: myapp/templates/home.html:234
+msgid "All cities"
+msgstr "Барлық қалалар"
+
+#: myapp/templates/home.html:243
+msgid "Search"
+msgstr "Іздеу"
+
+#: myapp/templates/home.html:249
+msgid "Latest Ads"
+msgstr "Соңғы жарнамалар"
+
+#: myapp/templates/home.html:256
+msgid "Image"
+msgstr "Сурет"
+
+#: myapp/templates/home.html:259
+msgid "Sold Image"
+msgstr "Сатылған сурет"
+
+#: myapp/templates/home.html:261
+msgid "Default Image"
+msgstr "Әдепкі сурет"
+
+#: myapp/templates/home.html:268
+msgid "Price:"
+msgstr "Бағасы:"
+
+#: myapp/templates/home.html:280
+msgid "View"
+msgstr "Көру"
+
+#: myapp/templates/home.html:286
+msgid "No ads found."
+msgstr "Жарнамалар табылмады."
+
+#: myapp/templates/home.html:324
+msgid "Scroll to top"
+msgstr "Жоғарға көтерілу"
+
+msgid "Your Profile"
+msgstr "Сіздің профиліңіз"
+
+msgid "User Information"
+msgstr "Пайдаланушы туралы ақпарат"
+
+msgid "Username"
+msgstr "Пайдаланушы аты"
+
+msgid "Your Listings"
+msgstr "Сіздің жарнамаларыңыз"
+
+msgid "My Listings"
+msgstr "Менің жарнамаларым"
+
+msgid "Create Listing"
+msgstr "Жарнама жасау"
+
+msgid "Created"
+msgstr "Жасалған"
+
+msgid "Back to Home"
+msgstr "Басты бетке оралу"
+
+msgid "Favorite Listings"
+msgstr "Таңдаулы жарнамалар"
+
+#. Translators: Welcome message with username
+msgid "Welcome, %(username)s! Here you can manage your listings."
+msgstr "Қош келдіңіз, %(username)s! Мұнда өз жарнамаларыңызды басқара аласыз."
+
+msgid "Create New Ad"
+msgstr "Жаңа жарнама жасау"
+
+msgid "Title"
+msgstr "Жарнамаңызға атау жазыңыз"
+
+msgid "Category"
+msgstr "Санат"
+
+msgid "Description"
+msgstr "Жарнамаңыздың сипаттамасы"
+
+msgid "Price"
+msgstr "Бағасы"
+
+msgid "Images"
+msgstr "Жарнамаңыздың фотосуреттері"
+
+msgid "Status"
+msgstr "Мәртебе"
+
+msgid "Posted on"
+msgstr "Жарияланған күні"
+
+msgid "Author"
+msgstr "Автор"
+
+msgid "Phone"
+msgstr "Телефон нөмірі"
+
+msgid "City"
+msgstr "Қала"
+
+msgid "Add to Favorites"
+msgstr "Таңдаулыларға қосу"
+
+msgid "Remove from Favorites"
+msgstr "Таңдаулылардан жою"
+
+msgid "Edit"
+msgstr "Өңдеу"
+
+msgid "Edit Ad"
+msgstr "Жарнаманы өңдеу"
+
+msgid "Add New Photos"
+msgstr "Жаңа фотосуреттер қосу"
+
+msgid "Current Photos"
+msgstr "Ағымдағы фотосуреттер"
+
+msgid "Ad Status"
+msgstr "Жарнама статусы"
+
+msgid "Save Changes"
+msgstr "Өзгертулерді сақтау"
+
+msgid "Cancel"
+msgstr "Болдырмау"
+
+msgid "Registration"
+msgstr "Тіркелу"
+
+msgid "You are already logged in as"
+msgstr "Сіз қазірдің өзінде кірдіңіз:"
+
+msgid "Go to homepage"
+msgstr "Басты бетке өту"
+
+msgid "Email (required)"
+msgstr "Электрондық пошта (міндетті)"
+
+msgid "Phone (required)"
+msgstr "Телефон (міндетті)"
+
+msgid "Password"
+msgstr "Құпия сөз"
+
+msgid "Confirm Password"
+msgstr "Құпия сөзді растау"
+
+msgid "Register"
+msgstr "Тіркелу"
+
+msgid "Already have an account?"
+msgstr "Аккаунтыңыз бар ма?"
+
+msgid "Log in"
+msgstr "Кіру"
+
+msgid "Registration successful!"
+msgstr "Тіркеу сәтті аяқталды!"
+
+msgid "Registration error."
+msgstr "Тіркеу қатесі."
+
+msgid "Connection error."
+msgstr "Қосылым қатесі."
+
+msgid "Forgot Password"  
+msgstr "Құпия сөзіңізді ұмыттыңыз ба?"
+
+msgid "Enter your email"
+msgstr "Электрондық поштаңызды енгізіңіз"
+
+msgid "Send Code"
+msgstr "Код жіберу"
+
+msgid "Username:"
+msgstr "Пайдаланушы аты:"
+
+msgid "Login to your account"
+msgstr "Аккаунтыңызға кіріңіз"
+
+msgid "Show password"
+msgstr "Құпия сөзді көрсету"
+
+msgid "Don't have an account?"
+msgstr "Аккаунтыңыз жоқ па?"
+
+msgid "Forgot password?"
+msgstr "Құпия сөзді ұмыттыңыз ба?"
+
+msgid "Moderate"
+msgstr "Модерациялау"
+
+msgid "Moderator"
+msgstr "Модератор"
+
+msgid "Main Photo"
+msgstr "Негізгі фото"
+
+msgid "No Photo"
+msgstr "Фото жоқ"
+
+msgid "Not specified"
+msgstr "Көрсетілмеген"
+
+msgid "Approve"
+msgstr "Қабылдау"
+
+msgid "Reject"
+msgstr "Қабылдамау"
+
+msgid "No ads under moderation."
+msgstr "Модерациядағы ешбір жарнама жоқ."
+
+msgid "Ads under moderation"
+msgstr "Модерациядағы жарнамалар"
+
+msgid "Ads under moderation."
+msgstr "Модерациядағы жарнамалар."
+
+msgid "Date"
+msgstr "Күні"
+
+msgid "Actions"
+msgstr "Әрекеттер"
+
+#: path/to/your/verify_code.html:XX
+msgid "Verify Code"
+msgstr "Кодты растау" 
+
+#: path/to/your/verify_code.html:XX
+msgid "Enter code from email"
+msgstr "Электрондық поштаңыздан кодты енгізіңіз" 
+
+#: path/to/your/verify_code.html:XX
+msgid "Verify"
+msgstr "Растау" 

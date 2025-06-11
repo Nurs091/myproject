@@ -138,14 +138,13 @@
           <span class="text-white mr-3">{% trans "Hello" %}, {{ request.user.username }}!</span> <!-- перевод -->
           <a href="{% url 'profile' %}" class="btn btn-light btn-sm mr-2">{% trans "Profile" %}</a> <!-- перевод -->
           <a href="{% url 'create_ad' %}" class="btn btn-success btn-sm mr-2">{% trans "Post Ad" %}</a> <!-- перевод -->
-          <form action="{% url 'set_language' %}" method="post" class="d-inline ml-3">
-  {% csrf_token %}
-  <select name="language" onchange="this.form.submit()" class="custom-select custom-select-sm">
-    <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
-    <option value="ru" {% if LANGUAGE_CODE == 'ru' %}selected{% endif %}>Русский</option>
-  </select>
-  <input type="hidden" name="next" value="{{ request.get_full_path }}">
-</form>
+                <form action="{% url 'set_language' %}" method="post" id="languageForm" style="display: inline-block; margin-left: 15px;">
+        {% csrf_token %}
+        <select name="language" class="form-control form-control-sm d-inline-block" style="width: auto;" onchange="this.form.submit();">
+          <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+          <option value="ru" {% if LANGUAGE_CODE == 'ru' %}selected{% endif %}>Русский</option>
+          <option value="kk" {% if LANGUAGE_CODE == 'kk' %}selected{% endif %}>Қазақша</option>
+        </select>
           <form action="{% url 'logout' %}" method="post" style="margin: 0;">
             {% csrf_token %}
             <button type="submit" class="btn btn-danger btn-sm">{% trans "Logout" %}</button> <!-- перевод -->

@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create New Ad</title> <!-- перевод -->
+  <title>{% trans "Create New Ad" %}</title> <!-- перевод -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
   <style>
@@ -41,26 +41,26 @@
     }
 
     .form-group textarea {
-  resize: vertical;
-  min-height: 80px;
-  max-height: 150px;
-}
+      resize: vertical;
+      min-height: 80px;
+      max-height: 150px;
+    }
 
     .form-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-}
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
 
-.form-control,
-textarea.form-control {
-  border-radius: 12px;
-  padding: 10px 14px;
-  border: 1px solid #ced4da;
-  background-color: #f8f9fa;
-  transition: box-shadow 0.3s;
-  font-size: 15px;
-}
+    .form-control,
+    textarea.form-control {
+      border-radius: 12px;
+      padding: 10px 14px;
+      border: 1px solid #ced4da;
+      background-color: #f8f9fa;
+      transition: box-shadow 0.3s;
+      font-size: 15px;
+    }
 
     .form-control:focus {
       box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
@@ -95,6 +95,23 @@ textarea.form-control {
       padding: 12px 15px;
       font-size: 16px;
     }
+
+    /* Style for error messages - added for clarity */
+    .text-danger {
+      color: #dc3545; /* Bootstrap's default danger color */
+      font-size: 0.9em;
+      margin-top: 0.25rem;
+    }
+
+    .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        padding: .75rem 1.25rem;
+        margin-bottom: 1rem;
+        border: 1px solid transparent;
+        border-radius: .25rem;
+    }
   </style>
 </head>
 
@@ -108,44 +125,102 @@ textarea.form-control {
       </div>
   <div class="form-wrapper">
     <h4>{% trans "Create New Ad" %}</h4> <!-- перевод -->
+
     <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
-      
+
+      {# Display non-field errors at the top #}
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+          {% for error in form.non_field_errors %}
+            <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
       <div class="form-group">
         {{ form.title.label_tag }}
         {{ form.title }}
+        {# Display field-specific errors for title #}
+        {% if form.title.errors %}
+          <div class="text-danger">
+            {% for error in form.title.errors %}
+              {{ error }}
+            {% endfor %}
+          </div>
+        {% endif %}
       </div>
-    
+
       <div class="form-group">
         {{ form.category.label_tag }}
         {{ form.category }}
+        {# Display field-specific errors for category #}
+        {% if form.category.errors %}
+          <div class="text-danger">
+            {% for error in form.category.errors %}
+              {{ error }}
+            {% endfor %}
+          </div>
+        {% endif %}
       </div>
-    
+
       <div class="form-group">
         {{ form.city.label_tag }}
         {{ form.city }}
+        {# Display field-specific errors for city #}
+        {% if form.city.errors %}
+          <div class="text-danger">
+            {% for error in form.city.errors %}
+              {{ error }}
+            {% endfor %}
+          </div>
+        {% endif %}
       </div>
-    
+
       <div class="form-group">
         {{ form.description.label_tag }}
         {{ form.description }}
+        {# Display field-specific errors for description #}
+        {% if form.description.errors %}
+          <div class="text-danger">
+            {% for error in form.description.errors %}
+              {{ error }}
+            {% endfor %}
+          </div>
+        {% endif %}
       </div>
-    
+
       <div class="form-group">
         {{ form.price.label_tag }}
         {{ form.price }}
+        {# Display field-specific errors for price #}
+        {% if form.price.errors %}
+          <div class="text-danger">
+            {% for error in form.price.errors %}
+              {{ error }}
+            {% endfor %}
+          </div>
+        {% endif %}
       </div>
-    
+
       <div class="form-group">
         <label for="images">{% trans "Images" %}</label>
         <input type="file" class="form-control-file" id="images" name="images" multiple>
+        {# Display image errors #}
+        {% if form.images.errors %}
+          <div class="text-danger">
+            {% for error in form.images.errors %}
+              {{ error }}
+            {% endfor %}
+          </div>
+        {% endif %}
       </div>
-    
+
       <div class="text-center mt-4">
         <button type="submit" class="btn btn-primary">{% trans "Post Ad" %}</button>
       </div>
     </form>
-    
+
   </div>
 </div>
 

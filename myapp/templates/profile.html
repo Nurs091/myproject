@@ -48,6 +48,7 @@
         <select name="language" onchange="this.form.submit()" class="form-select form-select-sm" style="display: inline-block; width: auto;">
           <option value="ru" {% if LANGUAGE_CODE == 'ru' %}selected{% endif %}>{% trans "Русский" %}</option>
           <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+          <option value="kk" {% if LANGUAGE_CODE == 'kk' %}selected{% endif %}>Қазақша</option>
         </select>
         <input type="hidden" name="next" value="{{ request.path }}">
       </form>

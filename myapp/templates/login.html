@@ -1,6 +1,7 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -109,31 +110,45 @@
 
 <body>
   <div class="container">
-    <h2>Login to your account</h2>
+    {# You might want to wrap your language select form in a <form> tag for it to submit #}
+    <form action="{% url 'set_language' %}" method="post" id="language-form-login"> {# Add form tag and action #}
+        {% csrf_token %}
+        <input name="next" type="hidden" value="{{ request.path }}">
+        <select name="language" class="form-control form-control-sm d-inline-block" style="width: auto;" onchange="this.form.submit();">
+            <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+            <option value="ru" {% if LANGUAGE_CODE == 'ru' %}selected{% endif %}>Русский</option>
+            <option value="kk" {% if LANGUAGE_CODE == 'kk' %}selected{% endif %}>Қазақша</option>
+        </select>
+    </form>
+
+    <h2>{% trans "Login to your account" %}</h2> {# Translate the heading #}
 
     {% if form.errors %}
       <div class="alert">
-        Incorrect username or password. Please try again.
+        {# Translate the specific error messages from form.errors if needed, or provide a generic translated message #}
+        {% trans "Incorrect username or password. Please try again." %}
       </div>
     {% endif %}
 
     <form method="post">
         {% csrf_token %}
-        {{ form.username.label_tag }} {{ form.username }}
-        
-        {{ form.password.label_tag }} 
+        {{ form.username.label_tag }} {# If label in forms.py is not translated, you'll need to handle it there #}
+        {{ form.username }}
+
+        {{ form.password.label_tag }} {# Same as username label #}
         {{ form.password }}
-        
+
         <div style="margin-top: -10px; margin-bottom: 15px;">
-          <input type="checkbox" id="togglePassword"> <label for="togglePassword" style="font-size:14px; cursor:pointer;">Show password</label>
+          <input type="checkbox" id="togglePassword">
+          <label for="togglePassword" style="font-size:14px; cursor:pointer;">{% trans "Show password" %}</label> {# Translate label #}
         </div>
-        
-        <button type="submit">Log in</button>
+
+        <button type="submit">{% trans "Log in" %}</button> {# Translate button text #}
     </form>
     <script>
         const togglePassword = document.getElementById('togglePassword');
         const passwordField = document.querySelector('input[name="password"]');
-      
+
         togglePassword.addEventListener('change', function() {
           if (this.checked) {
             passwordField.type = 'text';
@@ -142,11 +157,11 @@
           }
         });
       </script>
-      
+
 
       <div class="register-link">
-        <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
-        <p><a href="{% url 'forgot_password' %}">Forgot password?</a></p>
+        <p>{% trans "Don't have an account?" %} <a href="{% url 'register' %}">{% trans "Register" %}</a></p> {# Translate both parts #}
+        <p><a href="{% url 'forgot_password' %}">{% trans "Forgot password?" %}</a></p> {# Translate link text #}
       </div>
   </div>
 </body>

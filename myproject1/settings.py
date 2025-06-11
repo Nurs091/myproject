@@ -44,6 +44,7 @@ USE_TZ = True
 LANGUAGES = [
     ('en', 'English'),
     ('ru', 'Russian'),
+    ('kk', _('Kazakh')),
 ]
 
 LOCALE_PATHS = [

@@ -109,3 +109,59 @@ msgstr "No ads found."
 #: myapp/templates/home.html:324
 msgid "Scroll to top"
 msgstr "Scroll to top"
+
+#: registration/templates/registration/register.html:7
+msgid "Registration"
+msgstr "Registration"
+
+#: registration/templates/registration/register.html:37
+msgid "You are already logged in as"
+msgstr "You are already logged in as"
+
+#: registration/templates/registration/register.html:37
+msgid "Go to homepage"
+msgstr "Go to homepage"
+
+#: registration/templates/registration/register.html:55
+msgid "Username"
+msgstr "Username"
+
+#: registration/templates/registration/register.html:56
+msgid "Email (required)"
+msgstr "Email (required)"
+
+#: registration/templates/registration/register.html:57
+msgid "Phone (required)"
+msgstr "Phone (required)"
+
+#: registration/templates/registration/register.html:58
+msgid "Password"
+msgstr "Password"
+
+#: registration/templates/registration/register.html:59
+msgid "Confirm Password"
+msgstr "Confirm Password"
+
+#: registration/templates/registration/register.html:75
+msgid "Register"
+msgstr "Register"
+
+#: registration/templates/registration/register.html:80
+msgid "Already have an account?"
+msgstr "Already have an account?"
+
+#: registration/templates/registration/register.html:80
+msgid "Log in"
+msgstr "Log in"
+
+#: registration/templates/registration/register.html:106
+msgid "Registration successful!"
+msgstr "Registration successful!"
+
+#: registration/templates/registration/register.html:108
+msgid "Registration error."
+msgstr "Registration error."
+
+#: registration/templates/registration/register.html:112
+msgid "Connection error."
+msgstr "Connection error."

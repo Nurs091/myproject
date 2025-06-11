@@ -34,7 +34,8 @@ class Ad(models.Model):
         max_length=2,
         choices=[('ru', 'Русский'), ('en', 'English')],
         default='ru',
-        verbose_name='Язык объявления'
+        verbose_name='Язык объявления',
+        blank=True
     )
 
     def __str__(self):

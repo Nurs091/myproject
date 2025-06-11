@@ -1,10 +1,11 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registration</title>
+  <title>{% trans "Registration" %}</title>
   <style>
     body {
       font-family: 'Arial', sans-serif;
@@ -119,22 +120,33 @@
 <body>
 
 <div class="container">
-  <h2>Registration</h2>
+    <!-- Форма переключения языка -->
+  <form action="{% url 'set_language' %}" method="post" id="language-form">
+    {% csrf_token %}
+    <input name="next" type="hidden" value="{{ request.path }}">
+    <select name="language" onchange="this.form.submit()">
+      <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+      <option value="ru" {% if LANGUAGE_CODE == 'ru' %}selected{% endif %}>Русский</option>
+      <option value="kk" {% if LANGUAGE_CODE == 'kk' %}selected{% endif %}>Қазақша</option>
+    </select>
+  </form>
+  <h2>{% trans "Registration" %}</h2>
 
   {% if user.is_authenticated %}
     <div class="alert">
-      You are already logged in as {{ user.username }}. <a href="{% url 'home' %}">Go to homepage</a>.
+      {% trans "You are already logged in as" %} {{ user.username }}. <a href="{% url 'home' %}">{% trans "Go to homepage" %}</a>.
     </div>
   {% endif %}
 
   <form method="post">
+    
     {% csrf_token %}
 
-    <input type="text" name="username" placeholder="Username" required id="id_username">
-    <input type="email" name="email" placeholder="Email (required)" required id="id_email">
-    <input type="text" name="phone" placeholder="Phone (required)" id="id_phone">
-    <input type="password" name="password1" placeholder="Password" required id="id_password1">
-    <input type="password" name="password2" placeholder="Confirm Password" required id="id_password2">
+    <input type="text" name="username" placeholder="{% trans 'Username' %}" required id="id_username">
+    <input type="email" name="email" placeholder="{% trans 'Email (required)' %}" required id="id_email">
+    <input type="text" name="phone" placeholder="{% trans 'Phone (required)' %}" id="id_phone">
+    <input type="password" name="password1" placeholder="{% trans 'Password' %}" required id="id_password1">
+    <input type="password" name="password2" placeholder="{% trans 'Confirm Password' %}" required id="id_password2">
 
     {% if form.errors %}
       <div class="alert alert-danger">
@@ -153,13 +165,14 @@
       <div class="help-text">{{ form.password1.help_text|safe }}</div>
     {% endif %}
 
-    <button type="submit">Register</button>
+    <button type="submit">{% trans "Register" %}</button>
   </form>
 
   <div class="login-link">
-    <p>Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+    <p>{% trans "Already have an account?" %} <a href="{% url 'login' %}">{% trans "Log in" %}</a></p>
   </div>
 </div>
+
 <script>
   function getCookie(name) {
     let cookieValue = null;
@@ -180,11 +193,11 @@
     e.preventDefault();
 
     const data = {
-  username: document.querySelector('#id_username').value,
-  email: document.querySelector('#id_email').value,
-  password: document.querySelector('#id_password1').value,
-  phone: document.querySelector('#id_phone').value,  // <-- обязательно!
-};
+      username: document.querySelector('#id_username').value,
+      email: document.querySelector('#id_email').value,
+      password: document.querySelector('#id_password1').value,
+      phone: document.querySelector('#id_phone').value,
+    };
 
     try {
       const response = await fetch('/api/register/', {
@@ -199,10 +212,10 @@
       const result = await response.json();
 
       if (response.ok) {
-        alert(result.detail || 'Регистрация успешна!');
+        alert(result.detail || '{% trans "Registration successful!" %}');
         window.location.href = '/verify-code/';
       } else {
-        let errorMsg = result.error || 'Ошибка регистрации.';
+        let errorMsg = result.error || '{% trans "Registration error." %}';
         if (typeof result === 'object') {
           const allErrors = Object.values(result).flat().join('\n');
           errorMsg = allErrors || errorMsg;
@@ -210,14 +223,20 @@
         alert(errorMsg);
       }
     } catch (err) {
-      alert('Ошибка соединения с сервером.');
+      alert('{% trans "Connection error." %}');
       console.error(err);
     }
   });
 </script>
-
-
-  
+<script>
+  document.getElementById('language-form').addEventListener('submit', function(e) {
+    // e.preventDefault(); // Remove or comment out this line
+    console.log('Language form submitted!');
+    console.log('Selected language:', this.elements.language.value);
+    console.log('CSRF token:', this.elements.csrfmiddlewaretoken.value);
+    this.submit(); // Make sure this line is uncommented
+  });
+</script>
 
 </body>
 </html>

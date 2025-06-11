@@ -49,7 +49,7 @@ class AdForm(forms.ModelForm):
 
     language = forms.ChoiceField(
         choices=LANGUAGE_CHOICES,
-        required=True,
+        required=False,
         widget=forms.Select(attrs={'class': 'form-control'}),
         label=_("Language")
     )

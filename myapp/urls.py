@@ -24,6 +24,7 @@ urlpatterns = [
     path('forgot-password/', ForgotPasswordView.as_view(), name='forgot_password'),
     path('verify-reset-code/', VerifyResetCodeView.as_view(), name='verify_reset_code'),
     path('reset-password/', ResetPasswordView.as_view(), name='reset_password'),
+    path('i18n/', include('django.conf.urls.i18n')),
 
     # Остальные пути с языковым префиксом — просто пути без i18n_patterns здесь!
     path('register/', views.register_page, name='register'),
