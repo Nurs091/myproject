@@ -93,17 +93,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'myproject1.wsgi.application'
 
-
+import dj_database_url
 # Database configuration
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Craft',          # <-- название твоей базы данных
-        'USER': 'postgres',       # <-- имя пользователя, по умолчанию "postgres"
-        'PASSWORD': '1465',  # <-- введи свой пароль от PostgreSQL
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
 
 
