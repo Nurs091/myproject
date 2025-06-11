@@ -1,15 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
-import random
-import string
 from datetime import timedelta
 
-# Кастомизация модели пользователя, наследяя от AbstractUser
 class User(AbstractUser):
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=20, blank=False, null=False, unique=True)
-    is_moderator = models.BooleanField(default=False)  # <-- Добавляем это поле
+    is_moderator = models.BooleanField(default=False)
 
     def __str__(self):
         return self.username
@@ -41,23 +38,22 @@ class Ad(models.Model):
     def __str__(self):
         return self.title
 
-# Модель для изображений объявлений
 class AdImage(models.Model):
-    ad = models.ForeignKey(Ad, related_name="images", on_delete=models.CASCADE)  # Связь с объявлением
-    image = models.ImageField(upload_to='ads/images/')  # Путь для загрузки изображений
+    ad = models.ForeignKey(Ad, related_name="images", on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='ads/images/')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Image for {self.ad.title}"
 
 class AdStatus(models.Model):
-    name = models.CharField(max_length=50)  # Название статуса, например "Активно", "Продано", "На модерации"
-    description = models.TextField(blank=True)  # Описание статуса (опционально)
+    name = models.CharField(max_length=50)
+    description = models.TextField(blank=True)
     is_hidden = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
-    
+
 class AdHistory(models.Model):
     ad = models.ForeignKey('Ad', related_name='history', on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
@@ -67,23 +63,6 @@ class AdHistory(models.Model):
 
     def __str__(self):
         return f"История для {self.ad.title} ({self.changed_at.strftime('%d.%m.%Y %H:%M')})"
-
-
-# class EmailVerification(models.Model):
-#     email = models.EmailField()
-#     code = models.CharField(max_length=6)
-#     created_at = models.DateTimeField(auto_now_add=True)
-
-#     def is_expired(self):
-#         return (timezone.now() - self.created_at).seconds > 600  # 10 минут
-
-#     @staticmethod
-#     def generate_code():
-#         return ''.join(random.choices(string.digits, k=6))
-
-#     def __str__(self):
-#         return f"{self.email} — {self.code}"
-    
 
 class PasswordResetCode(models.Model):
     email = models.EmailField()
