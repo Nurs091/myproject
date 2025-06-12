@@ -7,9 +7,12 @@ pip install -r requirements.txt
 python manage.py makemigrations
 python manage.py migrate
 
-# Загрузка фикстур (важно делать ПОСЛЕ миграций)
-python manage.py loaddata categories.json  # Сначала категории
-python manage.py loaddata ads.json        # Затем объявления
+# Загрузка фикстур
+python manage.py loaddata categories.json
+python manage.py loaddata statuses.json  # если у тебя есть статусы
 
-# Сборка статических файлов
+# Генерация случайных объявлений
+python manage.py generate_fake_ads
+
+# Сборка статики
 python manage.py collectstatic --noinput
