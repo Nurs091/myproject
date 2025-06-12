@@ -7,6 +7,9 @@ pip install -r requirements.txt
 python manage.py makemigrations
 python manage.py migrate
 
+# Создание предустановленных категорий
+python manage.py create_categories
+
 # Загрузка фикстур
 python manage.py loaddata categories.json
 python manage.py loaddata statuses.json  # если у тебя есть статусы

@@ -1,23 +1,29 @@
-import random
 from django.core.management.base import BaseCommand
 from faker import Faker
-from myapp.models import Ad, User, Category, AdStatus
+import random
+from myapp.models import Category, Ad, User, AdStatus
 
 fake = Faker()
 
 class Command(BaseCommand):
-    help = "Генерирует случайные объявления"
+    help = "Генерирует случайные объявления (без создания категорий)"
 
     def handle(self, *args, **kwargs):
-        users = list(User.objects.all())
+        # Получаем все категории, пользователей и статусы
         categories = list(Category.objects.all())
+        users = list(User.objects.all())
         statuses = list(AdStatus.objects.all())
 
-        if not users or not categories or not statuses:
-            self.stdout.write(self.style.ERROR("Нет пользователей, категорий или статусов!"))
+        if not categories:
+            self.stdout.write(self.style.ERROR("Нет доступных категорий."))
             return
 
-        for _ in range(20):  # Сколько объявлений создать
+        if not users or not statuses:
+            self.stdout.write(self.style.ERROR("Не хватает пользователей или статусов для создания объявлений."))
+            return
+
+        # Генерация объявлений
+        for _ in range(20):
             Ad.objects.create(
                 title=fake.sentence(),
                 description=fake.text(),
@@ -29,4 +35,4 @@ class Command(BaseCommand):
                 language=random.choice(['ru', 'en'])
             )
 
-        self.stdout.write(self.style.SUCCESS("Случайные объявления созданы."))
+        self.stdout.write(self.style.SUCCESS("Созданы случайные объявления."))
