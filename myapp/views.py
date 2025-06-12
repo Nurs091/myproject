@@ -9,13 +9,13 @@ from django.contrib import messages
 from .models import User, Ad, Category, AdImage, AdStatus, AdHistory #EmailVerification
 from django.utils.translation import get_language_from_request
 from rest_framework.permissions import AllowAny
-from rest_framework import status
+
 
 from .forms import AdForm
-from .serializers import (
-    AdSerializer, AdStatusSerializer, CategorySerializer,
-    UserSerializer, RegisterSerializer, #VerifyEmailSerializer
-)
+# from .serializers import (
+    # AdStatusSerializer, CategorySerializer,
+    # UserSerializer, RegisterSerializer, #VerifyEmailSerializer
+# )
 #from .utils import send_verification_code
 
 # ------------------------ Аутентификация ------------------------
@@ -300,19 +300,19 @@ from rest_framework.response import Response
 
 class AdViewSet(viewsets.ModelViewSet):
     queryset = Ad.objects.all()
-    serializer_class = AdSerializer
+    # serializer_class = AdSerializer
 
 class AdStatusViewSet(viewsets.ModelViewSet):
     queryset = AdStatus.objects.all()
-    serializer_class = AdStatusSerializer
+    # serializer_class = AdStatusSerializer
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
-    serializer_class = CategorySerializer
+    # serializer_class = CategorySerializer
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    # serializer_class = UserSerializer
 
 
 class RegisterAPIView(APIView):
@@ -346,7 +346,7 @@ class RegisterAPIView(APIView):
 #         return Response(serializer.errors, status=400)
     
 
-
+from django.shortcuts import render
 
 def register_page(request):
     return render(request, 'register.html')
