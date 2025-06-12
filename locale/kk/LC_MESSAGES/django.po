@@ -315,3 +315,23 @@ msgstr "Электрондық поштаңыздан кодты енгізің�
 #: path/to/your/verify_code.html:XX
 msgid "Verify"
 msgstr "Растау" 
+
+#: myapp/models.py:XX
+msgid "Electronics"
+msgstr "Электрондық заттар"
+
+#: myapp/models.py:XX
+msgid "Furniture"
+msgstr "Жиһаз"
+
+#: myapp/models.py:XX
+msgid "Clothing"
+msgstr "Киім"
+
+#: myapp/models.py:XX
+msgid "Vehicles"
+msgstr "Көлік"
+
+#: myapp/models.py:XX
+msgid "Books"
+msgstr "Кітаптар"

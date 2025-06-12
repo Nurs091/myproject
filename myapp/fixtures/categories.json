@@ -1,0 +1,42 @@
+[
+  {
+    "model": "myapp.category", 
+    "pk": 1,
+    "fields": {
+      "name": "Electronics",
+      "slug": "electronics"
+    }
+  },
+  {
+    "model": "myapp.category",
+    "pk": 2,
+    "fields": {
+      "name": "Furniture",
+      "slug": "furniture"
+    }
+  },
+  {
+    "model": "myapp.category",
+    "pk": 3,
+    "fields": {
+      "name": "Clothing",
+      "slug": "clothing"
+    }
+  },
+  {
+    "model": "myapp.category",
+    "pk": 4,
+    "fields": {
+      "name": "Vehicles",
+      "slug": "vehicles"
+    }
+  },
+  {
+    "model": "myapp.category",
+    "pk": 5,
+    "fields": {
+      "name": "Books",
+      "slug": "books"
+    }
+  }
+]

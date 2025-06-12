@@ -8,17 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-12 22:22+0500\n"
+"POT-Creation-Date: 2025-06-12 22:21+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Your Name <your.email@example.com>\n"
-"Language-Team: Russian <ru@example.com>\n"
-"Language: ru\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
-"(n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: myapp/forms.py:31 myapp/templates/category_ads.html:188
 msgid "Almaty"
@@ -44,7 +41,7 @@ msgstr ""
 #: myapp/templates/moderation_panel.html:40
 #: myapp/templates/moderator_ad_detail.html:63
 msgid "City"
-msgstr "Город"
+msgstr ""
 
 #: myapp/forms.py:46
 msgid "Russian"
@@ -61,12 +58,12 @@ msgstr ""
 #: myapp/forms.py:61 myapp/templates/edit_ad.html:90
 #: myapp/templates/moderation_panel.html:37
 msgid "Title"
-msgstr "Придумайте название для вашего объявление"
+msgstr ""
 
 #: myapp/forms.py:62 myapp/templates/edit_ad.html:95
 #: myapp/templates/moderation_panel.html:38
 msgid "Description"
-msgstr "Описание Вашего Объявление"
+msgstr ""
 
 #: myapp/forms.py:63 myapp/templates/ad_details.html:188
 #: myapp/templates/ad_details.html:214 myapp/templates/edit_ad.html:100
@@ -74,11 +71,11 @@ msgstr "Описание Вашего Объявление"
 #: myapp/templates/moderator_ad_detail.html:62 myapp/templates/profile.html:95
 #: myapp/templates/profile.html:160
 msgid "Price"
-msgstr "Цена"
+msgstr ""
 
 #: myapp/forms.py:64
 msgid "Category"
-msgstr "Категория"
+msgstr ""
 
 #: myapp/templates/ad_details.html:143
 msgid "just now"
@@ -91,51 +88,51 @@ msgstr ""
 #: myapp/templates/ad_details.html:160 myapp/templates/category_ads.html:138
 #: myapp/templates/home.html:176 myapp/templates/moderator_ad_detail.html:22
 msgid "Hello"
-msgstr "Привет"
+msgstr ""
 
 #: myapp/templates/ad_details.html:163 myapp/templates/category_ads.html:139
 #: myapp/templates/home.html:187 myapp/templates/profile.html:8
 #: myapp/templates/profile.html:44
 msgid "Profile"
-msgstr "Профиль"
+msgstr ""
 
 #: myapp/templates/ad_details.html:175 myapp/templates/category_ads.html:150
 #: myapp/templates/home.html:191 myapp/templates/moderation_panel.html:26
 #: myapp/templates/moderator_ad_detail.html:33
 msgid "Logout"
-msgstr "Выйти"
+msgstr ""
 
 #: myapp/templates/ad_details.html:191
 #: myapp/templates/moderator_ad_detail.html:66
 msgid "Status"
-msgstr "Статус"
+msgstr ""
 
 #: myapp/templates/ad_details.html:193 myapp/templates/home.html:269
 msgid "Active"
-msgstr "Активные"
+msgstr ""
 
 #: myapp/templates/ad_details.html:195 myapp/templates/ad_details.html:274
 #: myapp/templates/home.html:271
 msgid "Sold"
-msgstr "Продано"
+msgstr ""
 
 #: myapp/templates/ad_details.html:200
 msgid "Posted on"
-msgstr "Объявление выложено"
+msgstr ""
 
 #: myapp/templates/ad_details.html:201 myapp/templates/moderation_panel.html:39
 #: myapp/templates/moderator_ad_detail.html:64
 msgid "Author"
-msgstr "Автор "
+msgstr ""
 
 #: myapp/templates/ad_details.html:203
 #: myapp/templates/moderator_ad_detail.html:65
 msgid "Phone"
-msgstr "Номер"
+msgstr ""
 
 #: myapp/templates/ad_details.html:209
 msgid "Not specified"
-msgstr "Не указано"
+msgstr ""
 
 #: myapp/templates/ad_details.html:228
 msgid "Cannot add rejected ad to favorites"
@@ -143,11 +140,11 @@ msgstr ""
 
 #: myapp/templates/ad_details.html:229 myapp/templates/ad_details.html:236
 msgid "Add to Favorites"
-msgstr "Добавить в Избранное"
+msgstr ""
 
 #: myapp/templates/ad_details.html:234
 msgid "Remove from Favorites"
-msgstr "Удалить с Избранных"
+msgstr ""
 
 #: myapp/templates/ad_details.html:244
 msgid "Cannot edit rejected ad"
@@ -155,7 +152,7 @@ msgstr ""
 
 #: myapp/templates/ad_details.html:245 myapp/templates/ad_details.html:248
 msgid "Edit"
-msgstr "Редактирование"
+msgstr ""
 
 #: myapp/templates/ad_details.html:251
 msgid "Are you sure you want to delete this ad?"
@@ -166,35 +163,29 @@ msgid "Delete"
 msgstr ""
 
 #: myapp/templates/ad_details.html:265
-#, fuzzy
-#| msgid "No Photo"
 msgid "Ad Photo"
-msgstr "Нет фото"
+msgstr ""
 
 #: myapp/templates/ad_details.html:268
 msgid "Thumbnail"
 msgstr ""
 
 #: myapp/templates/ad_details.html:276
-#, fuzzy
-#| msgid "No Photo"
 msgid "No Photo Available"
-msgstr "Нет фото"
+msgstr ""
 
 #: myapp/templates/ad_details.html:284
 msgid "Similar Ads"
 msgstr ""
 
 #: myapp/templates/ad_details.html:290
-#, fuzzy
-#| msgid "No Photo"
 msgid "Photo"
-msgstr "Нет фото"
+msgstr ""
 
 #: myapp/templates/ad_details.html:292
 #: myapp/templates/moderator_ad_detail.html:55
 msgid "No Photo"
-msgstr "Нет фото"
+msgstr ""
 
 #: myapp/templates/ad_details.html:297 myapp/templates/category_ads.html:223
 msgid "View Details"
@@ -207,40 +198,36 @@ msgstr ""
 #: myapp/templates/ad_details.html:320 myapp/templates/create_ad.html:123
 #: myapp/templates/edit_ad.html:79 myapp/templates/profile.html:42
 msgid "Back to Home"
-msgstr "Назад"
+msgstr ""
 
 #: myapp/templates/category_ads.html:136 myapp/templates/home.html:169
 msgid "Craft"
-msgstr "Craft"
+msgstr ""
 
 #: myapp/templates/category_ads.html:140 myapp/templates/create_ad.html:220
 #: myapp/templates/home.html:188
 msgid "Post Ad"
-msgstr "Подать объявление"
+msgstr ""
 
 #: myapp/templates/category_ads.html:162 myapp/templates/home.html:212
 msgid "Categories"
-msgstr "Категории"
+msgstr ""
 
 #: myapp/templates/category_ads.html:169
-#, fuzzy
-#| msgid "No categories"
 msgid "No categories available."
-msgstr "Нет категорий"
+msgstr ""
 
 #: myapp/templates/category_ads.html:182
-#, fuzzy
-#| msgid "Search ads..."
 msgid "Search ads in category..."
-msgstr "Поиск объявлений..."
+msgstr ""
 
 #: myapp/templates/category_ads.html:187 myapp/templates/home.html:231
 msgid "All cities"
-msgstr "Все города"
+msgstr ""
 
 #: myapp/templates/category_ads.html:197 myapp/templates/home.html:240
 msgid "Search"
-msgstr "Поиск"
+msgstr ""
 
 #: myapp/templates/category_ads.html:202
 #, python-format
@@ -250,55 +237,47 @@ msgstr ""
 #: myapp/templates/category_ads.html:210 myapp/templates/home.html:253
 #: myapp/templates/moderation_panel.html:36
 msgid "Image"
-msgstr "Изображение"
+msgstr ""
 
 #: myapp/templates/category_ads.html:213 myapp/templates/home.html:256
 msgid "Sold Image"
-msgstr "Изображение продано"
+msgstr ""
 
 #: myapp/templates/category_ads.html:215 myapp/templates/home.html:258
 msgid "Default Image"
-msgstr "Изображение по умолчанию"
+msgstr ""
 
 #: myapp/templates/category_ads.html:222 myapp/templates/home.html:265
 msgid "Price:"
-msgstr "Цена:"
+msgstr ""
 
 #: myapp/templates/category_ads.html:229
-#, fuzzy
-#| msgid "No ads found."
 msgid "No ads found in this category."
-msgstr "Объявления не найдены."
+msgstr ""
 
 #: myapp/templates/create_ad.html:8 myapp/templates/create_ad.html:127
 msgid "Create New Ad"
-msgstr "Создать Новое Объявление"
+msgstr ""
 
 #: myapp/templates/create_ad.html:207
 msgid "Images"
-msgstr "Фото Вашего Объявление"
+msgstr ""
 
 #: myapp/templates/edit_ad.html:7 myapp/templates/edit_ad.html:84
-#, fuzzy
-#| msgid "Edit"
 msgid "Edit Ad"
-msgstr "Редактирование"
+msgstr ""
 
 #: myapp/templates/edit_ad.html:105
-#, fuzzy
-#| msgid "No Photo"
 msgid "Add New Photos"
-msgstr "Нет фото"
+msgstr ""
 
 #: myapp/templates/edit_ad.html:111
 msgid "Current Photos:"
 msgstr ""
 
 #: myapp/templates/edit_ad.html:127
-#, fuzzy
-#| msgid "Status"
 msgid "Ad Status"
-msgstr "Статус"
+msgstr ""
 
 #: myapp/templates/edit_ad.html:138
 msgid "Save Changes"
@@ -311,55 +290,55 @@ msgstr ""
 #: myapp/templates/forgot_password.html:7
 #: myapp/templates/forgot_password.html:72
 msgid "Forgot Password"
-msgstr "Забыли пароль?"
+msgstr ""
 
 #: myapp/templates/forgot_password.html:75
 msgid "Enter your email"
-msgstr "Введите адрес электронной почты"
+msgstr ""
 
 #: myapp/templates/forgot_password.html:76
 msgid "Send Code"
-msgstr "Отправить код на почту"
+msgstr ""
 
 #: myapp/templates/home.html:172
 #, python-format
 msgid "Ads are waiting: %(moderation_count)s"
-msgstr "Ожидают объявления: %(moderation_count)s"
+msgstr ""
 
 #: myapp/templates/home.html:180 myapp/templates/moderation_panel.html:7
 #: myapp/templates/moderation_panel.html:15
 #: myapp/templates/moderator_ad_detail.html:21
 msgid "Moderation Panel"
-msgstr "Панель модерации"
+msgstr ""
 
 #: myapp/templates/home.html:217
 msgid "No categories"
-msgstr "Нет категорий"
+msgstr ""
 
 #: myapp/templates/home.html:227
 msgid "Search ads..."
-msgstr "Поиск объявлений..."
+msgstr ""
 
 #: myapp/templates/home.html:246
 msgid "Latest Ads"
-msgstr "Последние объявления"
+msgstr ""
 
 #: myapp/templates/home.html:277 myapp/templates/moderation_panel.html:63
 #: myapp/templates/profile.html:96 myapp/templates/profile.html:161
 msgid "View"
-msgstr "Просмотр"
+msgstr ""
 
 #: myapp/templates/home.html:283
 msgid "No ads found."
-msgstr "Объявления не найдены."
+msgstr ""
 
 #: myapp/templates/home.html:321
 msgid "Scroll to top"
-msgstr "Наверх"
+msgstr ""
 
 #: myapp/templates/login.html:124
 msgid "Login to your account"
-msgstr "Войдите в учетную запись"
+msgstr ""
 
 #: myapp/templates/login.html:129
 msgid "Incorrect username or password. Please try again."
@@ -367,75 +346,69 @@ msgstr ""
 
 #: myapp/templates/login.html:143
 msgid "Show password"
-msgstr "Показать пароль"
+msgstr ""
 
 #: myapp/templates/login.html:146 myapp/templates/register.html:172
 msgid "Log in"
-msgstr "Войти"
+msgstr ""
 
 #: myapp/templates/login.html:163
 msgid "Don't have an account?"
-msgstr "У вас нет учетной записи?"
+msgstr ""
 
 #: myapp/templates/login.html:163 myapp/templates/register.html:168
 msgid "Register"
-msgstr "Зарегистрироваться"
+msgstr ""
 
 #: myapp/templates/moderation_panel.html:32
-#, fuzzy
-#| msgid "Ads under moderation."
 msgid "Ads under moderation"
-msgstr "Объявления на модерации"
+msgstr ""
 
 #: myapp/templates/moderation_panel.html:42
 msgid "Date"
-msgstr "Дата"
+msgstr ""
 
 #: myapp/templates/moderation_panel.html:43
 msgid "Actions"
-msgstr "Действия"
+msgstr ""
 
 #: myapp/templates/moderation_panel.html:51
-#, fuzzy
-#| msgid "Sold Image"
 msgid "Ad Image"
-msgstr "Изображение продано"
+msgstr ""
 
 #: myapp/templates/moderation_panel.html:53
-#, fuzzy
-#| msgid "No Photo"
 msgid "No photo"
-msgstr "Нет фото"
+msgstr ""
 
 #: myapp/templates/moderation_panel.html:64
 #: myapp/templates/moderator_ad_detail.html:72
 msgid "Approve"
-msgstr "Одобрить"
+msgstr ""
 
 #: myapp/templates/moderation_panel.html:65
 #: myapp/templates/moderator_ad_detail.html:73
 msgid "Reject"
-msgstr "Отклонить"
+msgstr ""
 
 #: myapp/templates/moderation_panel.html:70
 msgid "No ads under moderation."
-msgstr "Нет объявлений, находящихся на модерации."
+msgstr ""
 
 #: myapp/templates/moderator_ad_detail.html:7
 msgid "Moderate"
-msgstr "Модерация"
+msgstr ""
 
 #: myapp/templates/moderator_ad_detail.html:22
 msgid "Moderator"
-msgstr "Модератор"
+msgstr ""
 
 #: myapp/templates/moderator_ad_detail.html:48
 msgid "Main Photo"
-msgstr "Главное фото"
+msgstr ""
 
 #: myapp/templates/moderator_ad_detail.html:69 myapp/templates/profile.html:99
 msgid "Created"
-msgstr "Создано"
+msgstr ""
 
 #: myapp/templates/profile.html:33
 msgid "Закрыть"
@@ -447,22 +420,20 @@ msgstr ""
 
 #: myapp/templates/profile.html:62
 msgid "Your Profile"
-msgstr "Ваш профиль"
+msgstr ""
 
 #: myapp/templates/profile.html:63
 #, python-format
 msgid "Welcome, %(username)s! Here you can manage your listings."
 msgstr ""
-"Добро пожаловать, %(username)s! Здесь вы можете управлять своими "
-"объявлениями."
 
 #: myapp/templates/profile.html:64
 msgid "User Information"
-msgstr "Информация о пользователе"
+msgstr ""
 
 #: myapp/templates/profile.html:65 myapp/templates/register.html:145
 msgid "Username"
-msgstr "Ваше имя"
+msgstr ""
 
 #: myapp/templates/profile.html:66
 msgid "Email"
@@ -470,19 +441,19 @@ msgstr ""
 
 #: myapp/templates/profile.html:73
 msgid "Your Listings"
-msgstr "Ваши объявления"
+msgstr ""
 
 #: myapp/templates/profile.html:74 myapp/templates/profile.html:149
 msgid "Favorite Listings"
-msgstr "Избранные списки"
+msgstr ""
 
 #: myapp/templates/profile.html:82
 msgid "My Listings"
-msgstr "Мои Объявления"
+msgstr ""
 
 #: myapp/templates/profile.html:83
 msgid "Create Listing"
-msgstr "Создать Объявления"
+msgstr ""
 
 #: myapp/templates/profile.html:91
 msgid "Объявление"
@@ -518,88 +489,61 @@ msgstr ""
 
 #: myapp/templates/register.html:8 myapp/templates/register.html:133
 msgid "Registration"
-msgstr "Регистрация"
+msgstr ""
 
 #: myapp/templates/register.html:137
 msgid "You are already logged in as"
-msgstr "Вы уже вошли как"
+msgstr ""
 
 #: myapp/templates/register.html:137
 msgid "Go to homepage"
-msgstr "Перейти на главную"
+msgstr ""
 
 #: myapp/templates/register.html:146
 msgid "Email (required)"
-msgstr "Email (обязательно)"
+msgstr ""
 
 #: myapp/templates/register.html:147
 msgid "Phone (required)"
-msgstr "Телефон (обязательно)"
+msgstr ""
 
 #: myapp/templates/register.html:148
 msgid "Password"
-msgstr "Пароль"
+msgstr ""
 
 #: myapp/templates/register.html:149
 msgid "Confirm Password"
-msgstr "Подтвердите пароль"
+msgstr ""
 
 #: myapp/templates/register.html:172
 msgid "Already have an account?"
-msgstr "Уже есть аккаунт?"
+msgstr ""
 
 #: myapp/templates/register.html:215
 msgid "Registration successful!"
-msgstr "Регистрация прошла успешно!"
+msgstr ""
 
 #: myapp/templates/register.html:218
 msgid "Registration error."
-msgstr "Ошибка регистрации."
+msgstr ""
 
 #: myapp/templates/register.html:226
 msgid "Connection error."
-msgstr "Ошибка соединения."
+msgstr ""
 
 #: myapp/templates/verify_reset_code.html:8
 #: myapp/templates/verify_reset_code.html:64
 msgid "Verify Code"
-msgstr "Подтверждать код"
+msgstr ""
 
 #: myapp/templates/verify_reset_code.html:67
 msgid "Enter code from email"
-msgstr "Введите код из электронной почты"
+msgstr ""
 
 #: myapp/templates/verify_reset_code.html:68
 msgid "Verify"
-msgstr "Подтверждать"
+msgstr ""
 
 #: myproject1/settings.py:47
 msgid "Kazakh"
 msgstr ""
-
-#~ msgid "OK"
-#~ msgstr "ОК"
-
-#~ msgid "All statuses"
-#~ msgstr "Все статусы"
-
-#~ msgid "Username:"
-#~ msgstr "Имя пользователя"
-
-#~ msgid "Forgot password?"
-#~ msgstr "Забыли пароль?"
-
-#~ msgid "Electronics"
-#~ msgstr "Электроника"
-
-#~ msgid "Furniture"
-#~ msgstr "Мебель"
-
-#~ msgid "Clothing"
-#~ msgstr "Одежда"
-
-#~ msgid "Vehicles"
-#~ msgstr "Транспорт"
-
-#~ msgid "Books"
-#~ msgstr "Книги"
