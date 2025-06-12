@@ -335,7 +335,7 @@ def register_view(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('index')  # или куда тебе нужно
+            return redirect('home')  # или куда тебе нужно
     else:
         form = CustomUserCreationForm()
     return render(request, 'register.html', {'form': form})
