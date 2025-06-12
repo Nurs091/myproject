@@ -9,6 +9,8 @@ from django.contrib import messages
 from .models import User, Ad, Category, AdImage, AdStatus, AdHistory #EmailVerification
 from django.utils.translation import get_language_from_request
 from rest_framework.permissions import AllowAny
+from .forms import CustomUserCreationForm
+
 
 
 from .forms import AdForm
@@ -62,9 +64,6 @@ def home(request):
             lower_title=Lower('title'),
             lower_description=Lower('description')
         ).filter(Q(lower_title__icontains=query) | Q(lower_description__icontains=query))
-
-    if status:
-        ads = ads.filter(status_id=5)
     if city:
         ads = ads.filter(city=city)
 
@@ -126,66 +125,51 @@ def ad_detail(request, ad_id):
 
 
 @login_required
+@login_required
 def create_ad(request):
-    print("--- create_ad view started ---")
     if request.method == 'POST':
-        print("Request method is POST")
         form = AdForm(request.POST, request.FILES)
-        print(f"Form instantiated. Is valid: {form.is_valid()}")
 
         if form.is_valid():
-            print("Form is valid!")
             ad = form.save(commit=False)
             ad.author = request.user
-            print(f"Ad object created (commit=False) by user: {ad.author.username}")
 
+            # Устанавливаем статус через код (независимо от языка)
             try:
-                print("Attempting to get AdStatus 'On moderation'")
-                ad.status = AdStatus.objects.get(name="On moderation")
-                print("Successfully got AdStatus 'On moderation'")
+                ad.status = AdStatus.objects.get(code="active")
             except AdStatus.DoesNotExist:
-                print("ERROR: AdStatus with name 'On moderation' does not exist!")
                 ad.status = None
             except AdStatus.MultipleObjectsReturned:
-                print("ERROR: Multiple AdStatus objects with name 'On moderation' found!")
-                ad.status = AdStatus.objects.filter(name="On moderation").first()
-
-            print(f"Ad status set to: {ad.status}")
+                ad.status = AdStatus.objects.filter(code="active").first()
 
             try:
                 ad.save()
-                print("Ad object saved to database.")
             except Exception as e:
-                print(f"ERROR during ad save: {e}")
-                return render(request, 'create_ad.html', {'form': form, 'categories': Category.objects.all(), 'save_error': str(e)})
+                return render(request, 'create_ad.html', {
+                    'form': form,
+                    'categories': Category.objects.all(),
+                    'save_error': str(e)
+                })
 
             images_list = request.FILES.getlist('images')
-            print(f"Found {len(images_list)} images to save.")
             try:
-                for i, image in enumerate(images_list):
+                for image in images_list:
                     AdImage.objects.create(ad=ad, image=image)
-                    print(f"Saved image {i+1}")
-                print("All images saved.")
             except Exception as e:
-                 print(f"ERROR during image save: {e}")
-                 return render(request, 'create_ad.html', {'form': form, 'categories': Category.objects.all(), 'image_save_error': str(e)})
+                return render(request, 'create_ad.html', {
+                    'form': form,
+                    'categories': Category.objects.all(),
+                    'image_save_error': str(e)
+                })
 
-            print("Redirecting to home.")
             return redirect('home')
-
-        else:
-            # Form is NOT valid
-            print("Form is NOT valid. Errors:")
-            print(form.errors) # <--- Add this line
-            print("Will render template with errors.")
-
-
     else:
-        print("Request method is GET")
         form = AdForm()
 
-    print("--- Rendering create_ad.html ---")
-    return render(request, 'create_ad.html', {'form': form, 'categories': Category.objects.all()})
+    return render(request, 'create_ad.html', {
+        'form': form,
+        'categories': Category.objects.all()
+    })
 
 
 @login_required
@@ -315,16 +299,16 @@ class UserViewSet(viewsets.ModelViewSet):
     # serializer_class = UserSerializer
 
 
-class RegisterAPIView(APIView):
-    permission_classes = [AllowAny]
+# class RegisterAPIView(APIView):
+#     permission_classes = [AllowAny]
 
-    def post(self, request):
-        serializer = RegisterSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.save()
-            login(request, user)  # сразу логиним
-            return Response({'detail': 'Регистрация успешна. Пользователь вошёл в систему.'}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     def post(self, request):
+#         serializer = RegisterSerializer(data=request.data)
+#         if serializer.is_valid():
+#             user = serializer.save()
+#             login(request, user)  # сразу логиним
+#             return Response({'detail': 'Регистрация успешна. Пользователь вошёл в систему.'}, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 # class VerifyEmailAPIView(APIView):
 #     def post(self, request):
 #         serializer = VerifyEmailSerializer(data=request.data)
@@ -345,11 +329,21 @@ class RegisterAPIView(APIView):
 #                 return Response({'error': 'Неверный код'}, status=400)
 #         return Response(serializer.errors, status=400)
     
+def register_view(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('index')  # или куда тебе нужно
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'register.html', {'form': form})
+
+
 
 from django.shortcuts import render
 
-def register_page(request):
-    return render(request, 'register.html')
 
 
 from django.views import View

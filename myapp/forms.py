@@ -70,24 +70,24 @@ class AdImageForm(forms.ModelForm):
         fields = ['image']
 
 
-class CustomUserCreationForm(UserCreationForm):
-    email = forms.EmailField(required=True)
+# class CustomUserCreationForm(UserCreationForm):
+#     email = forms.EmailField(required=True)
 
-    class Meta:
-        model = User
-        fields = ['username', 'email', 'phone', 'password1', 'password2']
+#     class Meta:
+#         model = User
+#         fields = ['username', 'email', 'phone', 'password1', 'password2']
 
-    def clean_email(self):
-        email = self.cleaned_data.get('email')
-        if User.objects.filter(email=email).exists():
-            raise forms.ValidationError("A user with that email already exists.")
-        return email
+#     def clean_email(self):
+#         email = self.cleaned_data.get('email')
+#         if User.objects.filter(email=email).exists():
+#             raise forms.ValidationError("A user with that email already exists.")
+#         return email
 
-    def clean_phone(self):
-        phone = self.cleaned_data.get('phone')
-        if phone and User.objects.filter(phone=phone).exists():
-            raise forms.ValidationError("A user with that phone number already exists.")
-        return phone
+#     def clean_phone(self):
+#         phone = self.cleaned_data.get('phone')
+#         if phone and User.objects.filter(phone=phone).exists():
+#             raise forms.ValidationError("A user with that phone number already exists.")
+#         return phone
     
 
 
